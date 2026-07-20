@@ -7,8 +7,9 @@ Copy and fill this block into the repository's agent instruction file:
 
 This repository follows Noel Method `<version>`.
 
-Before substantive work, read `<local-path>/NOEL-METHOD.md`, then read
-`<local-path>/PROJECT-PROFILE.md`. Use the smallest applicable work scale.
+Start with `<local-path>/pack/INDEX.md`. Always load the linked core and
+`<local-path>/PROJECT-PROFILE.md`, then load only the modules selected by the
+index's trigger table. Use the smallest applicable work scale.
 
 Repository safety and authority rules are the local specialization. If they
 appear to conflict with the hard core, stop and surface the conflict rather

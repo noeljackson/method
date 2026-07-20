@@ -3,7 +3,7 @@
 This example shows one possible specialization. Copy the project-profile
 template rather than treating these choices as universal.
 
-Method version: `0.1.0`
+Method version: `0.2.0`
 
 ## Sources of truth
 

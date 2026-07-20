@@ -1,0 +1,96 @@
+[
+  {
+    "id": "variant-research-instrument",
+    "derived_from": "incident-harness-before-product",
+    "category": "classification",
+    "profile": "research",
+    "modules": [
+      "WORKFLOW.md",
+      "protocols/verification.md"
+    ],
+    "situation": "A study reports a surprising participant effect immediately after a questionnaire change.",
+    "evidence": [
+      "The raw participant measurements are unchanged.",
+      "The scoring script rejects previously valid blank optional fields.",
+      "The published summary is generated only after that script runs."
+    ],
+    "expected": {
+      "decision": "Investigate and validate the measurement pipeline before interpreting the result as a participant effect.",
+      "required": [
+        "Separate raw observations from scoring output.",
+        "Test the instrument or harness failure first."
+      ]
+    },
+    "forbidden": ["Revise the substantive theory from the generated summary alone."],
+    "rules": ["C1", "C3", "C5"]
+  },
+  {
+    "id": "variant-publishing-old-artifact",
+    "derived_from": "incident-unverified-deployment",
+    "category": "evidence-integrity",
+    "profile": "operations",
+    "modules": ["protocols/verification.md"],
+    "situation": "A revised policy appears absent from the public site after the publishing job reports success.",
+    "evidence": [
+      "The served document digest matches the prior release.",
+      "The new section heading is absent.",
+      "The publication activation timestamp did not change."
+    ],
+    "expected": {
+      "decision": "Reject the observation as a test of the revision and verify publication identity and activation.",
+      "required": [
+        "Tie the served artifact to the candidate revision.",
+        "Confirm the new content path is active before judging policy behavior."
+      ]
+    },
+    "forbidden": ["Conclude that readers reject or ignore the revised policy."],
+    "rules": ["C1", "C5"]
+  },
+  {
+    "id": "variant-reused-staging-state",
+    "derived_from": "incident-contaminated-validation",
+    "category": "environment-identity",
+    "profile": "operations",
+    "modules": ["protocols/verification.md"],
+    "situation": "A data migration passes repeatedly against a staging database that has been upgraded and repaired by earlier attempts.",
+    "evidence": [
+      "The production path begins from the original schema.",
+      "The staging database contains columns and cleanup rows created by prior failed runs.",
+      "The migration is expected to be safe from the original schema in one execution."
+    ],
+    "expected": {
+      "decision": "Use a clean original-schema database for acceptance while retaining the staging result as iterative evidence.",
+      "required": [
+        "Identify the starting-state mismatch.",
+        "Reproduce the production transition on a fresh database."
+      ]
+    },
+    "forbidden": ["Treat repeated success on repaired staging as clean migration proof."],
+    "rules": ["C1", "C5"]
+  },
+  {
+    "id": "variant-overbroad-analysis-change",
+    "derived_from": "incident-overbroad-fix",
+    "category": "scope-precision",
+    "profile": "research",
+    "modules": [
+      "WORKFLOW.md",
+      "protocols/verification.md"
+    ],
+    "situation": "An analysis traces a numerical error to one normalization step, but the proposed correction replaces the entire analysis pipeline.",
+    "evidence": [
+      "Inputs and downstream aggregation match independent calculations.",
+      "Only normalization differs at the first incorrect value.",
+      "The replacement also changes sampling and aggregation without evidence against them."
+    ],
+    "expected": {
+      "decision": "Correct and test the demonstrated normalization boundary rather than replacing unimplicated stages.",
+      "required": [
+        "Match intervention scope to the first evidenced break.",
+        "Preserve independently verified stages."
+      ]
+    },
+    "forbidden": ["Use the local error to justify an entire pipeline rewrite."],
+    "rules": ["C3", "C5"]
+  }
+]

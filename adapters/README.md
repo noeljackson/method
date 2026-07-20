@@ -9,29 +9,35 @@ Use when readers and agents can fetch network content. Put the exact release
 URL and local profile path in the repository instructions.
 
 ```text
-https://raw.githubusercontent.com/noeljackson/method/v0.1.0/dist/NOEL-METHOD.md
+https://github.com/noeljackson/method/blob/v0.2.0/dist/pack/INDEX.md
 ```
 
 If the reference cannot be loaded, do not guess at the method. Use a local copy
 or report that the execution context is incomplete.
 
+## Modular copy
+
+Copy the complete `dist/pack/` directory into the consuming repository. Point
+the repository instructions at `pack/INDEX.md`, retain `MANIFEST.json`, and
+keep relative paths unchanged. This is the recommended mode for repeated agent
+use because the index routes work to only the applicable modules.
+
 ## Single-file copy
 
-Copy `dist/NOEL-METHOD.md` into the consuming repository, retain its generated
-version header, and add a completed project profile beside it. Updates are
-ordinary reviewed file changes.
+Copy `dist/NOEL-METHOD.md` into the consuming repository when the prompt
+system can load only one document. Retain its generated version header and add
+a completed project profile beside it.
 
 ## Vendored release
 
-Copy the release's `dist/`, `templates/`, and any selected protocols or
-adapters into a versioned vendor directory. Record the upstream tag and commit
-in the local profile.
+Copy the release's `dist/pack/` into a versioned vendor directory. Record the
+upstream tag, commit, and manifest digest in the local profile.
 
 ## Git subtree
 
 ```sh
 git subtree add --prefix=vendor/noel-method \
-  https://github.com/noeljackson/method.git v0.1.0 --squash
+  https://github.com/noeljackson/method.git v0.2.0 --squash
 ```
 
 Use a reviewed subtree pull to update the pinned release.
@@ -40,7 +46,7 @@ Use a reviewed subtree pull to update the pinned release.
 
 ```sh
 git submodule add https://github.com/noeljackson/method.git vendor/noel-method
-git -C vendor/noel-method checkout v0.1.0
+git -C vendor/noel-method checkout v0.2.0
 git add .gitmodules vendor/noel-method
 ```
 

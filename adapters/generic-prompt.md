@@ -1,8 +1,8 @@
 # Generic Prompt Wrapper
 
 ```text
-Read the attached Noel Method prompt pack and the project profile before
-acting.
+Read the Noel Method index, core, and project profile before acting. Load only
+the additional modules selected by the index's trigger table.
 
 Classify this request as direct, work-item, or program scale. Ground all claims
 in the named sources of truth. For substantive work, restate the work contract

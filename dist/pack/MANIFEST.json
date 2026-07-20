@@ -1,0 +1,19 @@
+{
+  "entrypoint": "INDEX.md",
+  "files": {
+    "CONTRACTS.md": "41d3152c70e971707a4698cdc14e5b6595303c52454a9134dfc18728b9642abd",
+    "CORE.md": "ef98bd17b873f952987d4b792a44871ce2d720759b9486c28ce8bf937fc5d529",
+    "INDEX.md": "0d805f446f9e675b801c5539ed661f4bbf399844c170b80ea216b803749f832f",
+    "WORKFLOW.md": "baca91a5bcfd6418d30dcb867d8ce7ee9328fc57b6781cf0dbdea974707d2d62",
+    "protocols/experiment.md": "f452018993808d82881d23e45361ad10687cd62e79b7efc5fbf47ca676a01415",
+    "protocols/program.md": "fc1390525542b1b1ce5c0cea03375f7e0c86bb21bd6d6b3e98d0a390a0aba8b5",
+    "protocols/session.md": "6522e48fb90a323338fcfe7f4852d61dc29e1a3d15af6f2ede98ddcf3f882fd8",
+    "protocols/verification.md": "bc56c0018ee0cb091326eecbb30fd81fe30824dad1da8656b36f4de1ba1f6647",
+    "templates/evidence-record.md": "e7c12e6786dcb55e32c09b0796f201d16bb671b080033810558aecf5f89c486d",
+    "templates/program-control.md": "df154a0627a1aaace113c84c884056d05de2078971bef266b6666c5695364f08",
+    "templates/project-profile.md": "e58165bdf3bc5f7971a8280e7466d58c86a05742ae34fd3316f5d8c833b8cd59",
+    "templates/work-contract.md": "94ce382cdd2d23ce3fc11fe2bc74bc441a9a1cae383c0abe712252b2494ea2eb"
+  },
+  "method": "Noel Method",
+  "version": "0.2.0"
+}

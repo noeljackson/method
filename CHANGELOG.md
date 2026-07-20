@@ -2,6 +2,15 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.2.0 - 2026-07-20
+
+- Add a linked modular distribution with an index-driven loading table.
+- Keep the full prompt pack as a compatibility fallback.
+- Add a generated manifest with per-file SHA-256 digests.
+- Add incident-derived adversarial evals and synthetic isomorphic variants.
+- Validate modular links, distribution drift, eval provenance, and rubric
+  structure in CI.
+
 ## 0.1.0 - 2026-07-20
 
 - Distill a seven-rule, actor-neutral hard core.

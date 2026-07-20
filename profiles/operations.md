@@ -1,6 +1,6 @@
 # Example Profile: Operational Change
 
-Method version: `0.1.0`
+Method version: `0.2.0`
 
 ## Sources of truth
 

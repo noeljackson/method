@@ -14,7 +14,7 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 NORMATIVE_DIRS = (ROOT / "src", ROOT / "protocols")
-BOUNDARY_PATHS = (*NORMATIVE_DIRS, ROOT / "dist" / "NOEL-METHOD.md")
+BOUNDARY_PATHS = (*NORMATIVE_DIRS, ROOT / "dist")
 FORBIDDEN_TERMS = (
     "isol8",
     "codewire",
@@ -79,7 +79,7 @@ def check_boundaries(errors: list[str]) -> None:
     paths: list[Path] = []
     for boundary in BOUNDARY_PATHS:
         if boundary.is_dir():
-            paths.extend(sorted(boundary.glob("*.md")))
+            paths.extend(sorted(boundary.rglob("*.md")))
         elif boundary.exists():
             paths.append(boundary)
 
@@ -142,6 +142,118 @@ def check_scenarios(errors: list[str]) -> None:
         errors.append("at least eight decision scenarios are required")
     if len(identifiers) != len(set(identifiers)):
         errors.append("scenario IDs must be unique")
+
+    incidents = json.loads(
+        (ROOT / "evals" / "incidents.json").read_text(encoding="utf-8")
+    )
+    incident_fields = {
+        "id",
+        "origin",
+        "category",
+        "profile",
+        "modules",
+        "situation",
+        "evidence",
+        "expected",
+        "forbidden",
+        "rules",
+    }
+    incident_ids: set[str] = set()
+    for index, incident in enumerate(incidents):
+        if set(incident) != incident_fields:
+            errors.append(
+                f"incident {index} fields must be {sorted(incident_fields)}"
+            )
+        identifier = incident.get("id", f"missing-incident-{index}")
+        incident_ids.add(identifier)
+        check_structured_case(incident, f"incident {identifier}", errors)
+    if len(incidents) < 6:
+        errors.append("at least six incident-derived evals are required")
+    if len(incident_ids) != len(incidents):
+        errors.append("incident eval IDs must be unique")
+
+    variants = json.loads(
+        (ROOT / "evals" / "variants.json").read_text(encoding="utf-8")
+    )
+    variant_fields = {
+        "id",
+        "derived_from",
+        "category",
+        "profile",
+        "modules",
+        "situation",
+        "evidence",
+        "expected",
+        "forbidden",
+        "rules",
+    }
+    variant_ids: set[str] = set()
+    for index, variant in enumerate(variants):
+        if set(variant) != variant_fields:
+            errors.append(f"variant {index} fields must be {sorted(variant_fields)}")
+        identifier = variant.get("id", f"missing-variant-{index}")
+        variant_ids.add(identifier)
+        check_structured_case(variant, f"variant {identifier}", errors)
+        if variant.get("derived_from") not in incident_ids:
+            errors.append(
+                f"variant {identifier}: unknown incident origin "
+                f"{variant.get('derived_from')}"
+            )
+    if len(variants) < 4:
+        errors.append("at least four synthetic variants are required")
+    if len(variant_ids) != len(variants):
+        errors.append("variant eval IDs must be unique")
+
+    for identifier in sorted(incident_ids | variant_ids):
+        for stage in ("route", "decision", "key"):
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "render_eval.py"),
+                    identifier,
+                    "--stage",
+                    stage,
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            if result.returncode or not result.stdout.strip():
+                errors.append(f"{identifier}: failed to render {stage} eval stage")
+
+
+def check_structured_case(
+    case: dict[str, object],
+    label: str,
+    errors: list[str],
+) -> None:
+    modules = case.get("modules", [])
+    if not isinstance(modules, list) or not modules:
+        errors.append(f"{label}: modules must be a non-empty list")
+    else:
+        for module in modules:
+            if not isinstance(module, str) or not (ROOT / "dist" / "pack" / module).exists():
+                errors.append(f"{label}: unknown modular-pack path {module}")
+
+    profile = case.get("profile")
+    if not isinstance(profile, str) or not (ROOT / "profiles" / f"{profile}.md").exists():
+        errors.append(f"{label}: unknown example profile {profile}")
+
+    expected = case.get("expected")
+    if not isinstance(expected, dict) or set(expected) != {"decision", "required"}:
+        errors.append(f"{label}: expected must contain decision and required")
+    elif not isinstance(expected["required"], list) or not expected["required"]:
+        errors.append(f"{label}: expected.required must be a non-empty list")
+
+    rules = case.get("rules", [])
+    if not isinstance(rules, list) or not set(rules).issubset(EXPECTED_RULES):
+        errors.append(f"{label}: rules must reference only C1-C7")
+
+    for field in ("evidence", "forbidden"):
+        value = case.get(field, [])
+        if not isinstance(value, list) or not value:
+            errors.append(f"{label}: {field} must be a non-empty list")
 
 
 def check_distribution(errors: list[str]) -> None:
