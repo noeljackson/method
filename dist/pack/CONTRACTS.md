@@ -18,6 +18,9 @@ Required fields:
 - `in_scope` and `out_of_scope` — the allowed boundary.
 - `authority` — mutations and decisions the executor may make.
 - `forbidden_work` — actions that remain disallowed even if convenient.
+- `sensitive_inputs` — secret references, approved delivery boundaries, and
+  exposure response, or an explicit statement that none are required; never
+  secret values.
 - `sources_of_truth` — ordered references used to resolve facts.
 - `known_evidence` and `unknowns` — observations, inferences, and open links.
 - `acceptance_gates` — binary conditions and required evidence.
@@ -54,7 +57,9 @@ Required fields:
 - work-item and review boundary;
 - gate catalog and evidence format;
 - verification selection by blast surface;
-- tool, environment, secret, and external-state rules;
+- tool, environment, and external-state rules;
+- approved secret providers, reference syntax, delivery boundaries, forbidden
+  disclosure surfaces, scanning controls, and exposure-response authority;
 - reporting and learning destinations; and
 - explicit owner decisions that specialize optional behavior.
 

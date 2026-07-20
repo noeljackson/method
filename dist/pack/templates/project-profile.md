@@ -67,7 +67,11 @@ Unknown or unclassified work selects: `<fail-closed behavior>`
 
 - Canonical environment: `<source>`
 - Tool rules: `<rules>`
-- Secret-safety rules: `<rules>`
+- Approved secret providers and opaque reference syntax: `<providers and references>`
+- Approved delivery boundaries: `<how values reach only their intended process or service>`
+- Forbidden secret operations and disclosure surfaces: `<rules>`
+- Safe verification, redaction, and secret-scanning rules: `<rules>`
+- Exposure response and rotation authority: `<owner, stop condition, and path>`
 - External-state rules: `<rules>`
 
 ## Reporting and learning

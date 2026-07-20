@@ -15,7 +15,7 @@ must be trusted rather than merely produced.
 The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** describe
 requirements in this document.
 
-- The seven rules labeled `C1` through `C7` are the hard core.
+- The eight rules labeled `C1` through `C8` are the hard core.
 - Protocols are activated by the chosen work scale and project profile.
 - A project profile supplies local policy but does not silently weaken the
   hard core.
@@ -154,6 +154,33 @@ Watch for non-convergence:
 - a rule that helps only one known task is likely overfit.
 
 When two approaches produce the same verified result, prefer the simpler one.
+
+## C8 — Keep secrets out of uncontrolled surfaces
+
+Actors MUST NOT ask a user to disclose a secret value into model context, or
+copy or deliberately place one in source control, plans, issue or review text,
+logs, evidence records, fixtures, command arguments, or other uncontrolled
+surfaces. Use an opaque reference and the project's approved secret-delivery
+mechanism instead. A model context is not a secret-delivery mechanism.
+
+Secret-bearing work MUST minimize access, privilege, lifetime, and egress.
+Fetch or inject a secret only when the authorized operation requires it, and
+deliver it only to the intended process or service. Do not prove availability
+by printing, dumping, encoding, or otherwise reproducing the value; verify
+through non-secret metadata or the intended behavior.
+
+If a value is exposed unexpectedly:
+
+- stop further propagation and do not quote the value in a report;
+- treat it as compromised until the owner decides otherwise;
+- invoke the project profile's containment, revocation, rotation, and
+  escalation path within the actor's authority; and
+- preserve only non-secret evidence about the exposure and response.
+
+A project profile MUST name the approved providers, reference syntax,
+delivery boundaries, forbidden surfaces, and exposure-response authority. It
+may tighten this rule but MUST NOT make prompts or durable work artifacts an
+approved secret channel.
 
 ---
 
@@ -311,6 +338,9 @@ Required fields:
 - `in_scope` and `out_of_scope` — the allowed boundary.
 - `authority` — mutations and decisions the executor may make.
 - `forbidden_work` — actions that remain disallowed even if convenient.
+- `sensitive_inputs` — secret references, approved delivery boundaries, and
+  exposure response, or an explicit statement that none are required; never
+  secret values.
 - `sources_of_truth` — ordered references used to resolve facts.
 - `known_evidence` and `unknowns` — observations, inferences, and open links.
 - `acceptance_gates` — binary conditions and required evidence.
@@ -347,7 +377,9 @@ Required fields:
 - work-item and review boundary;
 - gate catalog and evidence format;
 - verification selection by blast surface;
-- tool, environment, secret, and external-state rules;
+- tool, environment, and external-state rules;
+- approved secret providers, reference syntax, delivery boundaries, forbidden
+  disclosure surfaces, scanning controls, and exposure-response authority;
 - reporting and learning destinations; and
 - explicit owner decisions that specialize optional behavior.
 
@@ -568,6 +600,12 @@ A verification receipt identifies:
 Evidence from an earlier artifact cannot authorize a changed one. After
 rebasing, regenerating, rebuilding, or redeploying, rerun the affected gate.
 
+When verification needs a secret, record its opaque reference and the
+non-secret result, not its value. Prove availability through provider metadata
+that the profile permits, or through the intended authenticated behavior.
+Never print, dump, diff, encode, or hash a secret merely to prove that two
+surfaces agree.
+
 ## Handle failure
 
 Read the failing component's evidence first. Confirm it is non-empty before
@@ -651,3 +689,86 @@ Each row records:
 
 Discarded and invalid experiments remain useful evidence. Do not erase them
 from the ledger.
+
+---
+
+# Secrets Protocol
+
+Use this protocol when work authenticates with, creates, reads, changes,
+rotates, revokes, deletes, or could expose a secret. It specializes `C8`; it
+does not authorize secret access by itself.
+
+## Preflight
+
+Before access or mutation, establish without retrieving the value:
+
+- the opaque secret reference, owner, target environment, and intended use;
+- the approved provider, tool path, and delivery boundary from the project
+  profile;
+- the exact authority to read, inject, create, rotate, revoke, or delete;
+- the minimum scope and lifetime required by the receiving process;
+- every log, trace, transcript, artifact, and external service that could see
+  input or output; and
+- the exposure-response owner and stop condition.
+
+Unknown provider, target, authority, or egress fails closed. A convenient
+ambient credential is not authority to use it.
+
+## Deliver without revealing
+
+- Prefer provider-managed direct injection into the intended process or
+  service. Keep the value opaque to the coordinating actor and model.
+- Generate new values inside the approved provider or destination, not in a
+  prompt, transcript, patch, or coordinating tool call.
+- Do not use output-producing reads, shell tracing, environment dumps,
+  observable command arguments, diagnostic echoes, or verbose modes that can
+  render the value. A `silent` flag is not a sufficient control by itself.
+- Treat tool-call inputs and outputs as model-visible context even when the
+  underlying command runs locally.
+- Separate non-secret configuration and identifiers from secret values. Treat
+  names, paths, and infrastructure details as sensitive when the profile says
+  so.
+- Avoid temporary files. When a receiving tool requires one, use the
+  profile-approved protected location and permissions, bound its lifetime,
+  and remove it through an authorized cleanup path.
+- Do not widen a token, role, workflow permission, network path, or audience
+  to make delivery easier.
+
+## Verify safely
+
+Use the narrowest non-revealing proof that supports the claim:
+
+- approved provider status, version, age, or policy metadata;
+- presence of an expected reference or data-key shape without contents;
+- successful intended behavior with sensitive response fields suppressed; or
+- for rotation, acceptance of the new credential and rejection of the old one
+  without rendering either value.
+
+Run the project-defined secret scan over changed durable artifacts before
+publication or commit. A clean scan is a backstop, not evidence that deliberate
+disclosure is safe or that every secret shape was detected.
+
+Evidence records contain opaque references, artifact and environment
+identity, redacted observations, and limitations. A redaction marker is not
+proof that the original capture was safe.
+
+## Respond to exposure
+
+When a secret may have reached an uncontrolled surface:
+
+1. Stop the command, publication, or propagation path when safe to do so.
+2. Do not repeat the value while diagnosing or reporting the event.
+3. Identify the affected secret, audience, surfaces, and time window using
+   non-secret metadata.
+4. Mark affected gates `UNSATISFIED` and notify the profile's response owner.
+5. Revoke or rotate only with the required authority; absence of that
+   authority is an escalation, not permission to continue.
+6. Within current authority, sanitize durable uncontrolled copies while
+   preserving authorized, non-secret incident evidence; otherwise escalate
+   that containment action.
+7. Resume only after the owner accepts the containment and replacement
+   evidence.
+
+Redaction, deletion, or history rewriting does not reverse disclosure. It
+reduces future propagation but does not replace revocation or rotation when
+the response owner requires them.

@@ -48,3 +48,11 @@ independent corroboration or an explicit uncertainty decision.
 Reading public sources and producing local analysis are authorized. Contacting
 participants, changing shared data, publishing externally, or making a
 decision on behalf of the direction-setter requires explicit authority.
+
+## Secrets and restricted material
+
+Access credentials and restricted source material remain in their approved
+systems. Prompts, notes, citations, and reproducibility artifacts use opaque
+references and non-sensitive excerpts only. Publication checks include a
+disclosure review, and suspected exposure is escalated to the material owner
+without repeating it.

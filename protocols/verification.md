@@ -43,6 +43,12 @@ A verification receipt identifies:
 Evidence from an earlier artifact cannot authorize a changed one. After
 rebasing, regenerating, rebuilding, or redeploying, rerun the affected gate.
 
+When verification needs a secret, record its opaque reference and the
+non-secret result, not its value. Prove availability through provider metadata
+that the profile permits, or through the intended authenticated behavior.
+Never print, dump, diff, encode, or hash a secret merely to prove that two
+surfaces agree.
+
 ## Handle failure
 
 Read the failing component's evidence first. Confirm it is non-empty before

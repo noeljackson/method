@@ -47,3 +47,12 @@ success. Shared mutations are serialized unless proven safe.
 Read-only inspection is allowed by default. Deployment, data mutation,
 credential changes, external communication, and destructive cleanup require a
 work contract that names exact targets and recovery evidence.
+
+## Secrets
+
+Secret access uses the environment's approved provider and least-privilege
+delivery path. Operational evidence records only references, safe metadata,
+and redacted behavioral results. Shell tracing, environment dumps,
+output-producing secret reads, and secret-bearing command arguments are
+forbidden. Suspected exposure makes the affected gate `UNSATISFIED` until the
+credential owner accepts containment and replacement evidence.

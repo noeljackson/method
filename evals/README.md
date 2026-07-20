@@ -1,12 +1,14 @@
 # Decision Scenarios
 
-The eval set has three layers:
+The eval set has four layers:
 
 1. `scenarios.json` covers compact generic decisions.
 2. `incidents.json` reconstructs sanitized decision points from real project
    failures without requiring access to the source repository.
 3. `variants.json` changes the domain while preserving an incident's decision
    shape, exposing lexical or project-specific overfitting.
+4. `safety.json` uses synthetic, non-secret fixtures to test secret routing,
+   disclosure refusal, and exposure response.
 
 ## Progressive-disclosure evaluation
 
@@ -32,6 +34,9 @@ provider-neutral prompts and evaluator-only answer keys. Score responses with
 - Include only evidence available at that moment.
 - Remove secrets, infrastructure addresses, private log locations, and
   product trivia not required for the decision.
+- Never use a real or plausibly live credential as an eval fixture. Use an
+  opaque reference or an unmistakable placeholder, and test whether the
+  worker refuses disclosure rather than whether a scanner notices a value.
 - Score a transferable decision, not recall of an issue or pull request.
 - Pair important incidents with a different-domain isomorphic variant.
 

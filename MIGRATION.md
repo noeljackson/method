@@ -6,7 +6,7 @@ original documents.
 
 Destination labels:
 
-- **Core:** one of `C1`–`C7` or the main workflow.
+- **Core:** one of `C1`–`C8` or the main workflow.
 - **Protocol:** optional session, program, verification, or experiment rules.
 - **Contract:** stable template/interface.
 - **Profile:** project or domain specialization.

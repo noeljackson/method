@@ -23,6 +23,7 @@ by default.
 | Creating or auditing acceptance evidence | [Verification protocol](protocols/verification.md) |
 | Multi-wave or dependent work | [Program protocol](protocols/program.md) and verification protocol |
 | Repeated measured improvement | [Experiment protocol](protocols/experiment.md) and verification protocol |
+| Secret-bearing work or suspected exposure | [Secrets protocol](protocols/secrets.md) and verification protocol |
 | Creating a project or work artifact | [Contract definitions](CONTRACTS.md) and the relevant [template](templates/work-contract.md) |
 
 ## Contract templates

@@ -12,7 +12,7 @@ must be trusted rather than merely produced.
 The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** describe
 requirements in this document.
 
-- The seven rules labeled `C1` through `C7` are the hard core.
+- The eight rules labeled `C1` through `C8` are the hard core.
 - Protocols are activated by the chosen work scale and project profile.
 - A project profile supplies local policy but does not silently weaken the
   hard core.

@@ -55,3 +55,11 @@ Routine source changes, tests, branches, and review artifacts are authorized
 inside the work contract. Force pushes to shared history, releases,
 credentials, production changes, and destructive data operations require
 explicit authority.
+
+## Secrets
+
+Use the repository-approved secret provider and opaque references. Values are
+delivered only to the intended process and never enter prompts, patches,
+command arguments, logs, test fixtures, or review evidence. An unexpected
+disclosure stops the affected work and invokes the repository's credential
+response owner; rotation remains an explicitly authorized mutation.

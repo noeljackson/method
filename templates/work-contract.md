@@ -34,6 +34,18 @@ Forbidden even if convenient:
 
 - <action>
 
+## Sensitive inputs
+
+Required secret references; never values:
+
+- <opaque reference or `none`>
+
+Approved provider and delivery boundary: <mechanism or `n/a`>
+
+Forbidden disclosure surfaces: <surfaces or `n/a`>
+
+Exposure response owner and stop condition: <owner and condition or `n/a`>
+
 ## Sources of truth
 
 1. <source and what it owns>

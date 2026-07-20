@@ -8,6 +8,8 @@ All notable changes to the Noel Method are recorded here.
 - Keep the full prompt pack as a compatibility fallback.
 - Add a generated manifest with per-file SHA-256 digests.
 - Add incident-derived adversarial evals and synthetic isomorphic variants.
+- Add a universal secret-safety invariant, an opt-in secrets protocol, and
+  secret disclosure evals.
 - Validate modular links, distribution drift, eval provenance, and rubric
   structure in CI.
 

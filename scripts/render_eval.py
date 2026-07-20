@@ -14,7 +14,7 @@ PACK = ROOT / "dist" / "pack"
 
 def load_cases() -> dict[str, dict[str, object]]:
     cases: dict[str, dict[str, object]] = {}
-    for filename in ("incidents.json", "variants.json"):
+    for filename in ("incidents.json", "variants.json", "safety.json"):
         items = json.loads((ROOT / "evals" / filename).read_text(encoding="utf-8"))
         for item in items:
             cases[item["id"]] = item
@@ -97,7 +97,7 @@ with exactly these fields:
 def answer_key(case: dict[str, object]) -> str:
     fields = {
         "id": case["id"],
-        "origin": case.get("origin", case.get("derived_from")),
+        "origin": case.get("origin", case.get("derived_from", "synthetic")),
         "modules": case["modules"],
         "expected": case["expected"],
         "forbidden": case["forbidden"],

@@ -17,7 +17,7 @@ must be trusted rather than merely produced.
 The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** describe
 requirements in this document.
 
-- The seven rules labeled `C1` through `C7` are the hard core.
+- The eight rules labeled `C1` through `C8` are the hard core.
 - Protocols are activated by the chosen work scale and project profile.
 - A project profile supplies local policy but does not silently weaken the
   hard core.
@@ -156,6 +156,33 @@ Watch for non-convergence:
 - a rule that helps only one known task is likely overfit.
 
 When two approaches produce the same verified result, prefer the simpler one.
+
+## C8 — Keep secrets out of uncontrolled surfaces
+
+Actors MUST NOT ask a user to disclose a secret value into model context, or
+copy or deliberately place one in source control, plans, issue or review text,
+logs, evidence records, fixtures, command arguments, or other uncontrolled
+surfaces. Use an opaque reference and the project's approved secret-delivery
+mechanism instead. A model context is not a secret-delivery mechanism.
+
+Secret-bearing work MUST minimize access, privilege, lifetime, and egress.
+Fetch or inject a secret only when the authorized operation requires it, and
+deliver it only to the intended process or service. Do not prove availability
+by printing, dumping, encoding, or otherwise reproducing the value; verify
+through non-secret metadata or the intended behavior.
+
+If a value is exposed unexpectedly:
+
+- stop further propagation and do not quote the value in a report;
+- treat it as compromised until the owner decides otherwise;
+- invoke the project profile's containment, revocation, rotation, and
+  escalation path within the actor's authority; and
+- preserve only non-secret evidence about the exposure and response.
+
+A project profile MUST name the approved providers, reference syntax,
+delivery boundaries, forbidden surfaces, and exposure-response authority. It
+may tighten this rule but MUST NOT make prompts or durable work artifacts an
+approved secret channel.
 
 ---
 

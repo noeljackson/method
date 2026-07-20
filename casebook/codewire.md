@@ -57,6 +57,19 @@ became expensive to read and easy to misapply.
 The universal protocol corrects this by allowing one live `ProgramControl` and
 moving superseded controls into an append-only decision ledger.
 
+### Secret delivery must stay outside coordination context
+
+Operational workflows needed credentials without making their values part of
+the agent transcript or retained evidence. Output-producing secret reads,
+shell tracing, environment dumps, observable command arguments, and reliance
+on a tool's `silent` flag could all cross that boundary. The safer workflows
+used an approved provider to inject values directly into the intended process
+and verified only permitted metadata or authenticated behavior.
+
+Generalized into `C8`, the secrets protocol, secret-aware work contracts, and
+non-revealing verification. Provider commands, secret paths, and response
+owners remain project-profile policy.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

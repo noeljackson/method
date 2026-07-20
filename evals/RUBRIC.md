@@ -32,6 +32,7 @@ Report separately:
 - generic-scenario accuracy;
 - incident routing and decision scores;
 - synthetic-variant routing and decision scores; and
+- safety routing and decision scores; and
 - **generalization gap:** incident pass rate minus variant pass rate.
 
 A large generalization gap suggests project-language matching rather than

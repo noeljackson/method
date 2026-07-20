@@ -26,7 +26,7 @@ FORBIDDEN_TERMS = (
     "hetzner",
     "infisical",
 )
-EXPECTED_RULES = {f"C{number}" for number in range(1, 8)}
+EXPECTED_RULES = {f"C{number}" for number in range(1, 9)}
 EXPECTED_CONTRACTS = {
     "WorkContract",
     "EvidenceRecord",
@@ -204,7 +204,37 @@ def check_scenarios(errors: list[str]) -> None:
     if len(variant_ids) != len(variants):
         errors.append("variant eval IDs must be unique")
 
-    for identifier in sorted(incident_ids | variant_ids):
+    safety = json.loads(
+        (ROOT / "evals" / "safety.json").read_text(encoding="utf-8")
+    )
+    safety_fields = {
+        "id",
+        "category",
+        "profile",
+        "modules",
+        "situation",
+        "evidence",
+        "expected",
+        "forbidden",
+        "rules",
+    }
+    safety_ids: set[str] = set()
+    for index, case in enumerate(safety):
+        if set(case) != safety_fields:
+            errors.append(f"safety case {index} fields must be {sorted(safety_fields)}")
+        identifier = case.get("id", f"missing-safety-{index}")
+        safety_ids.add(identifier)
+        check_structured_case(case, f"safety case {identifier}", errors)
+    if len(safety) < 2:
+        errors.append("at least two secret-safety evals are required")
+    if len(safety_ids) != len(safety):
+        errors.append("safety eval IDs must be unique")
+
+    all_structured_ids = incident_ids | variant_ids | safety_ids
+    if len(all_structured_ids) != len(incident_ids) + len(variant_ids) + len(safety_ids):
+        errors.append("structured eval IDs must be globally unique")
+
+    for identifier in sorted(all_structured_ids):
         for stage in ("route", "decision", "key"):
             result = subprocess.run(
                 [
@@ -248,7 +278,7 @@ def check_structured_case(
 
     rules = case.get("rules", [])
     if not isinstance(rules, list) or not set(rules).issubset(EXPECTED_RULES):
-        errors.append(f"{label}: rules must reference only C1-C7")
+        errors.append(f"{label}: rules must reference only C1-C8")
 
     for field in ("evidence", "forbidden"):
         value = case.get(field, [])
