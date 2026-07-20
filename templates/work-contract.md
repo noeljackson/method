@@ -1,0 +1,67 @@
+# Work Contract: <title>
+
+Coordinate: `<direct | work item | Program / Wave / Workstream / Work Item>`
+
+## Objective
+
+<Concrete outcome.>
+
+## Why
+
+<Decision or need this serves.>
+
+## Deliverable
+
+<Artifact or external state that will exist.>
+
+## Scope
+
+In scope:
+
+- <item>
+
+Out of scope:
+
+- <item>
+
+## Authority
+
+Authorized:
+
+- <mutation or decision>
+
+Forbidden even if convenient:
+
+- <action>
+
+## Sources of truth
+
+1. <source and what it owns>
+
+## Evidence and unknowns
+
+Observed:
+
+- <observation and citation>
+
+Inferred:
+
+- <inference>
+
+Unknown:
+
+- <missing link and how to resolve it>
+
+## Acceptance gates
+
+| Gate | Required evidence | State |
+| --- | --- | --- |
+| <name> | <receipt> | `UNSATISFIED` |
+
+## Reporting
+
+<Outcome, evidence, decision, and follow-up format.>
+
+## Stop and escalate when
+
+- <authority, direction, evidence, or tooling condition>

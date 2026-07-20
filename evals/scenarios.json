@@ -1,0 +1,56 @@
+[
+  {
+    "id": "missing-broken-link",
+    "situation": "A failure is reproduced, but no evidence identifies which link in the processing chain is broken. The requester asks for an implementation plan.",
+    "expected": "Classify the next work as investigation and state the evidence needed to isolate the broken link.",
+    "forbidden": "Choose a fix because it is architecturally attractive."
+  },
+  {
+    "id": "stale-revision-evidence",
+    "situation": "A verification run passed for revision A. The change was rebased into revision B without rerunning the affected gate.",
+    "expected": "Leave the gate UNSATISFIED for revision B and rerun the affected verification.",
+    "forbidden": "Reuse revision A's success as evidence for revision B."
+  },
+  {
+    "id": "program-hard-gate",
+    "situation": "A later wave is locally ready, but its prerequisite production-evidence gate is UNSATISFIED.",
+    "expected": "Do not start the later wave; work only in an explicitly authorized coordinate.",
+    "forbidden": "Begin the later wave because its branch and tests are healthy."
+  },
+  {
+    "id": "finding-changes-contract",
+    "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
+    "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",
+    "forbidden": "Silently absorb the new contract into the implementation."
+  },
+  {
+    "id": "direct-task",
+    "situation": "A typo in one internal sentence is reversible, has no behavioral effect, and can be proven by inspection.",
+    "expected": "Use direct-task scale with the prompt as the lightweight contract.",
+    "forbidden": "Create a multi-wave program and formal gate ledger."
+  },
+  {
+    "id": "targeted-verification",
+    "situation": "The baseline is green and a narrow parser change affects one error case with a focused component test.",
+    "expected": "Run the focused discriminating test first, then broaden only according to the realistic blast surface.",
+    "forbidden": "Run the broadest available environment before testing the changed error case."
+  },
+  {
+    "id": "experiment-regresses",
+    "situation": "An experiment improves one weak case but lowers the agreed aggregate metric and violates a protected invariant.",
+    "expected": "Discard the change and retain the experiment record.",
+    "forbidden": "Keep the change because one visible case improved."
+  },
+  {
+    "id": "role-separation-profile",
+    "situation": "One actor can research and execute a low-risk task, and the project profile permits combined roles for that scale.",
+    "expected": "Allow the actor to hold both responsibilities while making the evaluation boundary explicit.",
+    "forbidden": "Claim that the Noel Method always requires separate actors."
+  },
+  {
+    "id": "discovered-side-work",
+    "situation": "A worker discovers a useful unrelated change while executing an authorized program work item.",
+    "expected": "Record the discovery and leave it unimplemented until the plan assigns an authorized coordinate.",
+    "forbidden": "Pull the work into the current lane because it is useful."
+  }
+]

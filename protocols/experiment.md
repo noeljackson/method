@@ -1,0 +1,58 @@
+# Experiment Protocol
+
+Use this protocol when improving a process, prompt, tool surface, model,
+workflow, or other system through repeated measured trials.
+
+## Establish a verified baseline
+
+Run the unchanged system first. Record the input set, environment, metric,
+artifact identity, and result. The comparison target changes only when a new
+result is accepted.
+
+## Run one interpretable experiment
+
+For each iteration:
+
+1. Inspect the weakest result and its trajectory or evidence.
+2. Group failures by general cause.
+3. State one hypothesis and expected effect.
+4. Make one coherent, general change.
+5. Validate structural integrity before the trial.
+6. Run the same evaluation in a fresh or equivalently controlled environment.
+7. Record the complete result, including regressions.
+8. Keep or discard using the rule below.
+
+## Keep or discard
+
+- Keep when the agreed metric improves without violating protected
+  invariants.
+- Keep an equal result only when the system becomes demonstrably simpler.
+- Otherwise discard the change while retaining the experiment record.
+
+Preserve the best verified artifact separately from the current experiment so
+a failed iteration cannot move the baseline.
+
+## Avoid overfitting
+
+Ask:
+
+> If this exact evaluation item disappeared, would the change still improve
+> the system?
+
+If not, the change is probably a task-specific workaround. Prefer tools,
+contracts, prompts, and environment improvements that remove a class of
+failures.
+
+## Experiment ledger
+
+Each row records:
+
+- artifact or commit identity;
+- hypothesis;
+- metric and per-case results;
+- `keep`, `discard`, or `invalid`;
+- protected-invariant result; and
+- short explanation.
+
+Discarded and invalid experiments remain useful evidence. Do not erase them
+from the ledger.
