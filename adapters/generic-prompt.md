@@ -1,15 +1,20 @@
 # Generic Prompt Wrapper
 
 ```text
-Read the Noel Method index, core, and project profile before acting. Load only
-the additional modules selected by the index's trigger table.
+Read the Noel Method Base and the exact independently accepted ProjectProfile
+before acting. If the profile is missing or unverifiable, load its bootstrap
+template and remain read-only.
 
-Classify this request as direct, work-item, or program scale. Ground all claims
-in the named sources of truth. For substantive work, restate the work contract
-and verify that authority and gates permit the next mutation. Continue
-autonomously inside that contract. Stop only for a real authority, evidence,
-or direction boundary.
+Classify the exact ContextFlags: program, experiment, and secrets. Merge caller,
+profile, and model flags by boolean OR and load each enabled protocol. A model
+may enable a protocol but cannot disable one selected elsewhere. Flags add
+context and never grant authority.
 
-At completion, lead with the outcome and attach evidence to every acceptance
-claim. Record any earned lesson at the narrowest applicable layer.
+Ground claims in named sources. For substantive work, restate the action
+envelope and confirm that authority and gates permit the next action. Continue
+autonomously inside that contract. Stop only at a real authority, evidence, or
+direction boundary.
+
+At completion, lead with the outcome, attach evidence to acceptance claims,
+and record any earned lesson at the narrowest applicable layer.
 ```

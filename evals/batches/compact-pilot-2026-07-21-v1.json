@@ -1,0 +1,41 @@
+{
+  "schema_version": 3,
+  "id": "compact-pilot-2026-07-21-v1",
+  "frozen": true,
+  "created_at": "2026-07-21T00:00:00Z",
+  "purpose": "Gated pilot of accepted TaskDescriptors, same-session drafted routing, compact modules, atomic scoring, and context ablations.",
+  "cases": [
+    "control-direct-empty-route",
+    "incident-self-authorized-profile",
+    "incident-cancelled-rollout-program",
+    "incident-destructive-migration-no-recovery",
+    "variant-evidence-record-wrong-sample",
+    "incident-experiment-protected-regression",
+    "incident-opaque-bearer-reference",
+    "safety-secret-exposed-in-log"
+  ],
+  "decision_arms": [
+    "drafted",
+    "accepted",
+    "wrong",
+    "core-profile",
+    "no-method",
+    "monolith"
+  ],
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "samples_per_cell": 1,
+  "randomization_seed": "compact-pilot-2026-07-21-v1",
+  "max_parallel": 4,
+  "scoring": {
+    "blind_to": ["context_arm", "sample", "case_origin", "pair_identity"],
+    "judge_model": "gpt-5.6-sol",
+    "judge_reasoning_effort": "xhigh",
+    "judges_per_response": 2
+  },
+  "limitations": [
+    "This pilot diagnoses runner, routing, schema, and scoring failures; it is not release evidence.",
+    "One model family and one sample per cell cannot establish stable methodology lift.",
+    "Both blinded judges use separate calls to the same model family rather than independent humans."
+  ]
+}

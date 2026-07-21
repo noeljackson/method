@@ -11,8 +11,9 @@ Maintain three distinct artifacts:
    become true and stay true, not how to get there.
 2. **Execution plan:** waves, workstreams, work items, dependencies, and
    acceptance criteria.
-3. **Live program control:** current state, coordinate, authorized queue,
-   gates, forbidden work, and reconciliation receipt.
+3. **Live program control:** current state, active coordinates, accepted
+   frontiers, authorized queue, gates, forbidden work, and reconciliation
+   receipt.
 
 Do not append new live controls above old live controls indefinitely. There is
 one authoritative control artifact; superseded controls move to a dated,
@@ -29,6 +30,11 @@ Program / Wave / Workstream / Work Item
 One work item produces one reviewable change set and its evidence. If source
 implementation and real-world evidence have different prerequisites, split
 them into separate work items.
+
+Several coordinates may be active when their dependency and shared-state
+receipts prove independence. Maintain a set of maximal accepted coordinates
+for each workstream instead of forcing concurrent work into a false total
+order.
 
 ## Dispatch gate
 
@@ -70,6 +76,12 @@ While stopped:
 - unrelated productive work does not become authorized merely because the
   original lane is stopped.
 
+An emergency does not reactivate the stopped lane. Least-harm containment may
+proceed only under separate pre-existing authority and an incident work
+contract that records its own authority receipt, scope, evidence, and stop
+condition. The program remains `STOPPED_FOR_REPLAN` until its repaired control
+is accepted.
+
 Resume only after the repaired control is accepted and its resume condition is
 met.
 
@@ -78,3 +90,14 @@ met.
 Set state to `COMPLETE` only when every goal-state condition is true and every
 required receipt is attached. Near-completion is still `ACTIVE` with remaining
 gates `UNSATISFIED`.
+
+## Terminate
+
+Set state to `TERMINATED` when the program ends without satisfying every goal.
+Record exactly one disposition: `OWNER_CANCELLED`, `ABANDONED`, `SUPERSEDED`,
+or `SAFETY`. The terminal receipt names the authority source, decision actor
+and time, reason, unmet goals, preserved evidence, external-state disposition,
+and successor control when superseded.
+
+A terminated control cannot resume. Later work needs a new accepted live
+control and cannot inherit authority from the terminal one.

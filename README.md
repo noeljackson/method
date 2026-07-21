@@ -6,9 +6,8 @@ responsibilities rather than identities.
 
 The method is intentionally layered:
 
-- A small hard core defines the minimum discipline.
-- Protocols cover sessions, multi-wave programs, verification, and
-  experiments.
+- A compact Base defines the non-waivable core, workflow, and common contracts.
+- Optional protocols cover programs, experiments, and secret-bearing work.
 - A project profile supplies local vocabulary, authority, gates, and tools.
 - Adapters show several ways to copy, vendor, or reference a release.
 - Case studies preserve the failures that earned the rules without turning
@@ -17,8 +16,8 @@ The method is intentionally layered:
 ## The loop
 
 ```text
-Orient -> Frame -> Evidence -> Classify -> Plan coverage
-       -> Contract -> Execute -> Verify -> Report -> Learn
+Orient and frame -> Gather and classify -> Check plan coverage
+                 -> Contract -> Act -> Verify -> Report and learn
 ```
 
 The core question is not merely, "Can this work be done?" It is:
@@ -29,19 +28,39 @@ The core question is not merely, "Can this work be done?" It is:
 ## Start here
 
 1. Open the modular pack's [index](dist/pack/INDEX.md).
-2. Always load its core and a completed local project profile.
-3. Follow the index only to modules whose trigger applies.
+2. Always load its Base and an independently accepted local project profile.
+3. OR the caller, profile, and model ContextFlags and load enabled protocols.
 4. Use the [full prompt pack](dist/NOEL-METHOD.md) only when the consumer
    cannot follow linked local files.
-5. Choose or complete a [project profile](templates/project-profile.md).
+5. Draft, independently accept, and verify a
+   [project profile](templates/project-profile.md).
 6. Choose a consumption mode from [the adapters guide](adapters/README.md).
 7. Use a [work contract](templates/work-contract.md) for substantive work.
 8. For multi-wave work, also create a
    [program control](templates/program-control.md).
 
-The modular pack is optimized for repeated agent use: `INDEX.md`, `CORE.md`,
-and the local profile form the minimum context. Workflow, protocol, and
-contract modules are loaded by trigger rather than on every turn.
+The modular pack is optimized for repeated agent use: `INDEX.md`, `BASE.md`,
+and the local profile form the normal context. The three non-authoritative
+flags—`program`, `experiment`, and `secrets`—only add context. They never grant
+authority, and no source may use `false` to clear another source's `true`.
+
+## Everyday use
+
+Most routine work should stay light. For a bounded, reversible direct task,
+the prompt can be its contract:
+
+```text
+Outcome: <what should be true next>
+Constraints: <boundaries and non-goals>
+Evidence: <current source of truth or check>
+Next action: <one bounded step>
+```
+
+Use a formal [work contract](templates/work-contract.md) only when work is
+substantive: it changes external or irreversible state, handles sensitive
+material, crosses a meaningful handoff or authority boundary, or has material
+uncertainty about success. An accepted ProjectProfile is workspace setup for
+its scope and revision; it is not recreated for every task.
 
 ## Consumption options
 
@@ -67,8 +86,9 @@ is not reproducible execution context.
 - `profiles/` — software, research, and operations examples
 - `adapters/` — integration and consumption snippets
 - `casebook/` — evidence behind the method
+- `audits/` — dated release-readiness and security-tool reports
 - `MIGRATION.md` — source-to-method traceability
-- `evals/` — generic, incident-derived, and synthetic decision scenarios
+- `evals/` — bounded adversarial context and decision evaluation
 
 ## Versioning
 
@@ -79,8 +99,12 @@ versioning:
 - Minor: new optional protocol, template, or compatible field.
 - Major: a hard-core rule or public contract changes meaning.
 
-The initial `0.x` releases are for field testing. The core becomes `1.0.0`
-after it has been consumed by multiple independent project profiles.
+Before `1.0.0`, a minor release MAY make a breaking hard-core, public-contract,
+or context-loading change when the changelog names it and `MIGRATION.md`
+supplies an explicit path. A pre-1 patch remains wording-only. From `1.0.0`
+onward, the major-change rule above applies without this exception. The core
+becomes `1.0.0` after it has been consumed by multiple independently accepted
+profiles.
 
 ## License
 

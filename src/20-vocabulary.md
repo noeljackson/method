@@ -1,71 +1,32 @@
 # Vocabulary and Roles
 
-Stable vocabulary makes prompts, plans, and reports interoperable.
+Roles are responsibilities. A profile maps them to actors and decides when
+separation is required.
 
-## Roles
+- **Direction-setter:** chooses outcomes and supplies authority.
+- **Evaluator:** frames work, checks evidence, maintains contracts, and reads
+  gates.
+- **Researcher:** gathers evidence without target mutation unless authorized.
+- **Executor:** produces the deliverable and verification evidence.
 
-Roles are responsibilities. A project profile maps them to people or agents and
-decides when separate actors are required.
+One actor MAY hold several roles for lower-risk work, but should mark role
+changes at evaluation boundaries.
 
-- **Direction-setter:** chooses the outcome, supplies authority, and decides
-  trade-offs that change scope or commitments.
-- **Evaluator:** frames work, checks evidence, maintains the contract, detects
-  drift, interprets gates, and decides when the method determines a pivot.
-- **Researcher:** gathers and analyzes evidence without performing the target
-  mutation unless the contract explicitly grants it.
-- **Executor:** produces the deliverable and verification evidence within the
-  work contract.
+A **direct task** is bounded, reversible, and locally provable. A **work item**
+has one reviewable outcome. A **program** has persistent dependent workstreams
+and explicit execution control.
 
-One actor MAY hold multiple roles for lower-risk work. The role change should
-be explicit at evaluation boundaries so self-evaluation is not mistaken for
-independent evidence.
+A disposition is exactly `PROCEED`, `HOLD`, `CONTAIN`, or `TERMINATE`.
 
-## Work scales
+Program state is exactly `ACTIVE`, `STOPPED_FOR_REPLAN`, `COMPLETE`, or
+`TERMINATED`. A terminated program records `OWNER_CANCELLED`, `ABANDONED`,
+`SUPERSEDED`, or `SAFETY` and cannot resume. Gate state is exactly `SATISFIED`
+or `UNSATISFIED`.
 
-- **Direct task:** bounded, reversible, low-blast work with an obvious local
-  proof. The prompt may serve as its contract.
-- **Work item:** one reviewable outcome with its own contract, change set, and
-  acceptance evidence.
-- **Program:** multiple dependent work items organized into waves and
-  workstreams with execution control.
+An **observation** was directly seen; an **inference** is derived; a **claim**
+is what others are asked to trust; a **gate** is a condition with required
+evidence; a **receipt** binds a result to an exact artifact and environment.
 
-## Program coordinate
-
-A program coordinate is written:
-
-```text
-Program / Wave / Workstream / Work Item
-```
-
-Every mutating action in a program belongs to one authorized coordinate.
-
-## Program and gate state
-
-Program state is exactly one of:
-
-- `ACTIVE` — work may execute only at authorized coordinates whose gates are
-  satisfied.
-- `STOPPED_FOR_REPLAN` — mutations are stopped while the controlling contract
-  is repaired.
-- `COMPLETE` — all end-state conditions and evidence are satisfied.
-
-Gate state is exactly one of:
-
-- `SATISFIED`
-- `UNSATISFIED`
-
-An external wait does not need another program state. The program remains
-`ACTIVE` with the relevant gate `UNSATISFIED`, which forbids dependent work.
-
-## Evidence terms
-
-- **Observation:** what was directly seen or measured.
-- **Inference:** a conclusion derived from observations.
-- **Claim:** a statement the work asks others to trust.
-- **Gate:** a named condition with required evidence.
-- **Receipt:** evidence tying a gate result to an exact artifact and
-  environment.
-- **Accepted boundary:** the last coordinate whose output and evidence are
-  authoritative.
-- **Proposal debt:** unvalidated proposals that compete for attention without
-  increasing confidence.
+An **approved secret reference** is non-secret, non-authorizing, and safe for
+its audience. A **clean context** never received an exposed value and inherits
+none of its transcript, tool output, process state, or unsafe logging path.

@@ -1,0 +1,189 @@
+{
+  "aggregate_by_arm": {
+    "accepted": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 1,
+      "judgments": 16,
+      "mean_content_out_of_9": 8.8125,
+      "mean_input_words": 5036.1,
+      "mean_rule_f1": 0.782783,
+      "responses": 8
+    },
+    "core-profile": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 1,
+      "judgments": 16,
+      "mean_content_out_of_9": 8.675,
+      "mean_input_words": 2665.1,
+      "mean_rule_f1": 0.689529,
+      "responses": 8
+    },
+    "drafted": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 0.9375,
+      "judgments": 16,
+      "mean_content_out_of_9": 8.4,
+      "mean_input_words": 4983.4,
+      "mean_rule_f1": 0.76195,
+      "responses": 8
+    },
+    "monolith": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 1,
+      "judgments": 16,
+      "mean_content_out_of_9": 8.5625,
+      "mean_input_words": 6199.1,
+      "mean_rule_f1": 0.752976,
+      "responses": 8
+    },
+    "no-method": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 0.6875,
+      "judgments": 16,
+      "mean_content_out_of_9": 6.520833,
+      "mean_input_words": 247.4,
+      "mean_rule_f1": null,
+      "responses": 8
+    },
+    "wrong": {
+      "hard_failure_judgments": 0,
+      "judged_pass_rate": 1,
+      "judgments": 16,
+      "mean_content_out_of_9": 8.3,
+      "mean_input_words": 4548,
+      "mean_rule_f1": 0.700397,
+      "responses": 8
+    }
+  },
+  "batch_id": "compact-pilot-2026-07-21-v1",
+  "judge_reliability": {
+    "decision_and_required_nominal": {
+      "agreement": 0.973958,
+      "items": 192,
+      "kappa": 0.886952
+    },
+    "evidence_predicates_nominal": {
+      "agreement": 0.993056,
+      "items": 144,
+      "kappa": 0.0
+    },
+    "forbidden_nominal": {
+      "agreement": 0.990741,
+      "items": 108,
+      "kappa": 0.962539
+    }
+  },
+  "limitations": [
+    "This pilot diagnoses runner, routing, schema, and scoring failures; it is not release evidence.",
+    "One model family and one sample per cell cannot establish stable methodology lift.",
+    "Both blinded judges use separate calls to the same model family rather than independent humans."
+  ],
+  "paired_drafted_minus": {
+    "accepted": {
+      "cases": 8,
+      "confidence_95": [
+        -1.19489,
+        0.36989
+      ],
+      "mean_delta": -0.4125
+    },
+    "core-profile": {
+      "cases": 8,
+      "confidence_95": [
+        -0.917651,
+        0.367651
+      ],
+      "mean_delta": -0.275
+    },
+    "monolith": {
+      "cases": 8,
+      "confidence_95": [
+        -1.1355,
+        0.8105
+      ],
+      "mean_delta": -0.1625
+    },
+    "no-method": {
+      "cases": 8,
+      "confidence_95": [
+        0.26508,
+        3.493253
+      ],
+      "mean_delta": 1.879167
+    },
+    "wrong": {
+      "cases": 8,
+      "confidence_95": [
+        -0.651874,
+        0.851874
+      ],
+      "mean_delta": 0.1
+    }
+  },
+  "pilot_gate": {
+    "checks": {
+      "accepted_routes_exact": true,
+      "drafted_and_accepted_safety_no_hard_failure": true,
+      "drafted_secret_module_recalled": true,
+      "wrong_routes_omit_decisive_module": true
+    },
+    "passed": true
+  },
+  "routing": {
+    "accepted": {
+      "critical_secret_recall": 1,
+      "decisive_module_recall": 1.0,
+      "exact_rate": 1,
+      "field_accuracy": {
+        "artifact_operations": 1,
+        "effect_class": 1,
+        "experiment": 1,
+        "scale": 1,
+        "secret_mode": 1
+      },
+      "mean_points": 2,
+      "module_precision": 1.0,
+      "module_recall": 1.0,
+      "routes": 8
+    },
+    "drafted": {
+      "critical_secret_recall": 1,
+      "decisive_module_recall": 0.857143,
+      "exact_rate": 0.375,
+      "field_accuracy": {
+        "artifact_operations": 0.625,
+        "effect_class": 1,
+        "experiment": 1,
+        "scale": 0.875,
+        "secret_mode": 0.875
+      },
+      "mean_points": 1.25,
+      "module_precision": 1.0,
+      "module_recall": 0.846154,
+      "routes": 8
+    },
+    "wrong": {
+      "critical_secret_recall": 0.75,
+      "decisive_module_recall": 0.0,
+      "exact_rate": 0,
+      "field_accuracy": {
+        "artifact_operations": 0.5,
+        "effect_class": 0.875,
+        "experiment": 0.875,
+        "scale": 0.625,
+        "secret_mode": 0.75
+      },
+      "mean_points": 0,
+      "module_precision": 0.857143,
+      "module_recall": 0.461538,
+      "routes": 8
+    }
+  },
+  "safety": {
+    "hard_failure_responses": 0,
+    "responses": 12,
+    "zero-failure_95_upper_bound": 0.220922
+  },
+  "source_digest": "36ac0cd520a3ac651a653ca2fd0b400ac9de91b94ae26f7920648e3b0455757c",
+  "total_model_tokens": 1424167
+}

@@ -1,0 +1,31 @@
+{
+  "method": "Noel Method",
+  "version": "0.2.0",
+  "schema_version": 1,
+  "base_modules": [
+    "BASE.md"
+  ],
+  "module_order": [
+    "protocols/program.md",
+    "protocols/experiment.md",
+    "protocols/secrets.md"
+  ],
+  "profile_requirement": {
+    "normal": "Load the exact independently accepted ProjectProfile revision.",
+    "missing_or_invalid": "Load artifacts/project-profile.md and remain read-only until acceptance is independently verifiable."
+  },
+  "flags": {
+    "program": {
+      "module": "protocols/program.md",
+      "activate_when": "An existing or required ProgramControl applies, or the task is an explicit persistent multi-workstream program."
+    },
+    "experiment": {
+      "module": "protocols/experiment.md",
+      "activate_when": "The task is an explicit controlled comparison against a fixed baseline."
+    },
+    "secrets": {
+      "module": "protocols/secrets.md",
+      "activate_when": "The task involves a credential, bearer material, secret delivery, or possible exposure."
+    }
+  }
+}

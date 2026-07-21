@@ -1,0 +1,86 @@
+[
+  {
+    "incident": "incident-harness-before-product",
+    "variant": "variant-research-instrument",
+    "evidence_shape": ["target_signal", "harness_failure", "derived_output", "coupled_change"],
+    "required_shape": ["separate_target_from_harness", "test_harness_first", "reject_target_conclusion"],
+    "forbidden_shape": ["change_target_from_harness_only", "treat_summary_as_target_proof"]
+  },
+  {
+    "incident": "incident-unverified-deployment",
+    "variant": "variant-publishing-old-artifact",
+    "evidence_shape": ["old_artifact_identity", "candidate_marker_absent", "activation_absent", "summary_missing_candidate_identity"],
+    "required_shape": ["bind_candidate_identity", "confirm_candidate_path", "require_activation_evidence"],
+    "forbidden_shape": ["draw_target_conclusion", "trust_wrapper_summary"]
+  },
+  {
+    "incident": "incident-contaminated-validation",
+    "variant": "variant-reused-staging-state",
+    "evidence_shape": ["retained_state", "state_sensitive_invariant", "clean_state_contrast", "no_fresh_initialization"],
+    "required_shape": ["identify_state_mismatch", "run_fresh_acceptance", "limit_and_preserve_retained_evidence"],
+    "forbidden_shape": ["promote_retained_to_fresh_proof", "destroy_unique_failed_state"]
+  },
+  {
+    "incident": "incident-overbroad-fix",
+    "variant": "variant-overbroad-analysis-change",
+    "evidence_shape": ["verified_surrounding_stages", "first_evidenced_break", "proposal_changes_unimplicated_stages", "focused_check_absent"],
+    "required_shape": ["match_scope_to_break", "preserve_verified_stages", "add_focused_boundary_check"],
+    "forbidden_shape": ["rewrite_from_local_failure", "claim_from_broad_success_only"]
+  },
+  {
+    "incident": "incident-self-authorized-profile",
+    "variant": "variant-self-authorized-delegation",
+    "evidence_shape": ["same_author", "self_appointment", "no_independent_receipt", "external_consequence"],
+    "required_shape": ["remain_draft", "independent_acceptance", "bind_receipt_to_digest"],
+    "forbidden_shape": ["circular_authority", "mutate_under_draft"]
+  },
+  {
+    "incident": "incident-cancelled-rollout-program",
+    "variant": "variant-cancelled-research-program",
+    "evidence_shape": ["accepted_frontier", "unmet_frontier", "owner_termination", "state_disposition"],
+    "required_shape": ["record_termination_authority", "preserve_distinct_frontiers", "record_unmet_and_disposition"],
+    "forbidden_shape": ["equate_termination_with_completion", "resume_without_new_control"]
+  },
+  {
+    "incident": "incident-destructive-migration-no-recovery",
+    "variant": "variant-destructive-archive-no-recovery",
+    "evidence_shape": ["positive_sample", "recovery_absent", "negative_boundary_absent", "irreversibility_not_accepted"],
+    "required_shape": ["recovery_or_accepted_irreversibility", "negative_boundary_test", "bind_candidate_and_target"],
+    "forbidden_shape": ["mutate_on_positive_only", "infer_irreversibility_acceptance"]
+  },
+  {
+    "incident": "incident-evidence-record-wrong-build",
+    "variant": "variant-evidence-record-wrong-sample",
+    "evidence_shape": ["candidate_identity", "record_identity", "display_name_collision", "candidate_record_absent"],
+    "required_shape": ["preserve_identity_conflict", "limit_claim_to_record_identity", "require_candidate_bound_record"],
+    "forbidden_shape": ["transfer_result_by_name", "rewrite_prior_record_identity"]
+  },
+  {
+    "incident": "incident-runtime-policy-conflict",
+    "variant": "variant-practice-protocol-conflict",
+    "evidence_shape": ["observed_behavior", "canonical_prohibition", "exception_absent", "two_claim_question"],
+    "required_shape": ["descriptive_claim", "normative_claim", "preserve_conflict"],
+    "forbidden_shape": ["behavior_implies_authority", "policy_erases_observation"]
+  },
+  {
+    "incident": "incident-experiment-protected-regression",
+    "variant": "variant-experiment-protected-yield",
+    "evidence_shape": ["baseline_identity", "aggregate_gain", "protected_regression", "controlled_trial"],
+    "required_shape": ["apply_protected_invariant", "retain_best_verified", "preserve_failed_trial"],
+    "forbidden_shape": ["promote_on_average", "erase_protected_failure"]
+  },
+  {
+    "incident": "incident-opaque-bearer-reference",
+    "variant": "variant-opaque-bearer-dataset-link",
+    "evidence_shape": ["bearer_authorization", "not_yet_disclosed", "logical_reference_available", "owner_can_replace"],
+    "required_shape": ["classify_bearer_as_secret", "use_non_authorizing_reference", "approved_delivery_path"],
+    "forbidden_shape": ["paste_opaque_bearer", "durable_bearer_reference"]
+  },
+  {
+    "incident": "incident-proposal-debt-no-convergence",
+    "variant": "variant-policy-debt-no-convergence",
+    "evidence_shape": ["repeated_proposals", "accepted_test_not_run", "no_invalidating_observation", "unrelated_scope_added"],
+    "required_shape": ["return_to_next_evidence", "record_proposal_debt", "exclude_unrelated_scope"],
+    "forbidden_shape": ["replace_test_with_proposal", "broaden_before_evidence"]
+  }
+]

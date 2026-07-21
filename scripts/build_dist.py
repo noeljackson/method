@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the modular and single-file Noel Method distributions."""
+"""Build the compact modular and single-file Noel Method distributions."""
 
 from __future__ import annotations
 
@@ -8,6 +8,8 @@ import difflib
 import hashlib
 import json
 from pathlib import Path
+
+from methodlib import CONTEXT_KEYS, context_spec
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,13 +27,6 @@ FULL_SOURCES = [
     "protocols/experiment.md",
     "protocols/secrets.md",
 ]
-PROTOCOLS = ("session", "program", "verification", "experiment", "secrets")
-TEMPLATES = (
-    "project-profile",
-    "work-contract",
-    "evidence-record",
-    "program-control",
-)
 
 
 def read(source: str) -> str:
@@ -46,115 +41,138 @@ def generated_header(version: str) -> str:
 
 
 def navigation(prefix: str = "") -> str:
-    return (
-        f"[Index]({prefix}INDEX.md) · "
-        f"[Core]({prefix}CORE.md) · "
-        f"[Workflow]({prefix}WORKFLOW.md) · "
-        f"[Contracts]({prefix}CONTRACTS.md)\n"
-    )
+    return f"[Index]({prefix}INDEX.md) · [Base]({prefix}BASE.md)\n"
 
 
 def modular_document(version: str, content: str, prefix: str = "") -> str:
     return generated_header(version) + "\n" + navigation(prefix) + "\n" + content + "\n"
 
 
-def render_index(version: str) -> str:
+def markdown_section(source: str, heading: str) -> str:
+    text = read(source)
+    marker = f"## {heading}"
+    start = text.find(marker)
+    if start < 0:
+        raise ValueError(f"{source}: missing section {heading}")
+    next_heading = text.find("\n## ", start + len(marker))
+    return text[start:] if next_heading < 0 else text[start:next_heading].rstrip()
+
+
+def render_index(version: str, spec: dict[str, object]) -> str:
+    profile = spec["profile_requirement"]
+    flags = spec["flags"]
     return generated_header(version) + f"""
 # Noel Method Pack
 
 Version: `{version}`
 
-This index is the router for progressive disclosure. Do not load every module
-by default.
-
 ## Always load
 
-1. [Core](CORE.md)
-2. The consuming project's completed profile. If none exists, create one from
-   the [project-profile template](templates/project-profile.md) before
-   substantive work.
+1. [Base](BASE.md)
+2. The consuming project's exact independently accepted ProjectProfile.
 
-## Load by trigger
+{profile['normal']}
 
-| Trigger | Additional modules |
-| --- | --- |
-| Direct, reversible task | None unless a gate or contract question appears |
-| Substantive work item | [Workflow](WORKFLOW.md) and [session protocol](protocols/session.md) |
-| Creating or auditing acceptance evidence | [Verification protocol](protocols/verification.md) |
-| Multi-wave or dependent work | [Program protocol](protocols/program.md) and verification protocol |
-| Repeated measured improvement | [Experiment protocol](protocols/experiment.md) and verification protocol |
-| Secret-bearing work or suspected exposure | [Secrets protocol](protocols/secrets.md) and verification protocol |
-| Creating a project or work artifact | [Contract definitions](CONTRACTS.md) and the relevant [template](templates/work-contract.md) |
+If it is missing, draft, stale, or unverifiable: {profile['missing_or_invalid']}
 
-## Contract templates
+## Context flags
 
-- [Project profile](templates/project-profile.md)
-- [Work contract](templates/work-contract.md)
-- [Evidence record](templates/evidence-record.md)
-- [Program control](templates/program-control.md)
+Use this exact non-authoritative JSON shape:
 
-## Loading rules
+```json
+{{"program": false, "experiment": false, "secrets": false}}
+```
 
-- Follow links from this index only when their trigger applies.
-- Keep references one hop from this index; do not search the pack for hidden
-  requirements.
-- A module may specialize the core but may not contradict it.
-- Repository-specific safety and authority rules remain the local
-  specialization. Surface a conflict instead of silently choosing.
-- Pin this pack's version and record it in the project profile.
+Merge flags supplied by the caller, accepted profile, and model using boolean
+OR. A model may enable a protocol but cannot disable one selected elsewhere.
+Malformed or unknown fields fail closed. Flags select context; WorkContracts,
+ProgramControls, and the accepted profile supply authority.
+
+| Flag | Enable when | Load |
+| --- | --- | --- |
+| `program` | {flags['program']['activate_when']} | [Program](protocols/program.md) |
+| `experiment` | {flags['experiment']['activate_when']} | [Experiment](protocols/experiment.md) |
+| `secrets` | {flags['secrets']['activate_when']} | [Secrets](protocols/secrets.md) |
+
+The machine-readable mapping is [`CONTEXT.json`](CONTEXT.json). Keep links one
+hop from this index and pin the pack version in the ProjectProfile.
 
 ## Single-file fallback
 
-If the consumer cannot follow linked local files, use
-`../NOEL-METHOD.md`. The full file is a compatibility fallback, not the
-recommended repeated-use context.
+Use [`../NOEL-METHOD.md`](../NOEL-METHOD.md) when linked local files cannot be
+loaded. It is a compatibility fallback, not the normal repeated-use context.
 """.lstrip()
 
 
 def render_all() -> dict[Path, str]:
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    spec = context_spec()
     full = generated_header(version) + "\n" + "\n\n---\n\n".join(
         read(source) for source in FULL_SOURCES
     ) + "\n"
-    core = "\n\n---\n\n".join(
-        read(source)
-        for source in ("src/00-preamble.md", "src/10-core.md", "src/20-vocabulary.md")
+    base = "\n\n---\n\n".join(
+        [
+            *(read(source) for source in (
+                "src/00-preamble.md",
+                "src/10-core.md",
+                "src/20-vocabulary.md",
+                "src/30-workflow.md",
+            )),
+            markdown_section("src/40-contracts.md", "WorkContract"),
+            markdown_section("src/40-contracts.md", "ActionEnvelope"),
+            markdown_section("src/40-contracts.md", "EvidenceRecord"),
+        ]
     )
-
+    program = "\n\n---\n\n".join(
+        (
+            read("protocols/program.md"),
+            markdown_section("src/40-contracts.md", "ProgramControl"),
+        )
+    )
+    project_profile = "\n\n---\n\n".join(
+        (
+            markdown_section("src/40-contracts.md", "ProjectProfile"),
+            read("templates/project-profile.md"),
+        )
+    )
     rendered: dict[Path, str] = {
         DIST / "NOEL-METHOD.md": full,
-        PACK / "INDEX.md": render_index(version),
-        PACK / "CORE.md": modular_document(version, core),
-        PACK / "WORKFLOW.md": modular_document(version, read("src/30-workflow.md")),
-        PACK / "CONTRACTS.md": modular_document(version, read("src/40-contracts.md")),
+        PACK / "INDEX.md": render_index(version, spec),
+        PACK / "CONTEXT.json": json.dumps(
+            {"method": "Noel Method", "version": version, **spec},
+            indent=2,
+        ) + "\n",
+        PACK / "BASE.md": modular_document(version, base),
+        PACK / "protocols" / "program.md": modular_document(version, program, prefix="../"),
+        PACK / "protocols" / "experiment.md": modular_document(
+            version, read("protocols/experiment.md"), prefix="../"
+        ),
+        PACK / "protocols" / "secrets.md": modular_document(
+            version, read("protocols/secrets.md"), prefix="../"
+        ),
+        PACK / "artifacts" / "project-profile.md": modular_document(
+            version, project_profile, prefix="../"
+        ),
     }
-    for name in PROTOCOLS:
-        rendered[PACK / "protocols" / f"{name}.md"] = modular_document(
-            version,
-            read(f"protocols/{name}.md"),
-            prefix="../",
-        )
-    for name in TEMPLATES:
-        rendered[PACK / "templates" / f"{name}.md"] = modular_document(
-            version,
-            read(f"templates/{name}.md"),
-            prefix="../",
-        )
-
-    manifest_files = {
-        str(path.relative_to(PACK)): hashlib.sha256(content.encode()).hexdigest()
+    manifest_files = [
+        {
+            "path": str(path.relative_to(PACK)),
+            "sha256": hashlib.sha256(content.encode()).hexdigest(),
+        }
         for path, content in rendered.items()
         if PACK in path.parents
-    }
+    ]
+    manifest_files.sort(key=lambda item: item["path"])
     rendered[PACK / "MANIFEST.json"] = json.dumps(
         {
             "method": "Noel Method",
             "version": version,
             "entrypoint": "INDEX.md",
+            "base": "BASE.md",
+            "context_flags": list(CONTEXT_KEYS),
             "files": manifest_files,
         },
         indent=2,
-        sort_keys=True,
     ) + "\n"
     return rendered
 
@@ -167,15 +185,11 @@ def check(rendered: dict[Path, str]) -> int:
             continue
         failed = True
         diff = difflib.unified_diff(
-            actual.splitlines(),
-            expected.splitlines(),
-            fromfile=str(path.relative_to(ROOT)),
-            tofile="generated",
-            lineterm="",
+            actual.splitlines(), expected.splitlines(),
+            fromfile=str(path.relative_to(ROOT)), tofile="generated", lineterm="",
         )
         print("\n".join(diff))
-
-    expected_pack = {path for path in rendered if PACK in path.parents or path == PACK}
+    expected_pack = {path for path in rendered if PACK in path.parents}
     actual_pack = {path for path in PACK.rglob("*") if path.is_file()} if PACK.exists() else set()
     extras = sorted(actual_pack - expected_pack)
     if extras:
@@ -191,21 +205,29 @@ def write(rendered: dict[Path, str]) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         print(f"wrote {path.relative_to(ROOT)}")
+    expected_pack = {path for path in rendered if PACK in path.parents}
+    for path in sorted((item for item in PACK.rglob("*") if item.is_file()), reverse=True):
+        if path in expected_pack:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if not (
+            text.startswith("<!-- Generated by scripts/build_dist.py")
+            or path.name == "ROUTING.json"
+        ):
+            raise RuntimeError(f"refusing to remove non-generated file: {path.relative_to(ROOT)}")
+        path.unlink()
+        print(f"removed stale {path.relative_to(ROOT)}")
+    for directory in sorted((item for item in PACK.rglob("*") if item.is_dir()), reverse=True):
+        if not any(directory.iterdir()):
+            directory.rmdir()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--check",
-        action="store_true",
-        help="fail when a checked-in distribution file is stale",
-    )
+    parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     rendered = render_all()
-    if args.check:
-        return check(rendered)
-    write(rendered)
-    return 0
+    return check(rendered) if args.check else (write(rendered) or 0)
 
 
 if __name__ == "__main__":

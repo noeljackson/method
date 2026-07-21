@@ -1,0 +1,8 @@
+[
+  {
+    "base": "safety-secret-exposed-in-log",
+    "counterfactual": "control-nonsecret-log-marker",
+    "flipped_fact": "Provider-side identity changes the observed string from a credential to a documented public, non-authorizing canary.",
+    "expected_change": "Compromise containment and credential disposition change to a bounded non-compromise closure; unrelated deployment acceptance remains independent."
+  }
+]

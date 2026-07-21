@@ -3,9 +3,17 @@
 This is the only live execution-control artifact for the program. Move
 superseded controls to the decision ledger; do not stack them here.
 
-- Program state: `<ACTIVE | STOPPED_FOR_REPLAN | COMPLETE>`
-- Current coordinate: `<Program / Wave / Workstream / Work Item>`
-- Accepted boundary: `<last accepted coordinate and evidence>`
+- Program state: `<ACTIVE | STOPPED_FOR_REPLAN | COMPLETE | TERMINATED>`
+
+## Active coordinates
+
+- `<Program / Wave / Workstream / Work Item; independence receipt>`
+
+## Accepted frontiers
+
+| Workstream | Maximal accepted coordinates | Evidence |
+| --- | --- | --- |
+| `<Program / Wave / Workstream>` | `<coordinate set>` | `<receipts>` |
 
 ## Authorized queue
 
@@ -48,3 +56,16 @@ superseded controls to the decision ledger; do not stack them here.
 ## Resume condition
 
 <Exact accepted artifact, decision, or gate needed to resume.>
+
+## Terminal disposition
+
+Complete only when program state is `TERMINATED`:
+
+- Disposition: `<OWNER_CANCELLED | ABANDONED | SUPERSEDED | SAFETY>`
+- Authority source, decided by, and decided at: `<provenance>`
+- Decision receipt and reason: `<evidence>`
+- Preserved evidence and unmet goals: `<citations>`
+- External-state disposition: `<reconciled state>`
+- Successor control, if superseded: `<new control or n/a>`
+
+A terminated control cannot resume.

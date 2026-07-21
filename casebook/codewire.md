@@ -24,6 +24,8 @@ Generalized into `C4`, program coordinates, and `ProgramControl`.
 
 ### Gates need exact evidence
 
+Observation ID: `C-006`
+
 A green run on an old head, a healthy feature branch, or an accepted source
 without matching deployment evidence did not authorize the next irreversible
 step. The program reconciled plan, tracker, canonical source, exact-head
@@ -49,6 +51,8 @@ and remote gates made verification cheaper without creating competing policy.
 Generalized into the verification selector and `C6`.
 
 ### Live control must not become its own archive
+
+Observation ID: `C-014`
 
 A large master plan accumulated many superseding execution-control blocks.
 Although the newest block declared precedence, the live authorization surface

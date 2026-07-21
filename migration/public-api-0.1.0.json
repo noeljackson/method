@@ -1,0 +1,46 @@
+{
+  "contracts": {
+    "EvidenceRecord": [
+      "artifact_identity",
+      "captured_at",
+      "citation",
+      "claim",
+      "environment_identity",
+      "freshness_or_supersession",
+      "method",
+      "observation",
+      "result"
+    ],
+    "ProgramControl": [
+      "accepted_boundary",
+      "active_owner_decisions",
+      "authorized_queue",
+      "canonical_sources",
+      "current_coordinate",
+      "forbidden_work",
+      "hard_gates",
+      "program",
+      "program_state",
+      "reconciliation_receipt",
+      "resume_condition",
+      "stop_condition"
+    ],
+    "ProjectProfile": [],
+    "WorkContract": [
+      "acceptance_gates",
+      "authority",
+      "deliverable",
+      "escalation",
+      "forbidden_work",
+      "in_scope",
+      "known_evidence",
+      "objective",
+      "out_of_scope",
+      "reporting",
+      "sources_of_truth",
+      "why"
+    ]
+  },
+  "rules": ["C1", "C2", "C3", "C4", "C5", "C6", "C7"],
+  "version": "0.1.0"
+}

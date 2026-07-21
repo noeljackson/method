@@ -1,79 +1,66 @@
 # Work Contract: <title>
 
-Coordinate: `<direct | work item | Program / Wave / Workstream / Work Item>`
+## Outcome
 
-## Objective
+<Concrete intended result.>
 
-<Concrete outcome.>
-
-## Why
-
-<Decision or need this serves.>
-
-## Deliverable
-
-<Artifact or external state that will exist.>
+Disposition: `<PROCEED | HOLD | CONTAIN | TERMINATE>`
 
 ## Scope
 
-In scope:
+Included: `<bounded work>`
 
-- <item>
-
-Out of scope:
-
-- <item>
+Excluded: `<non-goals and neighboring work>`
 
 ## Authority
 
-Authorized:
+Allowed decisions and mutations:
 
-- <mutation or decision>
+- <action>
 
 Forbidden even if convenient:
 
 - <action>
 
-## Sensitive inputs
+## Evidence
 
-Required secret references; never values:
-
-- <opaque reference or `none`>
-
-Approved provider and delivery boundary: <mechanism or `n/a`>
-
-Forbidden disclosure surfaces: <surfaces or `n/a`>
-
-Exposure response owner and stop condition: <owner and condition or `n/a`>
-
-## Sources of truth
-
-1. <source and what it owns>
-
-## Evidence and unknowns
-
-Observed:
+Observations and sources:
 
 - <observation and citation>
 
-Inferred:
+Inferences and unknowns:
 
-- <inference>
+- <inference or missing link>
 
-Unknown:
+## Gates
 
-- <missing link and how to resolve it>
-
-## Acceptance gates
-
-| Gate | Required evidence | State |
+| Gate | Required receipt | State |
 | --- | --- | --- |
-| <name> | <receipt> | `UNSATISFIED` |
+| <name> | <exact artifact, environment, method, and result> | `UNSATISFIED` |
+
+## Next evidence
+
+<Exact evidence that permits the next disposition change.>
 
 ## Reporting
 
-<Outcome, evidence, decision, and follow-up format.>
+<Audience, destination, and outcome/evidence format.>
 
-## Stop and escalate when
+## Recovery — when consequential or destructive
 
-- <authority, direction, evidence, or tooling condition>
+- Rollback, forward repair, or isolation: `<path and evidence>`
+- Negative authority-boundary check: `<proof forbidden targets fail closed>`
+- Accepted irreversibility when no recovery exists: `<authority receipt>`
+
+## Secrets — when context flag is true
+
+- Approved references and delivery boundary: `<never a secret value>`
+- Forbidden surfaces and response owner: `<controls>`
+
+## Program — when context flag is true
+
+- ProgramControl and authorized coordinate: `<references>`
+
+## Experiment — when context flag is true
+
+- Baseline, metric, protected invariants, and keep rule: `<references>`

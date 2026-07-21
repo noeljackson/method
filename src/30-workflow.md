@@ -1,62 +1,40 @@
 # Decision Workflow
 
-## 1. Orient
+## 1. Orient and frame
 
-Read the active instructions, current state, recent decisions, in-flight work,
-and relevant sources of truth. Separate current behavior from proposed or
-historical behavior.
+Read current instructions, state, decisions, and sources of truth. State the
+outcome, audience, constraints, non-goals, and consequence of being wrong.
+Choose the smallest work scale that preserves trust.
 
-## 2. Frame
+## 2. Gather and classify
 
-State the intended outcome, audience, constraints, non-goals, and consequence
-of being wrong. Choose the smallest applicable work scale.
+Establish a baseline. Separate observations, inferences, and unknowns. Name the
+problem class, invariant, ownership boundary, and blast surface. If the broken
+link is not demonstrated, investigate before implementing.
 
-## 3. Gather evidence
+## 3. Check plan coverage
 
-Establish a baseline and collect the evidence needed to distinguish plausible
-explanations. Map the chain from observation through decision to outcome. Mark
-unknown links explicitly.
+Execute an accepted plan when it covers the problem. Repair it when reality
+invalidates it. Contract a narrow intervention only when the issue is isolated
+and proportional.
 
-If the broken link is not demonstrated, the next work is investigation, not
-implementation.
+## 4. Contract
 
-## 4. Classify
+For substantive work, confirm the WorkContract and action envelope. In a
+program, reconcile them with the live ProgramControl and authorized coordinate.
 
-Name the problem class, invariant, ownership or authority boundary, and blast
-surface. Rule out measurement, harness, or environment faults before blaming
-the target system.
+## 5. Act
 
-## 5. Check plan coverage
+Proceed autonomously inside the contract. Keep the change aligned to the work
+item and do not absorb useful but unauthorized discoveries.
 
-Ask whether the accepted but unfinished plan already removes this class of
-problem.
+## 6. Verify
 
-- Covered: execute the relevant plan coordinate.
-- Not covered: amend the plan before changing direction.
-- Isolated and proportional: contract a narrow intervention.
+Run the sharpest discriminating check first. Confirm artifact, environment, and
+state identity. Broaden by blast surface and record gate receipts.
 
-## 6. Contract
+## 7. Report and learn
 
-Write the work contract. For a program, reconcile it with the live program
-control and confirm that the coordinate is authorized.
-
-## 7. Execute
-
-Act autonomously inside the contract. Keep the change set aligned to the work
-item. Do not absorb useful but unauthorized discoveries.
-
-## 8. Verify
-
-Run the sharpest discriminating check first. Confirm artifact and environment
-identity. Broaden verification according to blast surface. Record gate results
-with their receipts.
-
-## 9. Report
-
-Lead with the outcome. Distinguish facts, inferences, unresolved questions, and
-decisions. Attach evidence to every readiness or completion claim.
-
-## 10. Learn
-
-Update the relevant plan, tracker, debt ledger, case study, profile, or method
-rule. Promote a lesson only to the narrowest layer where it remains true.
+Lead with the outcome. Separate observations, inferences, unknowns, decisions,
+and next evidence. Attach evidence to readiness or completion claims. Record
+lessons at the narrowest layer where they remain true.

@@ -8,9 +8,12 @@ bounded actors inside one working session.
 1. Identify the direction-setter's requested outcome.
 2. Inspect current state before asking discoverable questions.
 3. Choose direct, work-item, or program scale.
-4. Assign the evaluator, researcher, and executor responsibilities according
-   to the project profile.
-5. Create or confirm the work contract.
+4. Verify that the project profile is `ACCEPTED`, its digest matches, and its
+   acceptance receipt resolves through the external authority source. If not,
+   remain read-only and draft or repair the profile.
+5. Assign the evaluator, researcher, and executor responsibilities according
+   to the accepted project profile.
+6. Create or confirm the work contract.
 
 When evidence is missing, start in researcher mode. Add execution authority
 only after the evidence supports a fix or change shape.
@@ -54,7 +57,7 @@ another differently shaped guess.
 
 At a session boundary:
 
-1. Record the delivered or accepted boundary.
+1. Record the delivered result and any accepted program frontiers.
 2. Preserve or dispose of temporary evidence intentionally.
 3. Reconcile open work and external state.
 4. Record tactical debt and follow-ups.

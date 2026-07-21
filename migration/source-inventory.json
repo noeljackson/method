@@ -45,7 +45,8 @@
     {"id": "I-043", "heading": "Principle 20.2: artifact coherence"},
     {"id": "I-044", "heading": "Principle 20.3: dependency fetchability"},
     {"id": "I-045", "heading": "Principle 20.4: one canonical moving plan"},
-    {"id": "I-046", "heading": "Update this doc when a rule is earned"}
+    {"id": "I-046", "heading": "Update this doc when a rule is earned"},
+    {"id": "I-047", "heading": "Observed secret-output disclosure and contaminated context"}
   ],
   "codewire": [
     {"id": "C-001", "heading": "Repository-local goal budget policy"},

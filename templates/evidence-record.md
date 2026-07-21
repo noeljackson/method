@@ -11,5 +11,5 @@
 - Freshness or supersession: `<event that invalidates this evidence>`
 - Inference, if any: `<clearly labeled conclusion>`
 
-Never include a secret value. Record only an approved opaque reference and
+Never include a secret value. Record only an approved secret reference and
 non-secret observation when the claim involves a secret.

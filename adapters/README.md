@@ -9,7 +9,7 @@ Use when readers and agents can fetch network content. Put the exact release
 URL and local profile path in the repository instructions.
 
 ```text
-https://github.com/noeljackson/method/blob/v0.2.0/dist/pack/INDEX.md
+https://raw.githubusercontent.com/noeljackson/method/<tag>/dist/pack/INDEX.md
 ```
 
 If the reference cannot be loaded, do not guess at the method. Use a local copy
@@ -20,13 +20,13 @@ or report that the execution context is incomplete.
 Copy the complete `dist/pack/` directory into the consuming repository. Point
 the repository instructions at `pack/INDEX.md`, retain `MANIFEST.json`, and
 keep relative paths unchanged. This is the recommended mode for repeated agent
-use because the index routes work to only the applicable modules.
+use because Base stays small and only applicable optional protocols are added.
 
 ## Single-file copy
 
 Copy `dist/NOEL-METHOD.md` into the consuming repository when the prompt
 system can load only one document. Retain its generated version header and add
-a completed project profile beside it.
+an independently accepted project profile beside it.
 
 ## Vendored release
 

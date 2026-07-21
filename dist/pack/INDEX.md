@@ -4,47 +4,38 @@
 
 Version: `0.2.0`
 
-This index is the router for progressive disclosure. Do not load every module
-by default.
-
 ## Always load
 
-1. [Core](CORE.md)
-2. The consuming project's completed profile. If none exists, create one from
-   the [project-profile template](templates/project-profile.md) before
-   substantive work.
+1. [Base](BASE.md)
+2. The consuming project's exact independently accepted ProjectProfile.
 
-## Load by trigger
+Load the exact independently accepted ProjectProfile revision.
 
-| Trigger | Additional modules |
-| --- | --- |
-| Direct, reversible task | None unless a gate or contract question appears |
-| Substantive work item | [Workflow](WORKFLOW.md) and [session protocol](protocols/session.md) |
-| Creating or auditing acceptance evidence | [Verification protocol](protocols/verification.md) |
-| Multi-wave or dependent work | [Program protocol](protocols/program.md) and verification protocol |
-| Repeated measured improvement | [Experiment protocol](protocols/experiment.md) and verification protocol |
-| Secret-bearing work or suspected exposure | [Secrets protocol](protocols/secrets.md) and verification protocol |
-| Creating a project or work artifact | [Contract definitions](CONTRACTS.md) and the relevant [template](templates/work-contract.md) |
+If it is missing, draft, stale, or unverifiable: Load artifacts/project-profile.md and remain read-only until acceptance is independently verifiable.
 
-## Contract templates
+## Context flags
 
-- [Project profile](templates/project-profile.md)
-- [Work contract](templates/work-contract.md)
-- [Evidence record](templates/evidence-record.md)
-- [Program control](templates/program-control.md)
+Use this exact non-authoritative JSON shape:
 
-## Loading rules
+```json
+{"program": false, "experiment": false, "secrets": false}
+```
 
-- Follow links from this index only when their trigger applies.
-- Keep references one hop from this index; do not search the pack for hidden
-  requirements.
-- A module may specialize the core but may not contradict it.
-- Repository-specific safety and authority rules remain the local
-  specialization. Surface a conflict instead of silently choosing.
-- Pin this pack's version and record it in the project profile.
+Merge flags supplied by the caller, accepted profile, and model using boolean
+OR. A model may enable a protocol but cannot disable one selected elsewhere.
+Malformed or unknown fields fail closed. Flags select context; WorkContracts,
+ProgramControls, and the accepted profile supply authority.
+
+| Flag | Enable when | Load |
+| --- | --- | --- |
+| `program` | An existing or required ProgramControl applies, or the task is an explicit persistent multi-workstream program. | [Program](protocols/program.md) |
+| `experiment` | The task is an explicit controlled comparison against a fixed baseline. | [Experiment](protocols/experiment.md) |
+| `secrets` | The task involves a credential, bearer material, secret delivery, or possible exposure. | [Secrets](protocols/secrets.md) |
+
+The machine-readable mapping is [`CONTEXT.json`](CONTEXT.json). Keep links one
+hop from this index and pin the pack version in the ProjectProfile.
 
 ## Single-file fallback
 
-If the consumer cannot follow linked local files, use
-`../NOEL-METHOD.md`. The full file is a compatibility fallback, not the
-recommended repeated-use context.
+Use [`../NOEL-METHOD.md`](../NOEL-METHOD.md) when linked local files cannot be
+loaded. It is a compatibility fallback, not the normal repeated-use context.

@@ -7,12 +7,14 @@ Copy and fill this block into the repository's agent instruction file:
 
 This repository follows Noel Method `<version>`.
 
-Start with `<local-path>/pack/INDEX.md`. Always load the linked core and
-`<local-path>/PROJECT-PROFILE.md`, then load only the modules selected by the
-index's trigger table. Use the smallest applicable work scale.
+Start with `<local-path>/pack/INDEX.md`. Always load `BASE.md` and the exact
+independently accepted `<local-path>/PROJECT-PROFILE.md`. If the profile cannot
+be verified, load the profile bootstrap and remain read-only.
 
-Repository safety and authority rules are the local specialization. If they
-appear to conflict with the hard core, stop and surface the conflict rather
-than silently choosing a rule. Record an explicit owner decision before
-resuming under a changed contract.
+Merge caller, profile, and model ContextFlags by boolean OR, then load the
+enabled Program, Experiment, and Secrets protocols. Flags select context; they
+do not authorize action.
+
+Repository rules and the accepted profile may tighten or specialize the hard
+core but cannot weaken C1–C8. A weakened core is a labeled nonconforming fork.
 ```

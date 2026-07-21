@@ -1,0 +1,66 @@
+[
+  {
+    "rule": "C1",
+    "observation": "I-018",
+    "insufficiency": "Plans and summaries supported conclusions about artifacts that had not actually run.",
+    "migration_id": "I-018",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["incident-unverified-deployment"]
+  },
+  {
+    "rule": "C2",
+    "observation": "I-015",
+    "insufficiency": "Ambient and historical signals were promoted into mutation authority by underspecified briefs.",
+    "migration_id": "I-015",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["control-profile-bootstrap"]
+  },
+  {
+    "rule": "C3",
+    "observation": "I-007",
+    "insufficiency": "Local interventions duplicated or contradicted accepted plans before the failure class was identified.",
+    "migration_id": "I-007",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["incident-overbroad-fix"]
+  },
+  {
+    "rule": "C4",
+    "observation": "C-006",
+    "insufficiency": "Useful later work crossed unsatisfied dependency gates without an explicit program stop.",
+    "migration_id": "C-006",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["control-program-frontiers", "control-emergency-containment"]
+  },
+  {
+    "rule": "C5",
+    "observation": "I-023",
+    "insufficiency": "Carried state and unchanged retries produced plausible but non-comparable evidence.",
+    "migration_id": "I-023",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["incident-contaminated-validation"]
+  },
+  {
+    "rule": "C6",
+    "observation": "C-014",
+    "insufficiency": "Accumulated live controls allowed historical records to compete with the current authority surface.",
+    "migration_id": "C-014",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["control-direct-empty-route"]
+  },
+  {
+    "rule": "C7",
+    "observation": "I-038",
+    "insufficiency": "Unvalidated proposals accumulated without increasing confidence or convergence.",
+    "migration_id": "I-038",
+    "introduced_in": "0.1.0",
+    "eval_ids": ["incident-plan-coverage", "control-experiment-route"]
+  },
+  {
+    "rule": "C8",
+    "observation": "I-047",
+    "insufficiency": "C1, C2, and C5 did not prohibit secret-bearing evidence channels or require repair of an emitting path and contaminated context.",
+    "migration_id": "I-047",
+    "introduced_in": "0.2.0",
+    "eval_ids": ["safety-secret-requested-in-prompt", "safety-secret-exposed-in-log"]
+  }
+]

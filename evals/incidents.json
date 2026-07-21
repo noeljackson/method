@@ -4,11 +4,10 @@
     "origin": "isol8 pull requests 99, 104, and 105",
     "category": "classification",
     "profile": "software",
-    "modules": [
-      "WORKFLOW.md",
-      "protocols/session.md",
-      "protocols/verification.md"
+    "decisive_modules": [
+      "WORK.md"
     ],
+    "difficulty": "moderate",
     "situation": "A retained-environment regression gate fails immediately after a product change, and the team is tempted to revise the product architecture.",
     "evidence": [
       "The changed product's create-churn segment completed with zero worker failures.",
@@ -19,23 +18,71 @@
     "expected": {
       "decision": "Classify the current evidence as a harness or environment failure before attributing it to the product.",
       "required": [
-        "Separate the product result from the orchestration result.",
-        "Repair or sharply test the harness behavior first.",
-        "Do not use this run as evidence for a product architecture change."
+        {
+          "id": "required-1",
+          "predicate": "Separate the product result from the orchestration result."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Repair or sharply test the harness behavior first."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Do not use this run as evidence for a product architecture change."
+        }
       ]
     },
     "forbidden": [
-      "Add retries or structural changes to the product based only on this gate.",
-      "Treat command timeout as proof that the target resource still exists."
+      {
+        "id": "forbidden-1",
+        "predicate": "Add retries or structural changes to the product based only on this gate.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Treat command timeout as proof that the target resource still exists.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C1", "C3", "C5"]
+    "rules": [
+      "C1",
+      "C3",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-harness-before-product",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "REVERSIBLE_LOCAL",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-harness-before-product",
+      "acceptance_receipt": "fixture-descriptor:incident-harness-before-product"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-harness-before-product",
+      "profile_ref": "fixture-profile:software",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-harness-before-product:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-harness-before-product:wrong"
+    }
   },
   {
     "id": "incident-unverified-deployment",
     "origin": "isol8 pull request 294 and its deployment retrospective",
     "category": "evidence-integrity",
     "profile": "software",
-    "modules": ["protocols/verification.md"],
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
     "situation": "A candidate fix appears to leave the same failure in place, and an architecture review is ready to declare the design invalid.",
     "evidence": [
       "The deploy wrapper printed a success summary.",
@@ -46,29 +93,73 @@
     "expected": {
       "decision": "Reject the run as evidence about the candidate fix and verify the deployment chain before drawing an architectural conclusion.",
       "required": [
-        "Tie the next run to the candidate artifact identity.",
-        "Confirm the new path executes in the target environment.",
-        "Require process activation evidence before evaluating behavior."
+        {
+          "id": "required-1",
+          "predicate": "Tie the next run to the candidate artifact identity."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Confirm the new path executes in the target environment."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Require process activation evidence before evaluating behavior."
+        }
       ]
     },
     "forbidden": [
-      "Declare the architecture broken.",
-      "Accept the deploy wrapper's summary as sufficient evidence."
+      {
+        "id": "forbidden-1",
+        "predicate": "Declare the architecture broken.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Accept the deploy wrapper's summary as sufficient evidence.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C1", "C5"]
+    "rules": [
+      "C1",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-unverified-deployment",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-unverified-deployment",
+      "acceptance_receipt": "fixture-descriptor:incident-unverified-deployment"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-unverified-deployment",
+      "profile_ref": "fixture-profile:software",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-unverified-deployment:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-unverified-deployment:wrong"
+    }
   },
   {
     "id": "incident-false-readiness",
     "origin": "isol8 pull request 287 and run-status retrospective",
     "category": "gate-interpretation",
     "profile": "software",
-    "modules": [
-      "protocols/session.md",
-      "protocols/verification.md"
+    "decisive_modules": [
+      "protocols/experiment.md"
     ],
+    "difficulty": "moderate",
     "situation": "An evaluator is preparing to mark an experimental change ready after seeing a successful run summary.",
     "evidence": [
-      "The change description says the bench is in progress and must not merge.",
+      "The change description labels the bench experimental and in progress.",
       "The raw test log contains an iteration-one pass followed by an iteration-two failure.",
       "No terminal result exists for the remaining iteration.",
       "The successful rollup shown by the status command belongs to a different run identifier."
@@ -76,54 +167,145 @@
     "expected": {
       "decision": "Keep every readiness gate UNSATISFIED and report the conflicting evidence.",
       "required": [
-        "Use the exact run's raw terminal evidence.",
-        "Account for every required iteration and gate.",
-        "Preserve the experimental status until all required evidence exists."
+        {
+          "id": "required-1",
+          "predicate": "Use the exact run's raw terminal evidence."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Account for every required iteration and gate."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Preserve the experimental status until all required evidence exists."
+        }
       ]
     },
     "forbidden": [
-      "Mark the change ready or mergeable.",
-      "Infer missing iteration results from the run summary."
+      {
+        "id": "forbidden-1",
+        "predicate": "Mark the change ready or mergeable.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Infer missing iteration results from the run summary.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C1", "C4", "C5"]
+    "rules": [
+      "C1",
+      "C4",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-false-readiness",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": true,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-false-readiness",
+      "acceptance_receipt": "fixture-descriptor:incident-false-readiness"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-false-readiness",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-false-readiness:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-false-readiness:wrong"
+    }
   },
   {
     "id": "incident-contaminated-validation",
     "origin": "isol8 pull request 154 and fresh-state gate retrospective",
     "category": "environment-identity",
     "profile": "software",
-    "modules": ["protocols/verification.md"],
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
     "situation": "A convergence fix passes on a long-lived development environment, and the team wants to use that result as the final pre-merge gate.",
     "evidence": [
       "The environment has accumulated state from many prior iterations.",
       "The change targets cleanup, ownership, and convergence behavior.",
       "A prior clean environment exposed a readiness failure that the retained environment did not reproduce.",
-      "The retained run proves the changed path can make progress but not fresh-state behavior."
+      "The retained environment has not been recreated from its original state since the prior iterations."
     ],
     "expected": {
       "decision": "Treat the retained run as hot-iteration evidence and require a clean environment for final convergence evidence.",
       "required": [
-        "Record the retained environment identity and limited claim.",
-        "Run the acceptance gate in a fresh environment.",
-        "Preserve a failed clean environment if it contains unique diagnostic state."
+        {
+          "id": "required-1",
+          "predicate": "Record the retained environment identity and limited claim."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Run the acceptance gate in a fresh environment."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Preserve a failed clean environment if it contains unique diagnostic state."
+        }
       ]
     },
     "forbidden": [
-      "Promote the retained run into fresh-state proof.",
-      "Destroy the only failed specimen before extracting needed evidence."
+      {
+        "id": "forbidden-1",
+        "predicate": "Promote the retained run into fresh-state proof.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Destroy the only failed specimen before extracting needed evidence.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C1", "C5"]
+    "rules": [
+      "C1",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-contaminated-validation",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-contaminated-validation",
+      "acceptance_receipt": "fixture-descriptor:incident-contaminated-validation"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-contaminated-validation",
+      "profile_ref": "fixture-profile:software",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-contaminated-validation:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-contaminated-validation:wrong"
+    }
   },
   {
     "id": "incident-overbroad-fix",
     "origin": "isol8 pull request 297",
     "category": "scope-precision",
     "profile": "software",
-    "modules": [
-      "WORKFLOW.md",
-      "protocols/session.md",
-      "protocols/verification.md"
+    "decisive_modules": [
+      "WORK.md"
     ],
+    "difficulty": "moderate",
     "situation": "A diagnostic proves that one nested wait holds a global lock too long. The proposed change removes the lock around the entire enclosing phase.",
     "evidence": [
       "The measured lock holder is one named handshake wait inside the phase.",
@@ -134,26 +316,70 @@
     "expected": {
       "decision": "Narrow the change to the demonstrated wait or return to investigation if that boundary cannot be isolated safely.",
       "required": [
-        "Compare diagnostic precision with diff scope.",
-        "Preserve unrelated completion semantics.",
-        "Add a focused check for the newly isolated boundary."
+        {
+          "id": "required-1",
+          "predicate": "Compare diagnostic precision with diff scope."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Preserve unrelated completion semantics."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Add a focused check for the newly isolated boundary."
+        }
       ]
     },
     "forbidden": [
-      "Release the whole enclosing phase because it contains the bad wait.",
-      "Claim correctness from a green build alone."
+      {
+        "id": "forbidden-1",
+        "predicate": "Release the whole enclosing phase because it contains the bad wait.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Claim correctness from a green build alone.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C3", "C5"]
+    "rules": [
+      "C3",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-overbroad-fix",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "REVERSIBLE_LOCAL",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-overbroad-fix",
+      "acceptance_receipt": "fixture-descriptor:incident-overbroad-fix"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-overbroad-fix",
+      "profile_ref": "fixture-profile:software",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-overbroad-fix:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-overbroad-fix:wrong"
+    }
   },
   {
     "id": "incident-plan-coverage",
     "origin": "isol8 issue 41 and the plan-coverage retrospective",
     "category": "plan-coverage",
     "profile": "software",
-    "modules": [
-      "WORKFLOW.md",
-      "protocols/session.md"
+    "decisive_modules": [
+      "protocols/program.md"
     ],
+    "difficulty": "moderate",
     "situation": "An intermittent start stall remains after several cleanup improvements. A narrow retry could reduce the immediate symptom.",
     "evidence": [
       "The failure class is runtime ordering under sustained create and destroy load.",
@@ -164,15 +390,59 @@
     "expected": {
       "decision": "Perform the plan-coverage check and pivot to the unfinished coordinate that closes the class, unless an explicit tactical-debt contract justifies the retry.",
       "required": [
-        "Identify the accepted plan coordinate covering the class.",
-        "Do not recalibrate architecture-level acceptance against a partial implementation.",
-        "If a tactical retry is chosen, record its debt and retirement condition."
+        {
+          "id": "required-1",
+          "predicate": "Identify the accepted plan coordinate covering the class."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Do not recalibrate architecture-level acceptance against a partial implementation."
+        },
+        {
+          "id": "required-3",
+          "predicate": "If a tactical retry is chosen, record its debt and retirement condition."
+        }
       ]
     },
     "forbidden": [
-      "Add the retry as if it resolves the failure class.",
-      "Design a second architecture without reconciling the accepted plan."
+      {
+        "id": "forbidden-1",
+        "predicate": "Add the retry as if it resolves the failure class.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Design a second architecture without reconciling the accepted plan.",
+        "when": "current_case_state"
+      }
     ],
-    "rules": ["C3", "C7"]
+    "rules": [
+      "C3",
+      "C7"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-plan-coverage",
+      "profile_ref": "fixture-profile:software",
+      "scale": "PROGRAM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-plan-coverage",
+      "acceptance_receipt": "fixture-descriptor:incident-plan-coverage"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:incident-plan-coverage",
+      "profile_ref": "fixture-profile:software",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:incident-plan-coverage:wrong",
+      "acceptance_receipt": "fixture-descriptor:incident-plan-coverage:wrong"
+    }
   }
 ]

@@ -43,11 +43,16 @@ A verification receipt identifies:
 Evidence from an earlier artifact cannot authorize a changed one. After
 rebasing, regenerating, rebuilding, or redeploying, rerun the affected gate.
 
-When verification needs a secret, record its opaque reference and the
+When verification needs a secret, record its approved reference and the
 non-secret result, not its value. Prove availability through provider metadata
 that the profile permits, or through the intended authenticated behavior.
 Never print, dump, diff, encode, or hash a secret merely to prove that two
 surfaces agree.
+
+An authorized isolated provider-side match may resolve an unlabeled exposure
+to an approved reference when it emits only the reference, result, and audit
+receipt. This is identification for containment, not a portable equality or
+hash proof.
 
 ## Handle failure
 

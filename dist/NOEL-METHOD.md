@@ -3,37 +3,49 @@
 
 # Noel Method
 
-The Noel Method is a methodology for delegated work: work in which direction,
-evaluation, research, and execution may be performed by different people,
-agents, or by one actor wearing explicitly different hats.
+The Noel Method is a compact methodology for delegated work: work in which
+direction, evaluation, research, and execution may be performed by different
+actors, or by one actor wearing explicitly different hats.
 
-It applies to engineering, research, operations, and other work where a result
-must be trusted rather than merely produced.
+It applies wherever a result must be trusted rather than merely produced.
 
 ## Normative language
 
-The words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** describe
-requirements in this document.
+**MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, and **MAY** describe
+requirements.
 
-- The eight rules labeled `C1` through `C8` are the hard core.
-- Protocols are activated by the chosen work scale and project profile.
-- A project profile supplies local policy but does not silently weaken the
-  hard core.
-- An explicit direction-setter decision may change a contract. The decision,
-  reason, and affected evidence MUST be recorded before work resumes.
+- `C1` through `C8` are the non-waivable hard core.
+- A profile may tighten the core or specialize behavior the core leaves open.
+  Weakening a core rule creates a labeled nonconforming fork.
+- An authorized direction-setter may change a work contract. Record the
+  decision, reason, and affected evidence before relying on it.
 
-## Applicability
+## Loading the method
 
-Use the smallest work scale that preserves trust:
+Load `BASE.md` and the accepted ProjectProfile for every task. Merge
+`program`, `experiment`, and `secrets` context flags from the caller, accepted
+profile, and model by boolean OR, then load the enabled protocol modules. A
+model may enable a flag but cannot clear one supplied by the caller or profile.
+Flags select context; they do not grant authority.
 
-- A direct task needs little ceremony when it is bounded, reversible, and
-  locally provable.
-- A substantive work item needs an explicit contract.
-- A dependent, multi-wave program needs execution control and hard gates.
+If the profile is missing, draft, invalid, or cannot be independently
+verified, load the ProjectProfile bootstrap and remain read-only.
 
-The method is not a reason to make trivial work bureaucratic. It is a way to
-keep consequential work from becoming informal at exactly the moment rigor is
-needed.
+Use the least ceremony that preserves trust. A bounded, reversible direct task
+may use its prompt as a contract. Substantive or consequential work uses the
+public contracts in this method.
+
+## Everyday use
+
+For a direct task, state only the outcome, relevant constraints, evidence or
+source of truth, and next action. Do not create a formal WorkContract unless
+the work is substantive: it changes external or irreversible state, handles
+sensitive material, crosses meaningful handoff or authority boundaries, or has
+material uncertainty about success.
+
+An accepted ProjectProfile is workspace setup for its stated scope and exact
+revision, not paperwork recreated for each task. Reaccept it only when that
+scope, revision, or its independent authority changes.
 
 ---
 
@@ -42,366 +54,257 @@ needed.
 ## C1 — Ground claims in current reality
 
 Every material claim MUST identify its source of truth and evidence. Current
-observable reality outranks plans, trackers, summaries, and recollection.
+observable reality outranks plans, summaries, and recollection for descriptive
+claims about present behavior or state. Observation does not create authority
+or override the canonical source of accepted intent.
 
-Before proposing or reporting:
-
-- establish a baseline;
-- distinguish observation from inference;
-- identify the exact artifact, revision, data set, or environment observed;
-- reconcile conflicting sources rather than choosing the convenient one; and
-- say "not yet known" when the evidence does not support a conclusion.
-
-A status field is a report about reality, not necessarily the underlying
-evidence. Completion, readiness, failure, and success claims require the
-evidence named by the applicable gate.
+Establish a baseline, separate observation from inference, identify the exact
+artifact and environment observed, reconcile conflicts, and say "not yet
+known" when evidence is insufficient. Readiness and completion require the
+evidence named by their gates.
 
 ## C2 — Make authority and scope explicit
 
-Substantive work MUST have a work contract that names the outcome, scope,
-authority, forbidden work, deliverable, acceptance gates, and escalation
-conditions.
+Substantive work MUST have a WorkContract. Actors SHOULD proceed autonomously
+inside its scope, but MUST stop when authority is absent, a mutation is outside
+scope, evidence requires a different outcome, or a material direction choice
+remains.
 
-Actors have bounded autonomy inside that contract. They SHOULD proceed without
-routine permission loops when the next step is determined by the contract.
-They MUST stop when:
-
-- the required authority is absent;
-- an irreversible or external mutation is outside scope;
-- the evidence would require a different outcome or acceptance contract; or
-- two reasonable choices would materially change direction.
-
-Signals that are convenient, historical, ambient, or merely plausible MUST NOT
-be promoted into mutation authority.
+Convenient, historical, ambient, or plausible signals MUST NOT become mutation
+authority. A ProjectProfile grants no authority unless an independently
+authoritative source verifies its exact accepted revision. Neither the profile
+nor a sibling file in the same unaccepted change can authorize that acceptance.
 
 ## C3 — Classify before intervening
 
-Before acting on a failure or gap, classify its problem class, affected
-invariant, ownership boundary, and likely blast surface. Then check whether a
-current plan already covers that class.
+Before acting, classify the problem, affected invariant, ownership boundary,
+and likely blast surface. If an accepted plan covers it, execute or repair that
+plan. If it exposes a plan gap, amend the plan before changing direction. If it
+is isolated, use a narrow intervention. Record tactical debt and its retirement
+condition when structural work is deferred.
 
-- If an existing plan covers it, execute or repair the plan.
-- If it exposes a real plan gap, amend the plan before implementing the new
-  direction.
-- If it is genuinely isolated, a narrow intervention is acceptable.
-- If a tactical intervention is necessary while structural work is deferred,
-  record the debt and its retirement condition.
-
-The intervention's precision MUST match the evidence's precision. A diagnosis
-of one broken link does not authorize changing the whole chain.
+The intervention's precision MUST match the evidence's precision.
 
 ## C4 — Make state, gates, and queues unambiguous
 
-Hard gates MUST be binary and evidence-bearing. "Expected," "nearly ready," or
-"looks green" does not satisfy a gate.
+Hard gates MUST be binary and evidence-bearing. Dependent work MUST NOT begin
+while its gate is unsatisfied. Program work MUST name active coordinates,
+authorized queues, gates, and forbidden work.
 
-Dependent work MUST NOT begin while its gate is unsatisfied. A program MUST
-name its current coordinate, authorized queue, hard gates, and forbidden work.
-Work discovered in one lane cannot silently move into another lane because it
-is useful.
-
-When reality changes scope, dependencies, authority, contracts, or acceptance
-criteria, mutation stops and the controlling plan is repaired before work
-resumes.
+When reality invalidates scope, dependencies, authority, contracts, or
+acceptance, mutation under that control stops until it is repaired. This does
+not prohibit least-harm emergency containment under separate pre-existing
+authority and its own incident contract. Containment stops propagation or harm;
+it MUST NOT resume or extend the invalidated work lane.
 
 ## C5 — Verify the claim being made
 
-Verification MUST be selected by failure class and blast surface, not by habit.
-Start with the cheapest sharp test that can disprove the working hypothesis,
-then broaden enough to cover the intervention's realistic effects.
+Choose verification by failure class and blast surface. Start with the cheapest
+sharp test that can disprove the hypothesis, then cover realistic effects.
+Evidence is valid only for the exact artifact, environment, and state tested.
 
-Evidence is valid only for the exact artifact and environment it tested. A
-result from an older revision, different configuration, contaminated state, or
-unverified deployment cannot prove the current claim.
+After failure, preserve useful evidence, classify before retrying, change the
+hypothesis, implementation, or environment, and use clean state when carried
+state could alter the signal. Repetition without a changed reason is not
+validation.
 
-On failure:
-
-- preserve the useful evidence;
-- classify the failure before retrying;
-- change a hypothesis, implementation, or environment before rerunning; and
-- use a clean environment when carried state could alter the signal.
-
-Retries without a changed reason are activity, not validation.
+Secret-bearing evidence may preserve an original only in an authorized
+forensic quarantine with named access, retention, and audit controls. Ordinary
+records and model context retain only non-secret observations.
 
 ## C6 — Keep one canonical source for each decision
 
-Every decision-bearing concept SHOULD have one named canonical source: the
-goal, authority, configuration, ownership record, active plan, gate result, or
-artifact identity.
-
-Missing canonical state should fail clearly. Silent fallback ladders create
-ambiguity and make later evidence hard to interpret. Explicit layering is
-allowed only when precedence selects one winner and the profile documents it.
-
-Historical records remain evidence, but they MUST NOT masquerade as the live
-control surface.
+Every decision-bearing concept SHOULD have one named canonical source. Missing
+canonical state should fail clearly. Layering is allowed only when explicit
+precedence selects one winner. Historical records remain evidence but MUST NOT
+masquerade as live control.
 
 ## C7 — Learn without overfitting
 
-Record material outcomes, failed hypotheses, tactical debt, and lessons at the
-boundary where they become clear.
-
-A lesson belongs in the hard core only when it generalizes beyond the incident
-that earned it. Otherwise it belongs in a protocol, profile, adapter, or case
-study.
-
-Watch for non-convergence:
-
-- repeated fixes at one boundary may indicate an incomplete classification;
-- failures appearing across unrelated classes indicate a framing or design
-  problem;
-- multiple unvalidated proposals create proposal debt; and
-- a rule that helps only one known task is likely overfit.
-
-When two approaches produce the same verified result, prefer the simpler one.
+Record material outcomes, failed hypotheses, tactical debt, and lessons when
+they become clear. Promote a lesson only to the narrowest layer where it
+generalizes. Repeated local failures may reveal bad classification; unrelated
+failures may reveal bad framing; unvalidated alternatives create proposal debt.
+When two approaches verify equally, prefer the simpler one.
 
 ## C8 — Keep secrets out of uncontrolled surfaces
 
-Actors MUST NOT ask a user to disclose a secret value into model context, or
-copy or deliberately place one in source control, plans, issue or review text,
-logs, evidence records, fixtures, command arguments, or other uncontrolled
-surfaces. Use an opaque reference and the project's approved secret-delivery
-mechanism instead. A model context is not a secret-delivery mechanism.
+Actors MUST NOT ask for or deliberately place secret values in model context,
+source control, plans, review text, logs, evidence records, fixtures, command
+arguments, or other uncontrolled surfaces. Use an approved non-secret,
+non-authorizing reference and approved delivery mechanism. Bearer references
+are secrets. Model context is not a delivery mechanism.
 
 Secret-bearing work MUST minimize access, privilege, lifetime, and egress.
-Fetch or inject a secret only when the authorized operation requires it, and
-deliver it only to the intended process or service. Do not prove availability
-by printing, dumping, encoding, or otherwise reproducing the value; verify
-through non-secret metadata or the intended behavior.
+Deliver a value only to its intended process or service and verify through
+non-secret metadata or intended behavior, never by reproducing the value.
 
-If a value is exposed unexpectedly:
+After unexpected exposure, stop propagation without quoting the value, treat
+it as compromised pending an owner decision, and invoke the profile's response
+path within authority. Recovery MUST identify or conservatively disposition
+plausible affected secrets, close the leak path, verify it with a non-secret
+canary, and restart in a clean context. A disposition may be revocation,
+rotation, expiry, deletion, or a documented non-compromise determination.
 
-- stop further propagation and do not quote the value in a report;
-- treat it as compromised until the owner decides otherwise;
-- invoke the project profile's containment, revocation, rotation, and
-  escalation path within the actor's authority; and
-- preserve only non-secret evidence about the exposure and response.
-
-A project profile MUST name the approved providers, reference syntax,
-delivery boundaries, forbidden surfaces, and exposure-response authority. It
-may tighten this rule but MUST NOT make prompts or durable work artifacts an
-approved secret channel.
+The ProjectProfile MUST define approved providers and references, delivery and
+forbidden surfaces, response authority, forensic quarantine, and clean-context
+rules. It may permit a destination-encrypted envelope only when the coordinating
+actor and model cannot decrypt it and the audience, key boundary, retention,
+and delivery path are explicit.
 
 ---
 
 # Vocabulary and Roles
 
-Stable vocabulary makes prompts, plans, and reports interoperable.
+Roles are responsibilities. A profile maps them to actors and decides when
+separation is required.
 
-## Roles
+- **Direction-setter:** chooses outcomes and supplies authority.
+- **Evaluator:** frames work, checks evidence, maintains contracts, and reads
+  gates.
+- **Researcher:** gathers evidence without target mutation unless authorized.
+- **Executor:** produces the deliverable and verification evidence.
 
-Roles are responsibilities. A project profile maps them to people or agents and
-decides when separate actors are required.
+One actor MAY hold several roles for lower-risk work, but should mark role
+changes at evaluation boundaries.
 
-- **Direction-setter:** chooses the outcome, supplies authority, and decides
-  trade-offs that change scope or commitments.
-- **Evaluator:** frames work, checks evidence, maintains the contract, detects
-  drift, interprets gates, and decides when the method determines a pivot.
-- **Researcher:** gathers and analyzes evidence without performing the target
-  mutation unless the contract explicitly grants it.
-- **Executor:** produces the deliverable and verification evidence within the
-  work contract.
+A **direct task** is bounded, reversible, and locally provable. A **work item**
+has one reviewable outcome. A **program** has persistent dependent workstreams
+and explicit execution control.
 
-One actor MAY hold multiple roles for lower-risk work. The role change should
-be explicit at evaluation boundaries so self-evaluation is not mistaken for
-independent evidence.
+A disposition is exactly `PROCEED`, `HOLD`, `CONTAIN`, or `TERMINATE`.
 
-## Work scales
+Program state is exactly `ACTIVE`, `STOPPED_FOR_REPLAN`, `COMPLETE`, or
+`TERMINATED`. A terminated program records `OWNER_CANCELLED`, `ABANDONED`,
+`SUPERSEDED`, or `SAFETY` and cannot resume. Gate state is exactly `SATISFIED`
+or `UNSATISFIED`.
 
-- **Direct task:** bounded, reversible, low-blast work with an obvious local
-  proof. The prompt may serve as its contract.
-- **Work item:** one reviewable outcome with its own contract, change set, and
-  acceptance evidence.
-- **Program:** multiple dependent work items organized into waves and
-  workstreams with execution control.
+An **observation** was directly seen; an **inference** is derived; a **claim**
+is what others are asked to trust; a **gate** is a condition with required
+evidence; a **receipt** binds a result to an exact artifact and environment.
 
-## Program coordinate
-
-A program coordinate is written:
-
-```text
-Program / Wave / Workstream / Work Item
-```
-
-Every mutating action in a program belongs to one authorized coordinate.
-
-## Program and gate state
-
-Program state is exactly one of:
-
-- `ACTIVE` — work may execute only at authorized coordinates whose gates are
-  satisfied.
-- `STOPPED_FOR_REPLAN` — mutations are stopped while the controlling contract
-  is repaired.
-- `COMPLETE` — all end-state conditions and evidence are satisfied.
-
-Gate state is exactly one of:
-
-- `SATISFIED`
-- `UNSATISFIED`
-
-An external wait does not need another program state. The program remains
-`ACTIVE` with the relevant gate `UNSATISFIED`, which forbids dependent work.
-
-## Evidence terms
-
-- **Observation:** what was directly seen or measured.
-- **Inference:** a conclusion derived from observations.
-- **Claim:** a statement the work asks others to trust.
-- **Gate:** a named condition with required evidence.
-- **Receipt:** evidence tying a gate result to an exact artifact and
-  environment.
-- **Accepted boundary:** the last coordinate whose output and evidence are
-  authoritative.
-- **Proposal debt:** unvalidated proposals that compete for attention without
-  increasing confidence.
+An **approved secret reference** is non-secret, non-authorizing, and safe for
+its audience. A **clean context** never received an exposed value and inherits
+none of its transcript, tool output, process state, or unsafe logging path.
 
 ---
 
 # Decision Workflow
 
-## 1. Orient
+## 1. Orient and frame
 
-Read the active instructions, current state, recent decisions, in-flight work,
-and relevant sources of truth. Separate current behavior from proposed or
-historical behavior.
+Read current instructions, state, decisions, and sources of truth. State the
+outcome, audience, constraints, non-goals, and consequence of being wrong.
+Choose the smallest work scale that preserves trust.
 
-## 2. Frame
+## 2. Gather and classify
 
-State the intended outcome, audience, constraints, non-goals, and consequence
-of being wrong. Choose the smallest applicable work scale.
+Establish a baseline. Separate observations, inferences, and unknowns. Name the
+problem class, invariant, ownership boundary, and blast surface. If the broken
+link is not demonstrated, investigate before implementing.
 
-## 3. Gather evidence
+## 3. Check plan coverage
 
-Establish a baseline and collect the evidence needed to distinguish plausible
-explanations. Map the chain from observation through decision to outcome. Mark
-unknown links explicitly.
+Execute an accepted plan when it covers the problem. Repair it when reality
+invalidates it. Contract a narrow intervention only when the issue is isolated
+and proportional.
 
-If the broken link is not demonstrated, the next work is investigation, not
-implementation.
+## 4. Contract
 
-## 4. Classify
+For substantive work, confirm the WorkContract and action envelope. In a
+program, reconcile them with the live ProgramControl and authorized coordinate.
 
-Name the problem class, invariant, ownership or authority boundary, and blast
-surface. Rule out measurement, harness, or environment faults before blaming
-the target system.
+## 5. Act
 
-## 5. Check plan coverage
+Proceed autonomously inside the contract. Keep the change aligned to the work
+item and do not absorb useful but unauthorized discoveries.
 
-Ask whether the accepted but unfinished plan already removes this class of
-problem.
+## 6. Verify
 
-- Covered: execute the relevant plan coordinate.
-- Not covered: amend the plan before changing direction.
-- Isolated and proportional: contract a narrow intervention.
+Run the sharpest discriminating check first. Confirm artifact, environment, and
+state identity. Broaden by blast surface and record gate receipts.
 
-## 6. Contract
+## 7. Report and learn
 
-Write the work contract. For a program, reconcile it with the live program
-control and confirm that the coordinate is authorized.
-
-## 7. Execute
-
-Act autonomously inside the contract. Keep the change set aligned to the work
-item. Do not absorb useful but unauthorized discoveries.
-
-## 8. Verify
-
-Run the sharpest discriminating check first. Confirm artifact and environment
-identity. Broaden verification according to blast surface. Record gate results
-with their receipts.
-
-## 9. Report
-
-Lead with the outcome. Distinguish facts, inferences, unresolved questions, and
-decisions. Attach evidence to every readiness or completion claim.
-
-## 10. Learn
-
-Update the relevant plan, tracker, debt ledger, case study, profile, or method
-rule. Promote a lesson only to the narrowest layer where it remains true.
+Lead with the outcome. Separate observations, inferences, unknowns, decisions,
+and next evidence. Attach evidence to readiness or completion claims. Record
+lessons at the narrowest layer where they remain true.
 
 ---
 
 # Public Contracts
 
-The contracts below are stable interfaces. Projects may add fields but should
-preserve these meanings so prompts and reports remain portable.
+Projects may add fields but should preserve these stable meanings.
 
 ## WorkContract
 
 Required fields:
 
-- `objective` — the concrete outcome.
-- `why` — the decision or need this work serves.
-- `deliverable` — the artifact or state that will exist.
-- `in_scope` and `out_of_scope` — the allowed boundary.
-- `authority` — mutations and decisions the executor may make.
-- `forbidden_work` — actions that remain disallowed even if convenient.
-- `sensitive_inputs` — secret references, approved delivery boundaries, and
-  exposure response, or an explicit statement that none are required; never
-  secret values.
-- `sources_of_truth` — ordered references used to resolve facts.
-- `known_evidence` and `unknowns` — observations, inferences, and open links.
-- `acceptance_gates` — binary conditions and required evidence.
-- `reporting` — required outcome and evidence format.
-- `escalation` — conditions that stop or reframe work.
+- `outcome` — concrete intended result;
+- `disposition` — `PROCEED`, `HOLD`, `CONTAIN`, or `TERMINATE`;
+- `scope` — included and excluded work;
+- `authority` — permitted decisions and mutations, plus forbidden work;
+- `evidence` — sources, observations, inferences, and unknowns;
+- `gates` — binary acceptance conditions and receipts;
+- `next_evidence` — what permits the next disposition change; and
+- `reporting` — audience, destination, and format.
+
+Add `recovery` for consequential or destructive mutation, including rollback,
+forward repair, isolation, or accepted irreversibility and a negative
+authority-boundary check. Add `secrets`, `program`, or `experiment` when the
+corresponding context flag is true.
+
+## ActionEnvelope
+
+Every substantive recommendation or handoff keeps these fields stable:
+
+- `disposition`
+- `observations`
+- `inferences_and_unknowns`
+- `allowed_actions`
+- `forbidden_actions`
+- `gates`
+- `recovery`
+- `next_evidence`
 
 ## EvidenceRecord
 
-Required fields:
-
-- `claim`
-- `observation`
-- `artifact_identity`
-- `environment_identity`
-- `method`
-- `result`
-- `citation`
-- `captured_at`
-- `freshness_or_supersession`
-
-An evidence record MAY state that a field is not applicable, but it MUST NOT
-silently omit identity needed to reproduce or interpret the claim.
+Required fields are `claim`, `observation`, `artifact_identity`,
+`environment_identity`, `method`, `result`, `citation`, `captured_at`, and
+`freshness_or_supersession`. Do not omit identity needed to reproduce or
+interpret the claim.
 
 ## ProjectProfile
 
 Required fields:
 
+- `profile_status` — `DRAFT` or `ACCEPTED`;
+- `authority_source`, `profile_digest`, `accepted_by`, `accepted_at`, and
+  `acceptance_receipt` binding acceptance to an independently authoritative
+  source and the exact profile revision;
 - method version and profile scope;
-- source-of-truth hierarchy;
-- role-to-actor mapping and separation policy;
-- work-scale thresholds;
-- domain problem taxonomy;
-- mutation authority and prohibited actions;
-- work-item and review boundary;
-- gate catalog and evidence format;
-- verification selection by blast surface;
-- tool, environment, and external-state rules;
-- approved secret providers, reference syntax, delivery boundaries, forbidden
-  disclosure surfaces, scanning controls, and exposure-response authority;
-- reporting and learning destinations; and
-- explicit owner decisions that specialize optional behavior.
+- canonical sources and their precedence;
+- role, authority, mutation, and separation boundaries;
+- work-scale thresholds, gates, and evidence policy;
+- conditional secret policy and emergency containment authority; and
+- reporting and learning destinations.
+
+A draft or unverifiable profile grants no mutation authority. Acceptance
+metadata inside the profile is not evidence by itself. A profile may set
+context flags to true but cannot force an applicable flag false.
 
 ## ProgramControl
 
-Required fields:
+Required fields are `program`, `program_state`, `active_coordinates`,
+`accepted_frontiers`, `authorized_queue`, `hard_gates`, `forbidden_work`,
+`canonical_sources`, `active_owner_decisions`, `reconciliation_receipt`,
+`stop_condition`, `resume_condition`, `terminal_disposition`, and
+`terminal_receipt`.
 
-- `program`
-- `program_state`
-- `current_coordinate`
-- `accepted_boundary`
-- `authorized_queue`
-- `hard_gates`
-- `forbidden_work`
-- `canonical_sources`
-- `active_owner_decisions`
-- `reconciliation_receipt`
-- `stop_condition`
-- `resume_condition`
-
-Only one live program control may authorize mutation. Superseded controls move
-to history and remain non-authoritative evidence.
+Terminal fields are required only for `TERMINATED` and preserve authority,
+reason, evidence, unmet goals, and external-state disposition. Only one live
+ProgramControl may authorize mutation. Superseded controls remain historical
+evidence.
 
 ---
 
@@ -415,9 +318,12 @@ bounded actors inside one working session.
 1. Identify the direction-setter's requested outcome.
 2. Inspect current state before asking discoverable questions.
 3. Choose direct, work-item, or program scale.
-4. Assign the evaluator, researcher, and executor responsibilities according
-   to the project profile.
-5. Create or confirm the work contract.
+4. Verify that the project profile is `ACCEPTED`, its digest matches, and its
+   acceptance receipt resolves through the external authority source. If not,
+   remain read-only and draft or repair the profile.
+5. Assign the evaluator, researcher, and executor responsibilities according
+   to the accepted project profile.
+6. Create or confirm the work contract.
 
 When evidence is missing, start in researcher mode. Add execution authority
 only after the evidence supports a fix or change shape.
@@ -461,7 +367,7 @@ another differently shaped guess.
 
 At a session boundary:
 
-1. Record the delivered or accepted boundary.
+1. Record the delivered result and any accepted program frontiers.
 2. Preserve or dispose of temporary evidence intentionally.
 3. Reconcile open work and external state.
 4. Record tactical debt and follow-ups.
@@ -485,8 +391,9 @@ Maintain three distinct artifacts:
    become true and stay true, not how to get there.
 2. **Execution plan:** waves, workstreams, work items, dependencies, and
    acceptance criteria.
-3. **Live program control:** current state, coordinate, authorized queue,
-   gates, forbidden work, and reconciliation receipt.
+3. **Live program control:** current state, active coordinates, accepted
+   frontiers, authorized queue, gates, forbidden work, and reconciliation
+   receipt.
 
 Do not append new live controls above old live controls indefinitely. There is
 one authoritative control artifact; superseded controls move to a dated,
@@ -503,6 +410,11 @@ Program / Wave / Workstream / Work Item
 One work item produces one reviewable change set and its evidence. If source
 implementation and real-world evidence have different prerequisites, split
 them into separate work items.
+
+Several coordinates may be active when their dependency and shared-state
+receipts prove independence. Maintain a set of maximal accepted coordinates
+for each workstream instead of forcing concurrent work into a false total
+order.
 
 ## Dispatch gate
 
@@ -544,6 +456,12 @@ While stopped:
 - unrelated productive work does not become authorized merely because the
   original lane is stopped.
 
+An emergency does not reactivate the stopped lane. Least-harm containment may
+proceed only under separate pre-existing authority and an incident work
+contract that records its own authority receipt, scope, evidence, and stop
+condition. The program remains `STOPPED_FOR_REPLAN` until its repaired control
+is accepted.
+
 Resume only after the repaired control is accepted and its resume condition is
 met.
 
@@ -552,6 +470,17 @@ met.
 Set state to `COMPLETE` only when every goal-state condition is true and every
 required receipt is attached. Near-completion is still `ACTIVE` with remaining
 gates `UNSATISFIED`.
+
+## Terminate
+
+Set state to `TERMINATED` when the program ends without satisfying every goal.
+Record exactly one disposition: `OWNER_CANCELLED`, `ABANDONED`, `SUPERSEDED`,
+or `SAFETY`. The terminal receipt names the authority source, decision actor
+and time, reason, unmet goals, preserved evidence, external-state disposition,
+and successor control when superseded.
+
+A terminated control cannot resume. Later work needs a new accepted live
+control and cannot inherit authority from the terminal one.
 
 ---
 
@@ -600,11 +529,16 @@ A verification receipt identifies:
 Evidence from an earlier artifact cannot authorize a changed one. After
 rebasing, regenerating, rebuilding, or redeploying, rerun the affected gate.
 
-When verification needs a secret, record its opaque reference and the
+When verification needs a secret, record its approved reference and the
 non-secret result, not its value. Prove availability through provider metadata
 that the profile permits, or through the intended authenticated behavior.
 Never print, dump, diff, encode, or hash a secret merely to prove that two
 surfaces agree.
+
+An authorized isolated provider-side match may resolve an unlabeled exposure
+to an approved reference when it emits only the reference, result, and audit
+receipt. This is identification for containment, not a portable equality or
+hash proof.
 
 ## Handle failure
 
@@ -702,17 +636,23 @@ does not authorize secret access by itself.
 
 Before access or mutation, establish without retrieving the value:
 
-- the opaque secret reference, owner, target environment, and intended use;
+- the approved secret reference, owner, target environment, and intended use;
 - the approved provider, tool path, and delivery boundary from the project
   profile;
 - the exact authority to read, inject, create, rotate, revoke, or delete;
 - the minimum scope and lifetime required by the receiving process;
-- every log, trace, transcript, artifact, and external service that could see
-  input or output; and
+- all reasonably foreseeable logs, traces, transcripts, artifacts, and
+  external services that could see input or output, plus explicit treatment of
+  material unknown egress; and
 - the exposure-response owner and stop condition.
 
-Unknown provider, target, authority, or egress fails closed. A convenient
-ambient credential is not authority to use it.
+Unknown provider, target, authority, or materially exposure-relevant egress
+fails closed. Immaterial platform unknowns remain explicit limitations. A
+convenient ambient credential is not authority to use it.
+
+Confirm that a reference is non-secret, non-authorizing, and safe for its
+audience. Treat a bearer link, recovery link, presigned share, or any identifier
+that grants access as a secret value.
 
 ## Deliver without revealing
 
@@ -733,6 +673,11 @@ ambient credential is not authority to use it.
   and remove it through an authorized cleanup path.
 - Do not widen a token, role, workflow permission, network path, or audience
   to make delivery easier.
+- A profile-approved destination-encrypted envelope may be durable only when
+  plaintext is
+  created and decrypted outside the coordinating actor and model, only the
+  intended destination holds the decryption capability, and the profile names
+  its key, audience, retention, and delivery boundaries.
 
 ## Verify safely
 
@@ -748,9 +693,14 @@ Run the project-defined secret scan over changed durable artifacts before
 publication or commit. A clean scan is a backstop, not evidence that deliberate
 disclosure is safe or that every secret shape was detected.
 
-Evidence records contain opaque references, artifact and environment
+Evidence records contain approved secret references, artifact and environment
 identity, redacted observations, and limitations. A redaction marker is not
 proof that the original capture was safe.
+
+When a leak has no safe label, an authorized isolated provider-side comparison
+may match candidate secrets. It emits only the approved reference, match
+status, and audit receipt; it MUST NOT emit values, bearer material, hashes, or
+fingerprints to the coordinator.
 
 ## Respond to exposure
 
@@ -761,13 +711,20 @@ When a secret may have reached an uncontrolled surface:
 3. Identify the affected secret, audience, surfaces, and time window using
    non-secret metadata.
 4. Mark affected gates `UNSATISFIED` and notify the profile's response owner.
-5. Revoke or rotate only with the required authority; absence of that
-   authority is an escalation, not permission to continue.
-6. Within current authority, sanitize durable uncontrolled copies while
-   preserving authorized, non-secret incident evidence; otherwise escalate
-   that containment action.
-7. Resume only after the owner accepts the containment and replacement
-   evidence.
+5. Revoke, rotate, expire, delete, or accept non-compromise only with the
+   required authority; absence of that authority is an escalation, not
+   permission to continue.
+6. Close or disable the command, logger, transcript, or publication path that
+   disclosed the value. Before introducing any replacement, prove the repair
+   with a non-secret canary or dry run.
+7. If a model context, transcript, captured tool output, or inherited process
+   state received the value, abandon it and continue only in a clean context.
+8. Within current authority, sanitize durable uncontrolled copies while
+   preserving non-secret incident evidence. An original required for forensics
+   or legal hold moves to an authorized quarantine with named audience,
+   access, retention, and audit controls and is never exposed to a model.
+9. Resume only after the owner accepts containment, the secret disposition,
+   leak-path closure, clean-context evidence, and remaining limitations.
 
 Redaction, deletion, or history rewriting does not reverse disclosure. It
 reduces future propagation but does not replace revocation or rotation when
