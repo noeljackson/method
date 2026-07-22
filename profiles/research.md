@@ -1,6 +1,9 @@
 # Example Profile: Research Investigation
 
-Method version: `0.1.0`
+This is an unaccepted example, not a live ProjectProfile. Copy the template and
+obtain independent acceptance before relying on local authority.
+
+Method version: `0.2.0`
 
 ## Sources of truth
 
@@ -26,6 +29,13 @@ evidence source. The direction-setter owns changes to the research question.
 - Program: a study with dependent questions, data collection, and publication
   gates.
 
+## Context flags
+
+Program is enabled for a persistent multi-workstream study, Experiment for an
+explicit controlled comparison against a fixed baseline, and Secrets for
+credentials, bearer material, restricted delivery, or possible exposure.
+Flags select context and never grant publication or mutation authority.
+
 ## Problem taxonomy
 
 - missing evidence;
@@ -48,3 +58,11 @@ independent corroboration or an explicit uncertainty decision.
 Reading public sources and producing local analysis are authorized. Contacting
 participants, changing shared data, publishing externally, or making a
 decision on behalf of the direction-setter requires explicit authority.
+
+## Secrets and restricted material
+
+Access credentials and restricted source material remain in their approved
+systems. Prompts, notes, citations, and reproducibility artifacts use approved
+non-authorizing references and non-sensitive excerpts only. Publication checks include a
+disclosure review, and suspected exposure is escalated to the material owner
+without repeating it.

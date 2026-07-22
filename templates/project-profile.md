@@ -2,20 +2,33 @@
 
 Method version: `<version>`
 
-## Scope
+## Acceptance
 
-<What work and repositories, systems, teams, or artifacts this profile governs.>
+- Profile status: `<DRAFT | ACCEPTED>`
+- Authority source: `<pre-existing canonical authority outside this profile
+  and the same unaccepted change>`
+- Profile digest: `<sha256 of UTF-8 profile body with this section omitted>`
+- Accepted by: `<authorized actor or n/a while DRAFT>`
+- Accepted at: `<timestamp or event or n/a while DRAFT>`
+- Acceptance receipt: `<independent citation or n/a while DRAFT>`
 
-## Sources of truth
+This profile grants no mutation authority while draft or unverifiable. If no
+authority source exists, remain read-only until an external owner creates one.
 
-List in precedence order and state what each source owns:
+## Scope and canonical sources
 
-1. `<source>` — `<owned facts or decisions>`
-2. `<source>` — `<owned facts or decisions>`
+Scope: `<work, systems, teams, or artifacts governed>`
 
-On conflict: `<fail, reconcile, or escalation behavior>`
+This is workspace setup for that scope and accepted revision. It is not a
+per-task form; reaccept it only when the scope, revision, or authority changes.
 
-## Roles and actors
+List sources in precedence order and say what each owns:
+
+1. `<source>` — `<facts or decisions>`
+
+Conflict behavior: `<fail, reconcile, or escalate>`
+
+## Roles, authority, and mutation boundaries
 
 | Role | Default actor | Must be separate when |
 | --- | --- | --- |
@@ -24,57 +37,42 @@ On conflict: `<fail, reconcile, or escalation behavior>`
 | Researcher | `<actor>` | `<condition>` |
 | Executor | `<actor>` | `<condition>` |
 
-## Work scales
+Allowed mutations: `<boundary>`
 
-- Direct task: `<local threshold>`
-- Work item: `<local review/change boundary>`
-- Program: `<conditions that activate program control>`
+Forbidden actions and additional approvals: `<boundary>`
 
-## Problem taxonomy
+Work-scale thresholds: `<direct, work item, and program>`
 
-| Class | Diagnostic owner | Typical evidence | Structural response |
+## Gates and evidence policy
+
+| Gate | Applies when | Required receipt | Authority to accept |
 | --- | --- | --- | --- |
-| `<class>` | `<role>` | `<evidence>` | `<response>` |
+| `<gate>` | `<selector>` | `<evidence>` | `<role>` |
 
-## Authority and forbidden actions
+Unknown work: `<fail-closed behavior>`
 
-Actors may: `<authorized mutations>`
+## Context flags forced true
 
-Actors may not: `<forbidden mutations>`
+- program: `<true only when this profile always requires Program protocol>`
+- experiment: `<true only when this profile always requires Experiment protocol>`
+- secrets: `<true only when this profile always requires Secrets protocol>`
 
-Additional approval is required for: `<conditions>`
+Omit or set false when not forced. Applicable caller or model flags still win.
 
-## Work-item boundary
+## Secret policy — when secret-bearing work is possible
 
-One work item maps to: `<PR, document, transaction, run, decision, or other reviewable unit>`
+- Approved providers and non-authorizing reference syntax: `<policy>`
+- Delivery boundaries and forbidden surfaces: `<policy>`
+- Exposure response and credential-disposition authority: `<owner and path>`
+- Leak-path closure and clean-context evidence: `<rule>`
+- Forensic quarantine: `<authority, access, retention, and audit>`
+- Destination-encrypted envelopes: `<boundaries or forbidden>`
 
-Parallel work rules: `<independence, contention, and shared-state rules>`
+## Emergency containment authority
 
-## Gates and evidence
-
-| Gate | Applies when | Required evidence | Authority to accept |
-| --- | --- | --- | --- |
-| `<gate>` | `<selector>` | `<receipt>` | `<role>` |
-
-Unknown or unclassified work selects: `<fail-closed behavior>`
-
-## Environments, tools, and secrets
-
-- Canonical environment: `<source>`
-- Tool rules: `<rules>`
-- Secret-safety rules: `<rules>`
-- External-state rules: `<rules>`
+<Preauthorized actor, least-harm boundary, receipt, and stop condition.>
 
 ## Reporting and learning
 
-- Status format: `<format>`
-- Evidence destination: `<location>`
-- Decisions and debt: `<location>`
-- Lessons and case studies: `<location>`
-
-## Active owner decisions
-
-Record only decisions that specialize optional behavior. A decision that
-changes the hard core must state the conflict and remain explicit.
-
-- `<date>` — `<decision, reason, and affected contract>`
+- Outcomes and evidence: `<destination and format>`
+- Decisions, debt, and lessons: `<destination>`

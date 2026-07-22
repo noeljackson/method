@@ -5,11 +5,15 @@ Use only when the worker is expected to have network access:
 ```markdown
 ## Noel Method
 
-This repository follows Noel Method `v0.1.0` at:
-`https://raw.githubusercontent.com/noeljackson/method/v0.1.0/dist/NOEL-METHOD.md`.
+This repository follows Noel Method `<tag>` at:
+`https://raw.githubusercontent.com/noeljackson/method/<tag>/dist/pack/INDEX.md`.
 
-Before substantive work, load that exact tagged document and then read the
-local `<path>/PROJECT-PROFILE.md`. Do not substitute `main` or a remembered
-version. If the document cannot be loaded, report the missing execution
-context and use an approved local copy.
+Use this only after the tag exists and its digest has been verified. Start with
+that exact tagged index. Always load its linked Base and an independently
+accepted local `<path>/PROJECT-PROFILE.md`, then OR caller, profile, and model
+ContextFlags and fetch enabled protocols. Resolve relative links under the
+same `<tag>/dist/pack/` base.
+Do not substitute `main` or a remembered version. If a required module cannot
+be loaded, report the missing execution context and use an approved local
+copy.
 ```

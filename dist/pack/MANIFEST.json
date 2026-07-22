@@ -1,0 +1,41 @@
+{
+  "method": "Noel Method",
+  "version": "0.2.0",
+  "entrypoint": "INDEX.md",
+  "base": "BASE.md",
+  "context_flags": [
+    "program",
+    "experiment",
+    "secrets"
+  ],
+  "files": [
+    {
+      "path": "BASE.md",
+      "sha256": "a421b3ddc36023fde6a8f9f9e2e2e54be27be91ec9dd6cf5ab3fa59d4e162cd9"
+    },
+    {
+      "path": "CONTEXT.json",
+      "sha256": "ca3dd0e3c6121272c344468391de4f58dbca661391cddad92655a51388d15e60"
+    },
+    {
+      "path": "INDEX.md",
+      "sha256": "1396bc952091c29f34a92c39e908a2bc3d30bc3cb87fc9ef6866b6cc44a387d7"
+    },
+    {
+      "path": "artifacts/project-profile.md",
+      "sha256": "f151928bbde82ea88626e320620272009285b2a10510dda1c54e2e6141380b8e"
+    },
+    {
+      "path": "protocols/experiment.md",
+      "sha256": "e6df88ec36cb7695fa145f8217ffa5f594e7cb05f823b4b6eb9477a2c8bd1703"
+    },
+    {
+      "path": "protocols/program.md",
+      "sha256": "bb80b6cc801aaa84ec45f16f78c8c524da2d8426affebe0f3b8f8263ed241d41"
+    },
+    {
+      "path": "protocols/secrets.md",
+      "sha256": "f99c27fcb4d2070b40a35f06b48568da150487874f1f2cb28ff696a943f4f131"
+    }
+  ]
+}

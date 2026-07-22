@@ -1,74 +1,73 @@
 # Public Contracts
 
-The contracts below are stable interfaces. Projects may add fields but should
-preserve these meanings so prompts and reports remain portable.
+Projects may add fields but should preserve these stable meanings.
 
 ## WorkContract
 
 Required fields:
 
-- `objective` — the concrete outcome.
-- `why` — the decision or need this work serves.
-- `deliverable` — the artifact or state that will exist.
-- `in_scope` and `out_of_scope` — the allowed boundary.
-- `authority` — mutations and decisions the executor may make.
-- `forbidden_work` — actions that remain disallowed even if convenient.
-- `sources_of_truth` — ordered references used to resolve facts.
-- `known_evidence` and `unknowns` — observations, inferences, and open links.
-- `acceptance_gates` — binary conditions and required evidence.
-- `reporting` — required outcome and evidence format.
-- `escalation` — conditions that stop or reframe work.
+- `outcome` — concrete intended result;
+- `disposition` — `PROCEED`, `HOLD`, `CONTAIN`, or `TERMINATE`;
+- `scope` — included and excluded work;
+- `authority` — permitted decisions and mutations, plus forbidden work;
+- `evidence` — sources, observations, inferences, and unknowns;
+- `gates` — binary acceptance conditions and receipts;
+- `next_evidence` — what permits the next disposition change; and
+- `reporting` — audience, destination, and format.
+
+Add `recovery` for consequential or destructive mutation, including rollback,
+forward repair, isolation, or accepted irreversibility and a negative
+authority-boundary check. Add `secrets`, `program`, or `experiment` when the
+corresponding context flag is true.
+
+## ActionEnvelope
+
+Every substantive recommendation or handoff keeps these fields stable:
+
+- `disposition`
+- `observations`
+- `inferences_and_unknowns`
+- `allowed_actions`
+- `forbidden_actions`
+- `gates`
+- `recovery`
+- `next_evidence`
 
 ## EvidenceRecord
 
-Required fields:
-
-- `claim`
-- `observation`
-- `artifact_identity`
-- `environment_identity`
-- `method`
-- `result`
-- `citation`
-- `captured_at`
-- `freshness_or_supersession`
-
-An evidence record MAY state that a field is not applicable, but it MUST NOT
-silently omit identity needed to reproduce or interpret the claim.
+Required fields are `claim`, `observation`, `artifact_identity`,
+`environment_identity`, `method`, `result`, `citation`, `captured_at`, and
+`freshness_or_supersession`. Do not omit identity needed to reproduce or
+interpret the claim.
 
 ## ProjectProfile
 
 Required fields:
 
+- `profile_status` — `DRAFT` or `ACCEPTED`;
+- `authority_source`, `profile_digest`, `accepted_by`, `accepted_at`, and
+  `acceptance_receipt` binding acceptance to an independently authoritative
+  source and the exact profile revision;
 - method version and profile scope;
-- source-of-truth hierarchy;
-- role-to-actor mapping and separation policy;
-- work-scale thresholds;
-- domain problem taxonomy;
-- mutation authority and prohibited actions;
-- work-item and review boundary;
-- gate catalog and evidence format;
-- verification selection by blast surface;
-- tool, environment, secret, and external-state rules;
-- reporting and learning destinations; and
-- explicit owner decisions that specialize optional behavior.
+- canonical sources and their precedence;
+- role, authority, mutation, and separation boundaries;
+- work-scale thresholds, gates, and evidence policy;
+- conditional secret policy and emergency containment authority; and
+- reporting and learning destinations.
+
+A draft or unverifiable profile grants no mutation authority. Acceptance
+metadata inside the profile is not evidence by itself. A profile may set
+context flags to true but cannot force an applicable flag false.
 
 ## ProgramControl
 
-Required fields:
+Required fields are `program`, `program_state`, `active_coordinates`,
+`accepted_frontiers`, `authorized_queue`, `hard_gates`, `forbidden_work`,
+`canonical_sources`, `active_owner_decisions`, `reconciliation_receipt`,
+`stop_condition`, `resume_condition`, `terminal_disposition`, and
+`terminal_receipt`.
 
-- `program`
-- `program_state`
-- `current_coordinate`
-- `accepted_boundary`
-- `authorized_queue`
-- `hard_gates`
-- `forbidden_work`
-- `canonical_sources`
-- `active_owner_decisions`
-- `reconciliation_receipt`
-- `stop_condition`
-- `resume_condition`
-
-Only one live program control may authorize mutation. Superseded controls move
-to history and remain non-authoritative evidence.
+Terminal fields are required only for `TERMINATED` and preserve authority,
+reason, evidence, unmet goals, and external-state disposition. Only one live
+ProgramControl may authorize mutation. Superseded controls remain historical
+evidence.

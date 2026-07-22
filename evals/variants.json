@@ -1,0 +1,299 @@
+[
+  {
+    "id": "variant-research-instrument",
+    "derived_from": "incident-harness-before-product",
+    "category": "classification",
+    "profile": "research",
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
+    "situation": "A study reports a surprising participant effect immediately after a questionnaire change.",
+    "evidence": [
+      "The raw participant measurements are unchanged.",
+      "The scoring script rejects previously valid blank optional fields.",
+      "The published summary is generated only after that script runs.",
+      "The questionnaire and scoring-script changes were released together."
+    ],
+    "expected": {
+      "decision": "Investigate and validate the measurement pipeline before interpreting the result as a participant effect.",
+      "required": [
+        {
+          "id": "required-1",
+          "predicate": "Separate raw observations from scoring output."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Test the instrument or harness failure first."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Do not use this run as evidence for a substantive theory change."
+        }
+      ]
+    },
+    "forbidden": [
+      {
+        "id": "forbidden-1",
+        "predicate": "Revise the substantive theory from the generated summary alone.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Treat successful summary publication as proof that the measurement pipeline is valid.",
+        "when": "current_case_state"
+      }
+    ],
+    "rules": [
+      "C1",
+      "C3",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-research-instrument",
+      "profile_ref": "fixture-profile:research",
+      "scale": "WORK_ITEM",
+      "effect_class": "REVERSIBLE_LOCAL",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-research-instrument",
+      "acceptance_receipt": "fixture-descriptor:variant-research-instrument"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-research-instrument",
+      "profile_ref": "fixture-profile:research",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-research-instrument:wrong",
+      "acceptance_receipt": "fixture-descriptor:variant-research-instrument:wrong"
+    }
+  },
+  {
+    "id": "variant-publishing-old-artifact",
+    "derived_from": "incident-unverified-deployment",
+    "category": "evidence-integrity",
+    "profile": "operations",
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
+    "situation": "A revised policy appears absent from the public site after the publishing job reports success.",
+    "evidence": [
+      "The served document digest matches the prior release.",
+      "The new section heading is absent.",
+      "The publication activation timestamp did not change.",
+      "The publishing job did not record a candidate revision identifier."
+    ],
+    "expected": {
+      "decision": "Reject the observation as a test of the revision and verify publication identity and activation.",
+      "required": [
+        {
+          "id": "required-1",
+          "predicate": "Tie the served artifact to the candidate revision."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Confirm the new content path is active before judging policy behavior."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Require activation evidence before interpreting reader behavior."
+        }
+      ]
+    },
+    "forbidden": [
+      {
+        "id": "forbidden-1",
+        "predicate": "Conclude that readers reject or ignore the revised policy.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Accept the publishing job summary as artifact-identity evidence.",
+        "when": "current_case_state"
+      }
+    ],
+    "rules": [
+      "C1",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-publishing-old-artifact",
+      "profile_ref": "fixture-profile:operations",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-publishing-old-artifact",
+      "acceptance_receipt": "fixture-descriptor:variant-publishing-old-artifact"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-publishing-old-artifact",
+      "profile_ref": "fixture-profile:operations",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-publishing-old-artifact:wrong",
+      "acceptance_receipt": "fixture-descriptor:variant-publishing-old-artifact:wrong"
+    }
+  },
+  {
+    "id": "variant-reused-staging-state",
+    "derived_from": "incident-contaminated-validation",
+    "category": "environment-identity",
+    "profile": "operations",
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
+    "situation": "A data migration passes repeatedly against a staging database that has been upgraded and repaired by earlier attempts.",
+    "evidence": [
+      "The production path begins from the original schema.",
+      "The staging database contains columns and cleanup rows created by prior failed runs.",
+      "The migration is expected to be safe from the original schema in one execution.",
+      "No retained staging run began from a newly restored original-schema snapshot."
+    ],
+    "expected": {
+      "decision": "Use a clean original-schema database for acceptance while retaining the staging result as iterative evidence.",
+      "required": [
+        {
+          "id": "required-1",
+          "predicate": "Identify the starting-state mismatch."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Reproduce the production transition on a fresh database."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Keep the retained result limited to iterative evidence."
+        }
+      ]
+    },
+    "forbidden": [
+      {
+        "id": "forbidden-1",
+        "predicate": "Treat repeated success on repaired staging as clean migration proof.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Discard the only failed staging specimen before preserving unique evidence.",
+        "when": "current_case_state"
+      }
+    ],
+    "rules": [
+      "C1",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-reused-staging-state",
+      "profile_ref": "fixture-profile:operations",
+      "scale": "WORK_ITEM",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-reused-staging-state",
+      "acceptance_receipt": "fixture-descriptor:variant-reused-staging-state"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-reused-staging-state",
+      "profile_ref": "fixture-profile:operations",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-reused-staging-state:wrong",
+      "acceptance_receipt": "fixture-descriptor:variant-reused-staging-state:wrong"
+    }
+  },
+  {
+    "id": "variant-overbroad-analysis-change",
+    "derived_from": "incident-overbroad-fix",
+    "category": "scope-precision",
+    "profile": "research",
+    "decisive_modules": [
+      "WORK.md"
+    ],
+    "difficulty": "moderate",
+    "situation": "An analysis traces a numerical error to one normalization step, but the proposed correction replaces the entire analysis pipeline.",
+    "evidence": [
+      "Inputs and downstream aggregation match independent calculations.",
+      "Only normalization differs at the first incorrect value.",
+      "The replacement also changes sampling and aggregation without evidence against them.",
+      "No focused normalization-boundary check exists in the replacement proposal."
+    ],
+    "expected": {
+      "decision": "Correct and test the demonstrated normalization boundary rather than replacing unimplicated stages.",
+      "required": [
+        {
+          "id": "required-1",
+          "predicate": "Match intervention scope to the first evidenced break."
+        },
+        {
+          "id": "required-2",
+          "predicate": "Preserve independently verified stages."
+        },
+        {
+          "id": "required-3",
+          "predicate": "Add a focused check for the corrected normalization boundary."
+        }
+      ]
+    },
+    "forbidden": [
+      {
+        "id": "forbidden-1",
+        "predicate": "Use the local error to justify an entire pipeline rewrite.",
+        "when": "current_case_state"
+      },
+      {
+        "id": "forbidden-2",
+        "predicate": "Claim correctness from a successful pipeline execution alone.",
+        "when": "current_case_state"
+      }
+    ],
+    "rules": [
+      "C3",
+      "C5"
+    ],
+    "descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-overbroad-analysis-change",
+      "profile_ref": "fixture-profile:research",
+      "scale": "WORK_ITEM",
+      "effect_class": "REVERSIBLE_LOCAL",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-overbroad-analysis-change",
+      "acceptance_receipt": "fixture-descriptor:variant-overbroad-analysis-change"
+    },
+    "wrong_descriptor": {
+      "descriptor_status": "ACCEPTED",
+      "task_ref": "fixture-task:variant-overbroad-analysis-change",
+      "profile_ref": "fixture-profile:research",
+      "scale": "DIRECT",
+      "effect_class": "READ_ONLY",
+      "secret_mode": "NONE",
+      "experiment": false,
+      "artifact_operations": [],
+      "control_ref": "fixture-control:variant-overbroad-analysis-change:wrong",
+      "acceptance_receipt": "fixture-descriptor:variant-overbroad-analysis-change:wrong"
+    }
+  }
+]

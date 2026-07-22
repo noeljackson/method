@@ -24,6 +24,8 @@ Generalized into `C4`, program coordinates, and `ProgramControl`.
 
 ### Gates need exact evidence
 
+Observation ID: `C-006`
+
 A green run on an old head, a healthy feature branch, or an accepted source
 without matching deployment evidence did not authorize the next irreversible
 step. The program reconciled plan, tracker, canonical source, exact-head
@@ -50,12 +52,27 @@ Generalized into the verification selector and `C6`.
 
 ### Live control must not become its own archive
 
+Observation ID: `C-014`
+
 A large master plan accumulated many superseding execution-control blocks.
 Although the newest block declared precedence, the live authorization surface
 became expensive to read and easy to misapply.
 
 The universal protocol corrects this by allowing one live `ProgramControl` and
 moving superseded controls into an append-only decision ledger.
+
+### Secret delivery must stay outside coordination context
+
+Operational workflows needed credentials without making their values part of
+the agent transcript or retained evidence. Output-producing secret reads,
+shell tracing, environment dumps, observable command arguments, and reliance
+on a tool's `silent` flag could all cross that boundary. The safer workflows
+used an approved provider to inject values directly into the intended process
+and verified only permitted metadata or authenticated behavior.
+
+Generalized into `C8`, the secrets protocol, secret-aware work contracts, and
+non-revealing verification. Provider commands, secret paths, and response
+owners remain project-profile policy.
 
 ## Experiment loop
 

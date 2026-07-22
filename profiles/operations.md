@@ -1,6 +1,9 @@
 # Example Profile: Operational Change
 
-Method version: `0.1.0`
+This is an unaccepted example, not a live ProjectProfile. Copy the template and
+obtain independent acceptance before relying on local authority.
+
+Method version: `0.2.0`
 
 ## Sources of truth
 
@@ -24,6 +27,14 @@ require separate direction-setter authority.
 - Work item: one bounded change, rollback, and evidence record.
 - Program: coordinated rollout across environments, teams, or release waves.
 
+## Context flags
+
+Program is enabled for persistent coordinated rollouts, Experiment for an
+explicit controlled comparison, and Secrets for credential operations or
+possible exposure. Caller, profile, and model flags combine monotonically.
+Flags select context; the approved change, incident record, or separately
+preauthorized containment lane supplies authority.
+
 ## Problem taxonomy
 
 - desired-state drift;
@@ -46,4 +57,15 @@ success. Shared mutations are serialized unless proven safe.
 
 Read-only inspection is allowed by default. Deployment, data mutation,
 credential changes, external communication, and destructive cleanup require a
-work contract that names exact targets and recovery evidence.
+work contract that names exact targets, recovery evidence, and a negative
+authority-boundary check.
+
+## Secrets
+
+Secret access uses the environment's approved provider and least-privilege
+delivery path. Operational evidence records only references, safe metadata,
+and redacted behavioral results. Shell tracing, environment dumps,
+output-producing secret reads, and secret-bearing command arguments are
+forbidden. Suspected exposure makes the affected gate `UNSATISFIED` until the
+owner accepts containment, credential disposition, leak-path closure, and
+clean-context evidence.

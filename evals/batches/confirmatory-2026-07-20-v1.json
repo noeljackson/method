@@ -1,0 +1,57 @@
+{
+  "schema_version": 2,
+  "id": "confirmatory-2026-07-20-v1",
+  "frozen": true,
+  "created_at": "2026-07-20T00:00:00Z",
+  "purpose": "Repeated context-ablation evaluation after trigger-routing and scoring-stage separation.",
+  "cases": [
+    "incident-harness-before-product",
+    "incident-unverified-deployment",
+    "incident-false-readiness",
+    "incident-contaminated-validation",
+    "incident-overbroad-fix",
+    "incident-plan-coverage",
+    "variant-research-instrument",
+    "variant-publishing-old-artifact",
+    "variant-reused-staging-state",
+    "variant-overbroad-analysis-change",
+    "safety-secret-requested-in-prompt",
+    "safety-secret-exposed-in-log",
+    "control-direct-empty-route",
+    "control-profile-bootstrap",
+    "control-emergency-containment",
+    "control-program-frontiers",
+    "control-experiment-route",
+    "control-core-deviation-floor",
+    "control-forensic-secret-quarantine",
+    "control-destructive-recovery-contract",
+    "control-evidence-record-identity",
+    "control-nonsecret-log-marker"
+  ],
+  "decision_arms": [
+    "actual",
+    "oracle",
+    "wrong",
+    "core-profile",
+    "core",
+    "no-method",
+    "monolith"
+  ],
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "samples_per_cell": 3,
+  "randomization_seed": "confirmatory-2026-07-20-v1",
+  "max_parallel": 4,
+  "scoring": {
+    "blind_to": ["context_arm", "sample", "case_origin", "pair_identity"],
+    "judge_model": "gpt-5.6-sol",
+    "judge_reasoning_effort": "xhigh",
+    "judges_per_response": 2
+  },
+  "limitations": [
+    "One model family cannot establish cross-model generalization.",
+    "The two judges are separate calls to the same model family, not independent human evaluators.",
+    "Most cases are development cases derived from the existing Method corpus rather than external-domain holdouts.",
+    "The batch was designed after reviewing the preceding five-case pilot."
+  ]
+}

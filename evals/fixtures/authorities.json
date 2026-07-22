@@ -1,0 +1,23 @@
+{
+  "approval:operations-profile-v1": {
+    "accepted_at": "2026-07-20T00:00:00Z",
+    "accepted_by": "fixture-direction-setter",
+    "authority_source": "eval-authority:operations",
+    "profile": "operations",
+    "profile_digest": "d7bd32c7f5712056545d705fcc2d812c5538812c43e8535018640d9ca792c875"
+  },
+  "approval:research-profile-v1": {
+    "accepted_at": "2026-07-20T00:00:00Z",
+    "accepted_by": "fixture-direction-setter",
+    "authority_source": "eval-authority:research",
+    "profile": "research",
+    "profile_digest": "45c326de794977f0b51e458f2c5c4c7ba1bce60793781fa6bf01f2f934e5903c"
+  },
+  "approval:software-profile-v1": {
+    "accepted_at": "2026-07-20T00:00:00Z",
+    "accepted_by": "fixture-direction-setter",
+    "authority_source": "eval-authority:software",
+    "profile": "software",
+    "profile_digest": "354478a8c2bbbc2c02b89b7fd0d914cc7a50d1ee2c411596a4fd5cbfe088e8b2"
+  }
+}

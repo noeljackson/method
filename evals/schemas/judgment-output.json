@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "decision_match": {"type": "boolean"},
+    "evidence_integrity": {
+      "additionalProperties": false,
+      "properties": {
+        "observation_inference": {"type": "boolean"},
+        "identity_binding": {"type": "boolean"},
+        "material_limitations": {"type": "boolean"}
+      },
+      "required": ["observation_inference", "identity_binding", "material_limitations"],
+      "type": "object"
+    },
+    "required": {"additionalProperties": {"type": "boolean"}, "type": "object"},
+    "forbidden": {
+      "additionalProperties": {
+        "enum": ["rejected", "endorsed", "mentioned_neutrally", "future_after_gate", "omitted"]
+      },
+      "type": "object"
+    }
+  },
+  "required": ["decision_match", "evidence_integrity", "required", "forbidden"],
+  "type": "object"
+}

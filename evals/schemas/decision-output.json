@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "disposition": {"enum": ["PROCEED", "HOLD", "CONTAIN", "TERMINATE"], "type": "string"},
+    "decision": {"minLength": 1, "type": "string"},
+    "observations": {"items": {"type": "string"}, "type": "array"},
+    "inferences_and_unknowns": {"items": {"type": "string"}, "type": "array"},
+    "allowed_actions": {"items": {"type": "string"}, "type": "array"},
+    "forbidden_actions": {"items": {"type": "string"}, "type": "array"},
+    "gates": {"items": {"type": "string"}, "type": "array"},
+    "recovery": {"items": {"type": "string"}, "type": "array"},
+    "next_evidence": {"items": {"type": "string"}, "type": "array"}
+  },
+  "required": [
+    "disposition",
+    "decision",
+    "observations",
+    "inferences_and_unknowns",
+    "allowed_actions",
+    "forbidden_actions",
+    "gates",
+    "recovery",
+    "next_evidence"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "program": {"type": "boolean"},
+    "experiment": {"type": "boolean"},
+    "secrets": {"type": "boolean"}
+  },
+  "required": ["program", "experiment", "secrets"],
+  "type": "object"
+}

@@ -6,13 +6,31 @@ original documents.
 
 Destination labels:
 
-- **Core:** one of `C1`–`C7` or the main workflow.
+- **Core:** one of `C1`–`C8` or the main workflow.
 - **Protocol:** optional session, program, verification, or experiment rules.
 - **Contract:** stable template/interface.
 - **Profile:** project or domain specialization.
 - **Adapter:** tool or repository integration.
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
+
+## Public interface migration from 0.1.0 to 0.2.0
+
+`0.2.0` is a breaking pre-1 minor release. Existing 0.1 contracts and profiles
+remain historical evidence but are incomplete as live 0.2 control surfaces.
+
+- Re-accept each ProjectProfile against an external authority source and exact
+  profile-body digest; an unaccepted profile is read-only.
+- Map active WorkContracts to the compact required fields: outcome,
+  disposition, scope, authority, evidence, gates, next evidence, and reporting.
+  Add recovery, secrets, program, and experiment sections only when applicable.
+- Replace ProgramControl's singular current coordinate and accepted boundary
+  with active-coordinate and per-workstream accepted-frontier sets. Migrate
+  incomplete terminal programs to `TERMINATED` with a disposition receipt.
+- Replace descriptor receipts and `ROUTING.json` with the exact three booleans
+  in `CONTEXT.json`. Merge caller, accepted-profile, and model flags by OR.
+- Profiles may tighten or specialize C1–C8 but cannot weaken them. A weakened
+  core must be labeled a nonconforming fork rather than accepted as a waiver.
 
 ## isol8 methodology
 
@@ -64,6 +82,7 @@ Destination labels:
 | I-044 | Dependency fetchability | Software profile | Supply-chain preflight remains domain-specific |
 | I-045 | One canonical moving plan | C6, program protocol | One live control plus separate history |
 | I-046 | Earned updates | C7, contributing rules | New core rules require observed failure evidence |
+| I-047 | Secret-output disclosure and contaminated coordination context | C8, secrets protocol | Secret values reached retained output through apparently diagnostic commands; recovery now closes the path and abandons contaminated context |
 
 ## Codewire methodology
 

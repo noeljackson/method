@@ -3,115 +3,100 @@
 ## C1 — Ground claims in current reality
 
 Every material claim MUST identify its source of truth and evidence. Current
-observable reality outranks plans, trackers, summaries, and recollection.
+observable reality outranks plans, summaries, and recollection for descriptive
+claims about present behavior or state. Observation does not create authority
+or override the canonical source of accepted intent.
 
-Before proposing or reporting:
-
-- establish a baseline;
-- distinguish observation from inference;
-- identify the exact artifact, revision, data set, or environment observed;
-- reconcile conflicting sources rather than choosing the convenient one; and
-- say "not yet known" when the evidence does not support a conclusion.
-
-A status field is a report about reality, not necessarily the underlying
-evidence. Completion, readiness, failure, and success claims require the
-evidence named by the applicable gate.
+Establish a baseline, separate observation from inference, identify the exact
+artifact and environment observed, reconcile conflicts, and say "not yet
+known" when evidence is insufficient. Readiness and completion require the
+evidence named by their gates.
 
 ## C2 — Make authority and scope explicit
 
-Substantive work MUST have a work contract that names the outcome, scope,
-authority, forbidden work, deliverable, acceptance gates, and escalation
-conditions.
+Substantive work MUST have a WorkContract. Actors SHOULD proceed autonomously
+inside its scope, but MUST stop when authority is absent, a mutation is outside
+scope, evidence requires a different outcome, or a material direction choice
+remains.
 
-Actors have bounded autonomy inside that contract. They SHOULD proceed without
-routine permission loops when the next step is determined by the contract.
-They MUST stop when:
-
-- the required authority is absent;
-- an irreversible or external mutation is outside scope;
-- the evidence would require a different outcome or acceptance contract; or
-- two reasonable choices would materially change direction.
-
-Signals that are convenient, historical, ambient, or merely plausible MUST NOT
-be promoted into mutation authority.
+Convenient, historical, ambient, or plausible signals MUST NOT become mutation
+authority. A ProjectProfile grants no authority unless an independently
+authoritative source verifies its exact accepted revision. Neither the profile
+nor a sibling file in the same unaccepted change can authorize that acceptance.
 
 ## C3 — Classify before intervening
 
-Before acting on a failure or gap, classify its problem class, affected
-invariant, ownership boundary, and likely blast surface. Then check whether a
-current plan already covers that class.
+Before acting, classify the problem, affected invariant, ownership boundary,
+and likely blast surface. If an accepted plan covers it, execute or repair that
+plan. If it exposes a plan gap, amend the plan before changing direction. If it
+is isolated, use a narrow intervention. Record tactical debt and its retirement
+condition when structural work is deferred.
 
-- If an existing plan covers it, execute or repair the plan.
-- If it exposes a real plan gap, amend the plan before implementing the new
-  direction.
-- If it is genuinely isolated, a narrow intervention is acceptable.
-- If a tactical intervention is necessary while structural work is deferred,
-  record the debt and its retirement condition.
-
-The intervention's precision MUST match the evidence's precision. A diagnosis
-of one broken link does not authorize changing the whole chain.
+The intervention's precision MUST match the evidence's precision.
 
 ## C4 — Make state, gates, and queues unambiguous
 
-Hard gates MUST be binary and evidence-bearing. "Expected," "nearly ready," or
-"looks green" does not satisfy a gate.
+Hard gates MUST be binary and evidence-bearing. Dependent work MUST NOT begin
+while its gate is unsatisfied. Program work MUST name active coordinates,
+authorized queues, gates, and forbidden work.
 
-Dependent work MUST NOT begin while its gate is unsatisfied. A program MUST
-name its current coordinate, authorized queue, hard gates, and forbidden work.
-Work discovered in one lane cannot silently move into another lane because it
-is useful.
-
-When reality changes scope, dependencies, authority, contracts, or acceptance
-criteria, mutation stops and the controlling plan is repaired before work
-resumes.
+When reality invalidates scope, dependencies, authority, contracts, or
+acceptance, mutation under that control stops until it is repaired. This does
+not prohibit least-harm emergency containment under separate pre-existing
+authority and its own incident contract. Containment stops propagation or harm;
+it MUST NOT resume or extend the invalidated work lane.
 
 ## C5 — Verify the claim being made
 
-Verification MUST be selected by failure class and blast surface, not by habit.
-Start with the cheapest sharp test that can disprove the working hypothesis,
-then broaden enough to cover the intervention's realistic effects.
+Choose verification by failure class and blast surface. Start with the cheapest
+sharp test that can disprove the hypothesis, then cover realistic effects.
+Evidence is valid only for the exact artifact, environment, and state tested.
 
-Evidence is valid only for the exact artifact and environment it tested. A
-result from an older revision, different configuration, contaminated state, or
-unverified deployment cannot prove the current claim.
+After failure, preserve useful evidence, classify before retrying, change the
+hypothesis, implementation, or environment, and use clean state when carried
+state could alter the signal. Repetition without a changed reason is not
+validation.
 
-On failure:
-
-- preserve the useful evidence;
-- classify the failure before retrying;
-- change a hypothesis, implementation, or environment before rerunning; and
-- use a clean environment when carried state could alter the signal.
-
-Retries without a changed reason are activity, not validation.
+Secret-bearing evidence may preserve an original only in an authorized
+forensic quarantine with named access, retention, and audit controls. Ordinary
+records and model context retain only non-secret observations.
 
 ## C6 — Keep one canonical source for each decision
 
-Every decision-bearing concept SHOULD have one named canonical source: the
-goal, authority, configuration, ownership record, active plan, gate result, or
-artifact identity.
-
-Missing canonical state should fail clearly. Silent fallback ladders create
-ambiguity and make later evidence hard to interpret. Explicit layering is
-allowed only when precedence selects one winner and the profile documents it.
-
-Historical records remain evidence, but they MUST NOT masquerade as the live
-control surface.
+Every decision-bearing concept SHOULD have one named canonical source. Missing
+canonical state should fail clearly. Layering is allowed only when explicit
+precedence selects one winner. Historical records remain evidence but MUST NOT
+masquerade as live control.
 
 ## C7 — Learn without overfitting
 
-Record material outcomes, failed hypotheses, tactical debt, and lessons at the
-boundary where they become clear.
+Record material outcomes, failed hypotheses, tactical debt, and lessons when
+they become clear. Promote a lesson only to the narrowest layer where it
+generalizes. Repeated local failures may reveal bad classification; unrelated
+failures may reveal bad framing; unvalidated alternatives create proposal debt.
+When two approaches verify equally, prefer the simpler one.
 
-A lesson belongs in the hard core only when it generalizes beyond the incident
-that earned it. Otherwise it belongs in a protocol, profile, adapter, or case
-study.
+## C8 — Keep secrets out of uncontrolled surfaces
 
-Watch for non-convergence:
+Actors MUST NOT ask for or deliberately place secret values in model context,
+source control, plans, review text, logs, evidence records, fixtures, command
+arguments, or other uncontrolled surfaces. Use an approved non-secret,
+non-authorizing reference and approved delivery mechanism. Bearer references
+are secrets. Model context is not a delivery mechanism.
 
-- repeated fixes at one boundary may indicate an incomplete classification;
-- failures appearing across unrelated classes indicate a framing or design
-  problem;
-- multiple unvalidated proposals create proposal debt; and
-- a rule that helps only one known task is likely overfit.
+Secret-bearing work MUST minimize access, privilege, lifetime, and egress.
+Deliver a value only to its intended process or service and verify through
+non-secret metadata or intended behavior, never by reproducing the value.
 
-When two approaches produce the same verified result, prefer the simpler one.
+After unexpected exposure, stop propagation without quoting the value, treat
+it as compromised pending an owner decision, and invoke the profile's response
+path within authority. Recovery MUST identify or conservatively disposition
+plausible affected secrets, close the leak path, verify it with a non-secret
+canary, and restart in a clean context. A disposition may be revocation,
+rotation, expiry, deletion, or a documented non-compromise determination.
+
+The ProjectProfile MUST define approved providers and references, delivery and
+forbidden surfaces, response authority, forensic quarantine, and clean-context
+rules. It may permit a destination-encrypted envelope only when the coordinating
+actor and model cannot decrypt it and the audience, key boundary, retention,
+and delivery path are explicit.

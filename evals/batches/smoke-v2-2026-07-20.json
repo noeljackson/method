@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "id": "smoke-v2-2026-07-20",
+  "frozen": true,
+  "created_at": "2026-07-20T00:00:00Z",
+  "purpose": "Schema-v2 runner smoke test before the repeated confirmatory batch.",
+  "cases": ["control-evidence-record-identity"],
+  "decision_arms": [
+    "actual",
+    "oracle",
+    "wrong",
+    "core-profile",
+    "core",
+    "no-method",
+    "monolith"
+  ],
+  "model": "gpt-5.6-sol",
+  "reasoning_effort": "xhigh",
+  "samples_per_cell": 1,
+  "randomization_seed": "smoke-v2-2026-07-20",
+  "max_parallel": 4,
+  "scoring": {
+    "blind_to": ["context_arm", "sample", "case_origin", "pair_identity"],
+    "judge_model": "gpt-5.6-sol",
+    "judge_reasoning_effort": "xhigh",
+    "judges_per_response": 2
+  },
+  "limitations": [
+    "This one-case run validates mechanics only and is not performance evidence.",
+    "Judges are separate calls to the same model family, not human evaluators."
+  ]
+}

@@ -8,9 +8,18 @@ bounded actors inside one working session.
 1. Identify the direction-setter's requested outcome.
 2. Inspect current state before asking discoverable questions.
 3. Choose direct, work-item, or program scale.
-4. Assign the evaluator, researcher, and executor responsibilities according
-   to the project profile.
-5. Create or confirm the work contract.
+4. Verify that the project profile is `ACCEPTED`, its digest matches, and its
+   acceptance receipt resolves through the external authority source. If not,
+   remain read-only and draft or repair the profile.
+5. Assign the evaluator, researcher, and executor responsibilities according
+   to the accepted project profile.
+6. Create or confirm the work contract.
+
+Before mutation, identify the canonical baseline and the isolated execution
+context for this session. Reconcile the baseline when it may have drifted. An
+execution context, temporary state, or prior transcript cannot grant authority
+or substitute for accepted state. Do not begin a new mutation lane from a
+dirty, unknown, or unaccepted context.
 
 When evidence is missing, start in researcher mode. Add execution authority
 only after the evidence supports a fix or change shape.
@@ -26,6 +35,10 @@ only after the evidence supports a fix or change shape.
   be busy while the overall direction is wrong.
 - Parallel work is justified only when lanes are independent. Evidence that
   determines another lane's approach runs first, not in a speculative race.
+- A parallel lane declares its shared mutable resources before it starts:
+  environments, services, credentials, caches, ports, logs, and artifacts as
+  applicable. If a shared resource can invalidate another lane's evidence,
+  serialize the work or establish an explicit isolation boundary.
 
 ## Redirect
 
@@ -54,7 +67,7 @@ another differently shaped guess.
 
 At a session boundary:
 
-1. Record the delivered or accepted boundary.
+1. Record the delivered result and any accepted program frontiers.
 2. Preserve or dispose of temporary evidence intentionally.
 3. Reconcile open work and external state.
 4. Record tactical debt and follow-ups.

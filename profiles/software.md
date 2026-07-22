@@ -1,9 +1,10 @@
 # Example Profile: Software Repository
 
-This example shows one possible specialization. Copy the project-profile
-template rather than treating these choices as universal.
+This unaccepted example shows one possible specialization. Copy the
+project-profile template and obtain independent acceptance rather than
+treating these choices as authority or as universal.
 
-Method version: `0.1.0`
+Method version: `0.2.0`
 
 ## Sources of truth
 
@@ -28,6 +29,13 @@ external-state changes.
 - Work item: one reviewable source change and its tests.
 - Program: dependent migrations, multiple repositories, releases, or shared
   production state.
+
+## Context flags
+
+Program is enabled for persistent dependent migrations, Experiment for an
+explicit controlled comparison, and Secrets whenever credentials, bearer
+material, delivery, or possible exposure are involved. Caller, profile, and
+model flags combine monotonically; none of these defaults grants authority.
 
 ## Problem taxonomy
 
@@ -55,3 +63,11 @@ Routine source changes, tests, branches, and review artifacts are authorized
 inside the work contract. Force pushes to shared history, releases,
 credentials, production changes, and destructive data operations require
 explicit authority.
+
+## Secrets
+
+Use the repository-approved secret provider and approved secret references. Values are
+delivered only to the intended process and never enter prompts, patches,
+command arguments, logs, test fixtures, or review evidence. An unexpected
+disclosure stops the affected work and invokes the repository's credential
+response owner; rotation remains an explicitly authorized mutation.
