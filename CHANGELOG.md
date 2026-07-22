@@ -4,8 +4,9 @@ All notable changes to the Noel Method are recorded here.
 
 ## 0.2.1 - 2026-07-22
 
-- Put the pinned local-pack installation command and first profile-setup step
-  directly in the README and getting-started guide.
+- Put the pinned local-pack installation command, ProjectProfile explanation,
+  and everyday-use path directly in the README; remove the redundant
+  getting-started page.
 
 ## 0.2.0 - 2026-07-20
 
