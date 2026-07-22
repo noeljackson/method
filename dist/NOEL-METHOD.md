@@ -325,6 +325,12 @@ bounded actors inside one working session.
    to the accepted project profile.
 6. Create or confirm the work contract.
 
+Before mutation, identify the canonical baseline and the isolated execution
+context for this session. Reconcile the baseline when it may have drifted. An
+execution context, temporary state, or prior transcript cannot grant authority
+or substitute for accepted state. Do not begin a new mutation lane from a
+dirty, unknown, or unaccepted context.
+
 When evidence is missing, start in researcher mode. Add execution authority
 only after the evidence supports a fix or change shape.
 
@@ -339,6 +345,10 @@ only after the evidence supports a fix or change shape.
   be busy while the overall direction is wrong.
 - Parallel work is justified only when lanes are independent. Evidence that
   determines another lane's approach runs first, not in a speculative race.
+- A parallel lane declares its shared mutable resources before it starts:
+  environments, services, credentials, caches, ports, logs, and artifacts as
+  applicable. If a shared resource can invalidate another lane's evidence,
+  serialize the work or establish an explicit isolation boundary.
 
 ## Redirect
 
@@ -416,6 +426,11 @@ receipts prove independence. Maintain a set of maximal accepted coordinates
 for each workstream instead of forcing concurrent work into a false total
 order.
 
+Each workstream names its execution context, canonical baseline, and any
+shared mutable resources. Reconcile a reused context before dispatch. A local
+context is evidence about state, not authority to mutate, publish, or merge;
+unaccepted residue from another lane cannot seed a new coordinate.
+
 ## Dispatch gate
 
 Before dispatching, publishing, merging, releasing, or performing an external
@@ -440,6 +455,9 @@ test is not authorization by itself.
   prerequisites.
 - Mutations to shared or external state are serialized unless the contract
   proves concurrency safe.
+- Cleanup, retention, and handoff for temporary execution contexts are named
+  in the work item or shared-resource receipt when they affect evidence,
+  safety, or later work.
 - A useful discovery stays in its lane until the plan assigns it a coordinate.
 
 ## Replan

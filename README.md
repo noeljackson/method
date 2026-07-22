@@ -13,6 +13,13 @@ The method is intentionally layered:
 - Case studies preserve the failures that earned the rules without turning
   the core into an incident journal.
 
+## New here?
+
+Start with the public [getting-started guide](GETTING-STARTED.md). It shows
+how to choose a published release, install a local or remote pack, create an
+accepted project profile, and use the light everyday path without loading the
+whole method for every task.
+
 ## The loop
 
 ```text
@@ -25,18 +32,16 @@ The core question is not merely, "Can this work be done?" It is:
 > What evidence, authority, and acceptance contract make this the right work
 > to do now?
 
-## Start here
+## Once installed
 
-1. Open the modular pack's [index](dist/pack/INDEX.md).
+1. Open the modular pack's [index](dist/pack/INDEX.md) from your pinned local
+   copy or tagged remote reference.
 2. Always load its Base and an independently accepted local project profile.
 3. OR the caller, profile, and model ContextFlags and load enabled protocols.
 4. Use the [full prompt pack](dist/NOEL-METHOD.md) only when the consumer
    cannot follow linked local files.
-5. Draft, independently accept, and verify a
-   [project profile](templates/project-profile.md).
-6. Choose a consumption mode from [the adapters guide](adapters/README.md).
-7. Use a [work contract](templates/work-contract.md) for substantive work.
-8. For multi-wave work, also create a
+5. Use a [work contract](templates/work-contract.md) for substantive work.
+6. For multi-wave work, also create a
    [program control](templates/program-control.md).
 
 The modular pack is optimized for repeated agent use: `INDEX.md`, `BASE.md`,

@@ -15,6 +15,12 @@ bounded actors inside one working session.
    to the accepted project profile.
 6. Create or confirm the work contract.
 
+Before mutation, identify the canonical baseline and the isolated execution
+context for this session. Reconcile the baseline when it may have drifted. An
+execution context, temporary state, or prior transcript cannot grant authority
+or substitute for accepted state. Do not begin a new mutation lane from a
+dirty, unknown, or unaccepted context.
+
 When evidence is missing, start in researcher mode. Add execution authority
 only after the evidence supports a fix or change shape.
 
@@ -29,6 +35,10 @@ only after the evidence supports a fix or change shape.
   be busy while the overall direction is wrong.
 - Parallel work is justified only when lanes are independent. Evidence that
   determines another lane's approach runs first, not in a speculative race.
+- A parallel lane declares its shared mutable resources before it starts:
+  environments, services, credentials, caches, ports, logs, and artifacts as
+  applicable. If a shared resource can invalidate another lane's evidence,
+  serialize the work or establish an explicit isolation boundary.
 
 ## Redirect
 

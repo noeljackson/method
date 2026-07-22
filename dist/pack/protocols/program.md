@@ -41,6 +41,11 @@ receipts prove independence. Maintain a set of maximal accepted coordinates
 for each workstream instead of forcing concurrent work into a false total
 order.
 
+Each workstream names its execution context, canonical baseline, and any
+shared mutable resources. Reconcile a reused context before dispatch. A local
+context is evidence about state, not authority to mutate, publish, or merge;
+unaccepted residue from another lane cannot seed a new coordinate.
+
 ## Dispatch gate
 
 Before dispatching, publishing, merging, releasing, or performing an external
@@ -65,6 +70,9 @@ test is not authorization by itself.
   prerequisites.
 - Mutations to shared or external state are serialized unless the contract
   proves concurrency safe.
+- Cleanup, retention, and handoff for temporary execution contexts are named
+  in the work item or shared-resource receipt when they affect evidence,
+  safety, or later work.
 - A useful discovery stays in its lane until the plan assigns it a coordinate.
 
 ## Replan

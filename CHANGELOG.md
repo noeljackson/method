@@ -18,6 +18,8 @@ All notable changes to the Noel Method are recorded here.
   merge them by OR, and map enabled flags to protocol files.
 - Add hard-core rule C8 from observed secret-output disclosures, an opt-in
   secrets protocol, clean-context recovery, and secret disclosure evals.
+- Require a reconciled canonical baseline and explicit execution-context and
+  shared-resource boundaries before substantive or parallel mutation.
 - Validate modular links, distribution drift, context derivation, word budgets,
   eval call caps, profile acceptance, and rule provenance in CI.
 
