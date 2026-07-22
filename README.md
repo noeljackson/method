@@ -1,58 +1,42 @@
 # Noel Method
 
-The Noel Method is a prompt-native methodology for reliable delegated work.
-It is designed to be read by humans and agents, and it treats roles as
-responsibilities rather than identities.
+The Noel Method helps people and agents do delegated work with clear authority,
+small evidence-based steps, and explicit acceptance.
 
-The method is intentionally layered:
+## Quick install
 
-- A compact Base defines the non-waivable core, workflow, and common contracts.
-- Optional protocols cover programs, experiments, and secret-bearing work.
-- A project profile supplies local vocabulary, authority, gates, and tools.
-- Adapters show several ways to copy, vendor, or reference a release.
-- Case studies preserve the failures that earned the rules without turning
-  the core into an incident journal.
+From the root of the repository that will use the Method, run:
 
-## New here?
-
-Start with the public [getting-started guide](GETTING-STARTED.md). It shows
-how to choose a published release, install a local or remote pack, create an
-accepted project profile, and use the light everyday path without loading the
-whole method for every task.
-
-## The loop
-
-```text
-Orient and frame -> Gather and classify -> Check plan coverage
-                 -> Contract -> Act -> Verify -> Report and learn
+```sh
+git subtree add --prefix=vendor/noel-method https://github.com/noeljackson/method.git v0.2.0 --squash
 ```
 
-The core question is not merely, "Can this work be done?" It is:
+That installs the pinned release as local files. Then create the project’s
+local profile without overwriting an existing one:
 
-> What evidence, authority, and acceptance contract make this the right work
-> to do now?
+```sh
+test ! -e PROJECT-PROFILE.md && cp vendor/noel-method/templates/project-profile.md PROJECT-PROFILE.md
+```
 
-## Once installed
+## Set up the ProjectProfile
 
-1. Open the modular pack's [index](dist/pack/INDEX.md) from your pinned local
-   copy or tagged remote reference.
-2. Always load its Base and an independently accepted local project profile.
-3. OR the caller, profile, and model ContextFlags and load enabled protocols.
-4. Use the [full prompt pack](dist/NOEL-METHOD.md) only when the consumer
-   cannot follow linked local files.
-5. Use a [work contract](templates/work-contract.md) for substantive work.
-6. For multi-wave work, also create a
-   [program control](templates/program-control.md).
+A ProjectProfile is a small local policy file for this repository. It names
+the sources of truth, who may decide or act, the important boundaries and
+gates, and where results are reported. It is the project-specific companion to
+the general Method.
 
-The modular pack is optimized for repeated agent use: `INDEX.md`, `BASE.md`,
-and the local profile form the normal context. The three non-authoritative
-flags—`program`, `experiment`, and `secrets`—only add context. They never grant
-authority, and no source may use `false` to clear another source's `true`.
+Fill in [the copied template](templates/project-profile.md). While it is
+`DRAFT`, it grants no mutation authority. An independent owner accepts its
+exact contents once it is correct. Usually you set it up once for a repository,
+then reaccept it only when its authority or scope changes.
 
 ## Everyday use
 
-Most routine work should stay light. For a bounded, reversible direct task,
-the prompt can be its contract:
+For each task, tell the agent to start with the installed pack’s
+`vendor/noel-method/dist/pack/INDEX.md` and this repository’s accepted
+`PROJECT-PROFILE.md`.
+
+Most routine work needs only a short request:
 
 ```text
 Outcome: <what should be true next>
@@ -61,25 +45,17 @@ Evidence: <current source of truth or check>
 Next action: <one bounded step>
 ```
 
-Use a formal [work contract](templates/work-contract.md) only when work is
-substantive: it changes external or irreversible state, handles sensitive
-material, crosses a meaningful handoff or authority boundary, or has material
-uncertainty about success. An accepted ProjectProfile is workspace setup for
-its scope and revision; it is not recreated for every task.
+Use a [WorkContract](templates/work-contract.md) when work changes external or
+irreversible state, handles sensitive material, crosses an authority boundary,
+or has material uncertainty. The index adds the Program, Experiment, or
+Secrets protocol only when that kind of work applies.
 
-## Consumption options
+## Need another installation mode?
 
-| Mode | Best for | Trade-off |
-| --- | --- | --- |
-| Tagged reference | Readers and networked agents | Smallest footprint; unavailable offline |
-| Modular copy | Repeated agent use | Best context efficiency; preserve relative links |
-| Single-file copy | One-document prompt systems | Broadest context on every use |
-| Vendored release | Reproducible local use | Updates are explicit repository changes |
-| Git subtree | Projects that want local files and upstream history | Update commands require care |
-| Git submodule | Projects that want an exact upstream checkout | Adds submodule workflow overhead |
-
-Always pin a release. A reference to mutable `main` is useful for browsing but
-is not reproducible execution context.
+The local subtree above is the recommended default. For a remote reference,
+single-file prompt, submodule, or update procedure, use the
+[adapter guide](adapters/README.md). Always pin a release rather than using
+mutable `main`.
 
 ## Repository map
 
