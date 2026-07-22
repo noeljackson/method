@@ -4,7 +4,29 @@ Noel Method is workspace setup plus a small working loop. You install one
 pinned pack, accept one local ProjectProfile for the workspace, and then use
 only the context needed by the work in front of you.
 
-## 1. Start from a published tag
+## 1. Install the recommended local pack
+
+From the root of the repository that will use the Method, run this one command:
+
+```sh
+git subtree add --prefix=vendor/noel-method https://github.com/noeljackson/method.git v0.2.0 --squash
+```
+
+It adds the released pack as local, reviewable files. The command creates a
+commit, so run it on the branch where this repository setup belongs. It does
+not activate the Method or give anyone new authority.
+
+Next, create the local profile without replacing an existing one:
+
+```sh
+test ! -e PROJECT-PROFILE.md && cp vendor/noel-method/templates/project-profile.md PROJECT-PROFILE.md
+```
+
+Point repository instructions at
+`vendor/noel-method/dist/pack/INDEX.md`. Keep the pack's `MANIFEST.json` and
+relative layout intact.
+
+## 2. Choose a release deliberately
 
 Use a Git tag that exists remotely. `VERSION` describes the source checkout;
 it is not by itself a released, reproducible install target. Never point a
@@ -19,26 +41,11 @@ git ls-remote --exit-code --refs https://github.com/noeljackson/method.git \
 If the tag is absent, wait for the release or inspect the source read-only.
 Do not present an untagged checkout as an installed Method release.
 
-## 2. Choose one installation mode
+For a later release, substitute its verified tag in the install command above.
+To update an existing subtree, use a reviewed `git subtree pull` rather than
+running `add` again.
 
-### Local, reproducible pack
-
-Use this for a repository that expects repeated agent work or offline access.
-It keeps the Method alongside the project and makes updates ordinary reviewed
-repository changes.
-
-```sh
-NOEL_METHOD_TAG='vX.Y.Z' # replace with a published release tag
-git subtree add --prefix=vendor/noel-method \
-  https://github.com/noeljackson/method.git "$NOEL_METHOD_TAG" --squash
-test ! -e PROJECT-PROFILE.md
-cp vendor/noel-method/templates/project-profile.md PROJECT-PROFILE.md
-```
-
-Point your repository instructions at
-`vendor/noel-method/dist/pack/INDEX.md`. Keep the pack's `MANIFEST.json` and
-relative layout intact. For a submodule or a one-file prompt system, use the
-[adapter guide](adapters/README.md).
+## 3. Choose another installation mode only when needed
 
 ### Tagged remote reference
 
@@ -53,7 +60,7 @@ The [remote instruction snippet](adapters/agents-remote.md) is ready to copy.
 Keep `PROJECT-PROFILE.md` in the consuming repository; remote Method text does
 not supply local authority.
 
-## 3. Create and accept the project profile
+## 4. Create and accept the project profile
 
 Fill the copied [ProjectProfile template](templates/project-profile.md) with
 the workspace's canonical sources, actors, authority boundaries, gates,
@@ -75,7 +82,7 @@ The command excludes the Acceptance section exactly as the profile contract
 requires. Record its output in `Profile digest` before the independent owner
 accepts the profile.
 
-## 4. Use the normal path
+## 5. Use the normal path
 
 For every task, load the pinned pack's `INDEX.md`, `BASE.md`, and the exact
 accepted `PROJECT-PROFILE.md`.
@@ -105,7 +112,7 @@ Enable an optional protocol only when it applies:
 Caller, profile, and model flags merge by boolean OR. A flag adds context; it
 does not grant authority.
 
-## 5. Know the limits
+## 6. Know the limits
 
 The Method does not choose the project's goal, make a draft profile active, or
 turn a passing test into permission for an unrelated mutation. It gives people

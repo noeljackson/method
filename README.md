@@ -13,12 +13,25 @@ The method is intentionally layered:
 - Case studies preserve the failures that earned the rules without turning
   the core into an incident journal.
 
-## New here?
+## Quick install
 
-Start with the public [getting-started guide](GETTING-STARTED.md). It shows
-how to choose a published release, install a local or remote pack, create an
-accepted project profile, and use the light everyday path without loading the
-whole method for every task.
+From the root of the repository that will use the Method, run:
+
+```sh
+git subtree add --prefix=vendor/noel-method https://github.com/noeljackson/method.git v0.2.0 --squash
+```
+
+That installs the pinned release as local files. Then create the local profile
+without overwriting an existing one:
+
+```sh
+test ! -e PROJECT-PROFILE.md && cp vendor/noel-method/templates/project-profile.md PROJECT-PROFILE.md
+```
+
+The Method is not active until an independent owner accepts that profile. For
+the short setup walkthrough, including profile acceptance and everyday use,
+read [Getting started](GETTING-STARTED.md). Other installation modes are in
+the [adapter guide](adapters/README.md).
 
 ## The loop
 
