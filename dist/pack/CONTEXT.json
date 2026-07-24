@@ -1,31 +1,33 @@
 {
   "method": "Noel Method",
-  "version": "0.2.1",
-  "schema_version": 1,
-  "base_modules": [
-    "BASE.md"
-  ],
+  "version": "0.3.0",
+  "schema_version": 2,
+  "kernel": "KERNEL.md",
   "module_order": [
     "protocols/program.md",
     "protocols/experiment.md",
     "protocols/secrets.md"
   ],
-  "profile_requirement": {
-    "normal": "Load the exact independently accepted ProjectProfile revision.",
-    "missing_or_invalid": "Load artifacts/project-profile.md and remain read-only until acceptance is independently verifiable."
-  },
-  "flags": {
+  "protocols": {
     "program": {
       "module": "protocols/program.md",
-      "activate_when": "An existing or required ProgramControl applies, or the task is an explicit persistent multi-workstream program."
+      "task_signal": "persistent_program"
     },
     "experiment": {
       "module": "protocols/experiment.md",
-      "activate_when": "The task is an explicit controlled comparison against a fixed baseline."
+      "task_signal": "controlled_comparison"
     },
     "secrets": {
       "module": "protocols/secrets.md",
-      "activate_when": "The task involves a credential, bearer material, secret delivery, or possible exposure."
+      "task_signal": "secret_risk"
     }
+  },
+  "runtime": {
+    "profile_schema": "schemas/project-profile.schema.json",
+    "authorities_schema": "schemas/profile-authorities.schema.json",
+    "task_schema": "schemas/task-request.schema.json",
+    "envelope_schema": "schemas/runtime-envelope.schema.json",
+    "program_schema": "schemas/program-control.schema.json",
+    "resolver": "tools/noel_method.py"
   }
 }

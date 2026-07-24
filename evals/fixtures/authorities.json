@@ -1,23 +1,26 @@
 {
-  "approval:operations-profile-v1": {
-    "accepted_at": "2026-07-20T00:00:00Z",
-    "accepted_by": "fixture-direction-setter",
+  "approval:operations-v3": {
+    "profile_id": "operations",
+    "method_version": "0.3.0",
+    "policy_sha256": "a1966f8f997c11047b758b7bba1119947f830638e262897c56911c4b05cf72a4",
     "authority_source": "eval-authority:operations",
-    "profile": "operations",
-    "profile_digest": "d7bd32c7f5712056545d705fcc2d812c5538812c43e8535018640d9ca792c875"
+    "accepted_by": "fixture-owner",
+    "accepted_at": "2026-07-23T00:00:00Z"
   },
-  "approval:research-profile-v1": {
-    "accepted_at": "2026-07-20T00:00:00Z",
-    "accepted_by": "fixture-direction-setter",
+  "approval:research-v3": {
+    "profile_id": "research",
+    "method_version": "0.3.0",
+    "policy_sha256": "b68efaba23dc18ccd8e25272b1d8e967976b828f0f7c0ca16c65f9714cc3804f",
     "authority_source": "eval-authority:research",
-    "profile": "research",
-    "profile_digest": "45c326de794977f0b51e458f2c5c4c7ba1bce60793781fa6bf01f2f934e5903c"
+    "accepted_by": "fixture-owner",
+    "accepted_at": "2026-07-23T00:00:00Z"
   },
-  "approval:software-profile-v1": {
-    "accepted_at": "2026-07-20T00:00:00Z",
-    "accepted_by": "fixture-direction-setter",
+  "approval:software-v3": {
+    "profile_id": "software",
+    "method_version": "0.3.0",
+    "policy_sha256": "4eb51a7a3346d21939f7fe1c1f6428cf78636469a1e9878709671e5f5c4118d6",
     "authority_source": "eval-authority:software",
-    "profile": "software",
-    "profile_digest": "354478a8c2bbbc2c02b89b7fd0d914cc7a50d1ee2c411596a4fd5cbfe088e8b2"
+    "accepted_by": "fixture-owner",
+    "accepted_at": "2026-07-23T00:00:00Z"
   }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the compact modular and single-file Noel Method distributions."""
+"""Build the v0.3 runtime pack and equivalent monolith."""
 
 from __future__ import annotations
 
@@ -9,24 +9,19 @@ import hashlib
 import json
 from pathlib import Path
 
-from methodlib import CONTEXT_KEYS, context_spec
+from methodlib import PROTOCOL_KEYS, context_spec
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 PACK = DIST / "pack"
-FULL_SOURCES = [
-    "src/00-preamble.md",
-    "src/10-core.md",
-    "src/20-vocabulary.md",
-    "src/30-workflow.md",
-    "src/40-contracts.md",
-    "protocols/session.md",
-    "protocols/program.md",
-    "protocols/verification.md",
-    "protocols/experiment.md",
-    "protocols/secrets.md",
-]
+SCHEMAS = (
+    "project-profile.schema.json",
+    "profile-authorities.schema.json",
+    "task-request.schema.json",
+    "runtime-envelope.schema.json",
+    "program-control.schema.json",
+)
 
 
 def read(source: str) -> str:
@@ -41,119 +36,107 @@ def generated_header(version: str) -> str:
 
 
 def navigation(prefix: str = "") -> str:
-    return f"[Index]({prefix}INDEX.md) · [Base]({prefix}BASE.md)\n"
+    return f"[Index]({prefix}INDEX.md) · [Kernel]({prefix}KERNEL.md)\n"
 
 
 def modular_document(version: str, content: str, prefix: str = "") -> str:
     return generated_header(version) + "\n" + navigation(prefix) + "\n" + content + "\n"
 
 
-def markdown_section(source: str, heading: str) -> str:
-    text = read(source)
-    marker = f"## {heading}"
-    start = text.find(marker)
-    if start < 0:
-        raise ValueError(f"{source}: missing section {heading}")
-    next_heading = text.find("\n## ", start + len(marker))
-    return text[start:] if next_heading < 0 else text[start:next_heading].rstrip()
-
-
 def render_index(version: str, spec: dict[str, object]) -> str:
-    profile = spec["profile_requirement"]
-    flags = spec["flags"]
+    protocols = spec["protocols"]
     return generated_header(version) + f"""
-# Noel Method Pack
+# Noel Method Runtime Pack
 
 Version: `{version}`
 
-## Always load
+## Direct work
 
-1. [Base](BASE.md)
-2. The consuming project's exact independently accepted ProjectProfile.
+For bounded, reversible, locally provable work under direct human supervision,
+load [Kernel](KERNEL.md). The current request supplies the outcome, constraints,
+source of truth, and next action. Do not create a RuntimeEnvelope merely to
+answer, inspect, or make a small supervised local change.
 
-{profile['normal']}
+## Controlled work
 
-If it is missing, draft, stale, or unverifiable: {profile['missing_or_invalid']}
+Consequential work outside the direct boundary requires a RuntimeEnvelope
+produced by the packaged resolver from an independently accepted ProjectProfile
+and trusted TaskRequest:
 
-## Context flags
-
-Use this exact non-authoritative JSON shape:
-
-```json
-{{"program": false, "experiment": false, "secrets": false}}
+```sh
+python3 tools/noel_method.py resolve \\
+  --profile PROJECT-PROFILE.json \\
+  --authorities PROFILE-AUTHORITIES.json \\
+  --task TASK-REQUEST.json
 ```
 
-Merge flags supplied by the caller, accepted profile, and model using boolean
-OR. A model may enable a protocol but cannot disable one selected elsewhere.
-Malformed or unknown fields fail closed. Flags select context; WorkContracts,
-ProgramControls, and the accepted profile supply authority.
+Load [Kernel](KERNEL.md), the complete RuntimeEnvelope, and exactly the protocol
+modules named by `protocols`. If the envelope is missing, unverified, expired,
+or inconsistent with current state, remain read-only.
 
-| Flag | Enable when | Load |
+When Program is selected, separately validate and supply the ProgramControl
+named by the TaskRequest:
+
+```sh
+python3 tools/noel_method.py validate-program-control PROGRAM-CONTROL.json
+```
+
+This validates structure and terminal-state invariants only. The harness must
+still bind the control to current canonical state and authority.
+
+| Protocol | Resolver signal | Module |
 | --- | --- | --- |
-| `program` | {flags['program']['activate_when']} | [Program](protocols/program.md) |
-| `experiment` | {flags['experiment']['activate_when']} | [Experiment](protocols/experiment.md) |
-| `secrets` | {flags['secrets']['activate_when']} | [Secrets](protocols/secrets.md) |
+| `program` | `{protocols['program']['task_signal']}` or profile/model escalation | [Program](protocols/program.md) |
+| `experiment` | `{protocols['experiment']['task_signal']}` or profile/model escalation | [Experiment](protocols/experiment.md) |
+| `secrets` | `{protocols['secrets']['task_signal']}` or profile/model escalation | [Secrets](protocols/secrets.md) |
 
-The machine-readable mapping is [`CONTEXT.json`](CONTEXT.json). Keep links one
-hop from this index and pin the pack version in the ProjectProfile.
+The model may request another protocol when risk emerges. Only the resolver may
+issue an updated envelope; the model cannot remove a protocol or widen action
+authority.
+
+Machine-readable routing and schemas are in [CONTEXT.json](CONTEXT.json) and
+[`schemas/`](schemas/).
 
 ## Single-file fallback
 
-Use [`../NOEL-METHOD.md`](../NOEL-METHOD.md) when linked local files cannot be
-loaded. It is a compatibility fallback, not the normal repeated-use context.
+Use [`../MONOLITH.md`](../MONOLITH.md) only when linked modules cannot be
+loaded. It contains the same Kernel and all three protocols; the RuntimeEnvelope
+still supplies project policy and authority.
 """.lstrip()
 
 
 def render_all() -> dict[Path, str]:
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     spec = context_spec()
-    full = generated_header(version) + "\n" + "\n\n---\n\n".join(
-        read(source) for source in FULL_SOURCES
+    kernel = read("src/KERNEL.md")
+    protocol_content = {
+        key: read(f"protocols/{key}.md") for key in PROTOCOL_KEYS
+    }
+    monolith = generated_header(version) + "\n" + "\n\n---\n\n".join(
+        [kernel, *(protocol_content[key] for key in PROTOCOL_KEYS)]
     ) + "\n"
-    base = "\n\n---\n\n".join(
-        [
-            *(read(source) for source in (
-                "src/00-preamble.md",
-                "src/10-core.md",
-                "src/20-vocabulary.md",
-                "src/30-workflow.md",
-            )),
-            markdown_section("src/40-contracts.md", "WorkContract"),
-            markdown_section("src/40-contracts.md", "ActionEnvelope"),
-            markdown_section("src/40-contracts.md", "EvidenceRecord"),
-        ]
-    )
-    program = "\n\n---\n\n".join(
-        (
-            read("protocols/program.md"),
-            markdown_section("src/40-contracts.md", "ProgramControl"),
-        )
-    )
-    project_profile = "\n\n---\n\n".join(
-        (
-            markdown_section("src/40-contracts.md", "ProjectProfile"),
-            read("templates/project-profile.md"),
-        )
-    )
     rendered: dict[Path, str] = {
-        DIST / "NOEL-METHOD.md": full,
+        DIST / "MONOLITH.md": monolith,
         PACK / "INDEX.md": render_index(version, spec),
         PACK / "CONTEXT.json": json.dumps(
             {"method": "Noel Method", "version": version, **spec},
             indent=2,
         ) + "\n",
-        PACK / "BASE.md": modular_document(version, base),
-        PACK / "protocols" / "program.md": modular_document(version, program, prefix="../"),
-        PACK / "protocols" / "experiment.md": modular_document(
-            version, read("protocols/experiment.md"), prefix="../"
-        ),
-        PACK / "protocols" / "secrets.md": modular_document(
-            version, read("protocols/secrets.md"), prefix="../"
-        ),
-        PACK / "artifacts" / "project-profile.md": modular_document(
-            version, project_profile, prefix="../"
+        PACK / "KERNEL.md": modular_document(version, kernel),
+        PACK / "tools" / "noel_method.py": (
+            f"# Generated from scripts/methodlib.py for Noel Method {version}.\n"
+            + (ROOT / "scripts" / "methodlib.py").read_text(encoding="utf-8")
         ),
     }
+    for key in PROTOCOL_KEYS:
+        rendered[PACK / "protocols" / f"{key}.md"] = modular_document(
+            version, protocol_content[key], prefix="../"
+        )
+    for schema in SCHEMAS:
+        rendered[PACK / "schemas" / schema] = (
+            ROOT / "schemas" / schema
+        ).read_text(encoding="utf-8")
+
     manifest_files = [
         {
             "path": str(path.relative_to(PACK)),
@@ -168,8 +151,8 @@ def render_all() -> dict[Path, str]:
             "method": "Noel Method",
             "version": version,
             "entrypoint": "INDEX.md",
-            "base": "BASE.md",
-            "context_flags": list(CONTEXT_KEYS),
+            "kernel": "KERNEL.md",
+            "protocols": list(PROTOCOL_KEYS),
             "files": manifest_files,
         },
         indent=2,
@@ -190,7 +173,9 @@ def check(rendered: dict[Path, str]) -> int:
         )
         print("\n".join(diff))
     expected_pack = {path for path in rendered if PACK in path.parents}
-    actual_pack = {path for path in PACK.rglob("*") if path.is_file()} if PACK.exists() else set()
+    actual_pack = {
+        path for path in PACK.rglob("*") if path.is_file()
+    } if PACK.exists() else set()
     extras = sorted(actual_pack - expected_pack)
     if extras:
         failed = True
@@ -200,24 +185,46 @@ def check(rendered: dict[Path, str]) -> int:
     return 1 if failed else 0
 
 
+def previous_generated_files() -> set[Path]:
+    manifest = PACK / "MANIFEST.json"
+    if not manifest.is_file():
+        return set()
+    try:
+        value = json.loads(manifest.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    if not isinstance(value, dict) or not isinstance(value.get("files"), list):
+        return set()
+    return {
+        PACK / item["path"]
+        for item in value["files"]
+        if isinstance(item, dict) and isinstance(item.get("path"), str)
+    }
+
+
 def write(rendered: dict[Path, str]) -> None:
+    previous = previous_generated_files()
     for path, content in rendered.items():
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         print(f"wrote {path.relative_to(ROOT)}")
     expected_pack = {path for path in rendered if PACK in path.parents}
-    for path in sorted((item for item in PACK.rglob("*") if item.is_file()), reverse=True):
+    for path in sorted(
+        (item for item in PACK.rglob("*") if item.is_file()), reverse=True
+    ):
         if path in expected_pack:
             continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        if not (
-            text.startswith("<!-- Generated by scripts/build_dist.py")
-            or path.name == "ROUTING.json"
-        ):
-            raise RuntimeError(f"refusing to remove non-generated file: {path.relative_to(ROOT)}")
+        if path not in previous:
+            text = path.read_text(encoding="utf-8", errors="replace")
+            if not text.startswith("<!-- Generated by scripts/build_dist.py"):
+                raise RuntimeError(
+                    f"refusing to remove non-generated file: {path.relative_to(ROOT)}"
+                )
         path.unlink()
         print(f"removed stale {path.relative_to(ROOT)}")
-    for directory in sorted((item for item in PACK.rglob("*") if item.is_dir()), reverse=True):
+    for directory in sorted(
+        (item for item in PACK.rglob("*") if item.is_dir()), reverse=True
+    ):
         if not any(directory.iterdir()):
             directory.rmdir()
 

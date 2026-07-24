@@ -2,6 +2,26 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.3.0 - 2026-07-23
+
+- Replace the eight-rule Base and routine Session/Verification protocols with
+  a 600-word runtime Kernel: Observe, Bound, Act, Verify, Report, plus the
+  permanent secret boundary.
+- Make direct supervised work artifact-free; the current request is sufficient
+  for bounded, reversible, locally provable tasks.
+- Reserve ProjectProfile, TaskRequest, and RuntimeEnvelope for guarded work
+  that crosses the direct supervised boundary.
+- Add a strict standard-library resolver with duplicate-field rejection,
+  digest-bound external profile acceptance, monotonic protocol selection,
+  action/gate validation, and compact conditional controls.
+- Retain only Program, Experiment, and Secrets as universal optional protocols.
+- Replace the generated distribution with a progressively loaded runtime pack
+  and an exactly equivalent `dist/MONOLITH.md`.
+- Replace the 76-call default eval with an opt-in eight-call smoke gate.
+  Deterministic tests own routing and contract correctness; broader ablations
+  are diagnostic only.
+- Add strict JSON Schemas and JSON templates for all guarded-runner controls.
+
 ## 0.2.1 - 2026-07-22
 
 - Put the pinned local-pack installation command, ProjectProfile explanation,

@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "task_id": "experiment-protected-regression",
+  "outcome": "Decide whether to promote a candidate with higher mean score and a protected regression",
+  "scope": {
+    "include": [
+      "baseline and candidate evidence",
+      "promotion recommendation"
+    ],
+    "exclude": [
+      "changing the preregistered metric",
+      "publishing the result"
+    ]
+  },
+  "resource_refs": [
+    "trial-design:accepted-A",
+    "trial-result:candidate-A"
+  ],
+  "requested_actions": [
+    "source.read",
+    "analysis.local",
+    "trial.run"
+  ],
+  "forbidden_actions": [
+    "baseline.replace-unverified",
+    "result.publish"
+  ],
+  "signals": {
+    "persistent_program": false,
+    "controlled_comparison": true,
+    "secret_risk": "none"
+  },
+  "required_gates": [
+    "comparable-trial"
+  ],
+  "baseline_identity": "accepted trial baseline A",
+  "stop_conditions": [
+    "Protected-invariant evidence is missing or regresses"
+  ],
+  "expires_on": [
+    "task-end",
+    "profile-change",
+    "baseline-change"
+  ]
+}

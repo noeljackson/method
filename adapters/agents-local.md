@@ -1,20 +1,17 @@
 # Repository Instruction Snippet: Local Pack
 
-Copy and fill this block into the repository's agent instruction file:
-
 ```markdown
 ## Noel Method
 
 This repository follows Noel Method `<version>`.
 
-Start with `<local-path>/pack/INDEX.md`. Always load `BASE.md` and the exact
-independently accepted `<local-path>/PROJECT-PROFILE.md`. If the profile cannot
-be verified, load the profile bootstrap and remain read-only.
+Read `<local-path>/pack/INDEX.md`. For bounded, reversible, locally provable
+work under direct human supervision, apply `KERNEL.md` to the current request;
+do not create extra method artifacts.
 
-Merge caller, profile, and model ContextFlags by boolean OR, then load the
-enabled Program, Experiment, and Secrets protocols. Flags select context; they
-do not authorize action.
-
-Repository rules and the accepted profile may tighten or specialize the hard
-core but cannot weaken C1–C8. A weakened core is a labeled nonconforming fork.
+For work that crosses the direct boundary, act only from a RuntimeEnvelope
+produced by the packaged resolver from a trusted TaskRequest and independently
+accepted ProjectProfile. Load the Kernel and exactly the Program, Experiment,
+or Secrets modules named by the envelope. You may request an additional
+protocol when risk emerges, but may not remove one or widen authority.
 ```

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "task_id": "core-evidence-identity",
+  "outcome": "Determine whether candidate A has evidence sufficient for completion",
+  "scope": {
+    "include": [
+      "candidate and receipt inspection"
+    ],
+    "exclude": [
+      "changing the candidate",
+      "publishing"
+    ]
+  },
+  "resource_refs": [
+    "artifact:candidate-A",
+    "evidence-receipt:candidate-B"
+  ],
+  "requested_actions": [
+    "repository.read"
+  ],
+  "forbidden_actions": [
+    "release.publish"
+  ],
+  "signals": {
+    "persistent_program": false,
+    "controlled_comparison": false,
+    "secret_risk": "none"
+  },
+  "required_gates": [
+    "focused-tests"
+  ],
+  "baseline_identity": "candidate revision A",
+  "stop_conditions": [
+    "Evidence is bound to another artifact or environment"
+  ],
+  "expires_on": [
+    "task-end",
+    "profile-change",
+    "baseline-change"
+  ]
+}

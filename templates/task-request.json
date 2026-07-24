@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "task_id": "replace-me",
+  "outcome": "Describe the intended result",
+  "scope": {
+    "include": [
+      "Describe included work"
+    ],
+    "exclude": [
+      "Describe neighboring work"
+    ]
+  },
+  "resource_refs": [],
+  "requested_actions": [
+    "repository.read"
+  ],
+  "forbidden_actions": [
+    "external.mutate"
+  ],
+  "signals": {
+    "persistent_program": false,
+    "controlled_comparison": false,
+    "secret_risk": "none"
+  },
+  "required_gates": [
+    "focused-verification"
+  ],
+  "baseline_identity": "Describe the current revision or state",
+  "stop_conditions": [
+    "Authority or scope becomes unclear"
+  ],
+  "expires_on": [
+    "task-end",
+    "profile-change",
+    "baseline-change"
+  ]
+}

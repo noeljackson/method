@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "claim": "Statement this evidence supports or rejects",
+  "observation": "Direct non-secret observation",
+  "artifact_identity": "Exact revision or digest",
+  "environment_identity": "Exact environment or configuration",
+  "method": "Command, measurement, inspection, or review",
+  "result": "Terminal result",
+  "citation": "Non-secret evidence location",
+  "captured_at": "Timestamp or event",
+  "limitations": [
+    "Material limitation or none"
+  ],
+  "superseded_by": "Event that invalidates this receipt"
+}

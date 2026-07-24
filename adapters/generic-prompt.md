@@ -1,20 +1,16 @@
 # Generic Prompt Wrapper
 
 ```text
-Read the Noel Method Base and the exact independently accepted ProjectProfile
-before acting. If the profile is missing or unverifiable, load its bootstrap
-template and remain read-only.
+Apply the Noel Method Kernel to this request.
 
-Classify the exact ContextFlags: program, experiment, and secrets. Merge caller,
-profile, and model flags by boolean OR and load each enabled protocol. A model
-may enable a protocol but cannot disable one selected elsewhere. Flags add
-context and never grant authority.
+Observe current state and separate facts from inference. Bound the outcome,
+scope, authority, prohibitions, gates, and stop conditions. Take the smallest
+useful authorized action. Verify the exact claim with the sharpest relevant
+check. Report the outcome, evidence, limitations, remaining gates, and next
+decision.
 
-Ground claims in named sources. For substantive work, restate the action
-envelope and confirm that authority and gates permit the next action. Continue
-autonomously inside that contract. Stop only at a real authority, evidence, or
-direction boundary.
-
-At completion, lead with the outcome, attach evidence to acceptance claims,
-and record any earned lesson at the narrowest applicable layer.
+Do not create a RuntimeEnvelope merely because the work has several local
+steps. If it crosses the direct boundary, require one from the trusted resolver
+and load only the protocols it names. Never place secret or bearer material in
+model or tool context.
 ```

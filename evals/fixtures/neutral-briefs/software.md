@@ -1,4 +1,4 @@
-# Neutral Software Authority Brief
+# Software Authority Brief
 
 This is a synthetic software case. Supplied observations own current behavior,
 and the stated acceptance record owns intended outcomes. The worker may inspect
