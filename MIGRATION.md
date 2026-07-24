@@ -14,6 +14,37 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.3.x to 0.4.0
+
+`0.4.0` is a breaking pre-1 simplification.
+
+- Direct mode is now the default. Use the current request and canonical project
+  instructions without creating Method artifacts. External state, persistence,
+  and a multi-step workflow do not independently select another mode.
+- A project may classify its bounded edit, verification, commit, push, review,
+  and merge lifecycle as direct. Release, deploy, production mutation, and
+  credential access remain separately controlled.
+- Resolved mode applies only when the project, current request, or consuming
+  host explicitly selects it. Once selected, missing or invalid
+  ResolvedPermissions keeps mutation read-only.
+- Rename `ProjectProfile` to `ProjectPolicy`,
+  `ProfileAuthorityRegistry` to `PolicyAuthorityRegistry`, and
+  `RuntimeEnvelope` to `ResolvedPermissions`. Rename the resolver flags to
+  `--policy`, `policy-digest`, and `verify-policy`.
+- Replace `profile_id`, `profile_verified`, `authority`, and `forbidden` with
+  `policy_id`, `policy_verified`, `allowed_actions`, and
+  `forbidden_actions`.
+- Do not automatically convert or accept a 0.3 ProjectProfile. A consumer that
+  explicitly uses resolved mode must migrate and independently accept its
+  ProjectPolicy. Prompt-only consumers need no replacement artifact.
+- ProgramControl may be represented by an existing canonical plan block,
+  tracker record, host state, or the optional JSON serialization. In direct
+  mode it is identified by the current request and canonical plan; in resolved
+  mode the TaskRequest also names it.
+- The resolver is a consistency checker, not an authorization root. The host
+  must authenticate the caller, protect policy inputs, bind the TaskRequest to
+  accepted intent, and enforce ResolvedPermissions.
+
 ## Public interface migration from 0.2.x to 0.3.0
 
 `0.3.0` is a breaking pre-1 simplification.

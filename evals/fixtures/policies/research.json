@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "research",
+  "method_version": "0.4.0",
+  "policy_id": "research",
   "policy": {
     "scope": [
       "Synthetic research evaluation workspace"
@@ -63,10 +63,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "b68efaba23dc18ccd8e25272b1d8e967976b828f0f7c0ca16c65f9714cc3804f",
+    "policy_sha256": "a91d9362c01ef0b687d63a692a1b71f9fb08a8d76bd9ee84f3ddd3a3d018b369",
     "authority_source": "eval-authority:research",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z",
-    "receipt": "approval:research-v3"
+    "receipt": "approval:research-v4"
   }
 }

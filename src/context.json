@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "kernel": "KERNEL.md",
   "module_order": [
     "protocols/program.md",
@@ -20,11 +20,24 @@
       "task_signal": "secret_risk"
     }
   },
-  "runtime": {
-    "profile_schema": "schemas/project-profile.schema.json",
-    "authorities_schema": "schemas/profile-authorities.schema.json",
+  "authority_modes": {
+    "default": "direct",
+    "direct": {
+      "requires": []
+    },
+    "resolved": {
+      "selection": "explicit",
+      "requires": [
+        "TaskRequest",
+        "ResolvedPermissions"
+      ]
+    }
+  },
+  "resolved_mode": {
+    "policy_schema": "schemas/project-policy.schema.json",
+    "authorities_schema": "schemas/policy-authorities.schema.json",
     "task_schema": "schemas/task-request.schema.json",
-    "envelope_schema": "schemas/runtime-envelope.schema.json",
+    "permissions_schema": "schemas/resolved-permissions.schema.json",
     "program_schema": "schemas/program-control.schema.json",
     "resolver": "tools/noel_method.py"
   }

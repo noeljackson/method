@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "operations-example",
+  "method_version": "0.4.0",
+  "policy_id": "operations-example",
   "policy": {
     "scope": [
       "One operational environment and its approved change controls"

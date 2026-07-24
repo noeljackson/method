@@ -10,8 +10,9 @@ Use the [Kernel](src/KERNEL.md) for any delegated task where a wrong answer or
 action would cost more than a quick correction. That includes most repository
 changes, operational diagnosis, and evidence-backed research.
 
-Do **not** create method artifacts for a question, inspection, or small
-reversible change under direct human supervision. A concise request is enough:
+Direct authority mode is the default. The current request and canonical
+project instructions are the boundary; normal chat creates no Method-specific
+artifact. A concise request may be enough:
 
 ```text
 Outcome: fix the parser defect.
@@ -20,28 +21,18 @@ Forbidden: publish, deploy, access credentials.
 Evidence: the focused test must pass on the changed revision.
 ```
 
-Use a verified RuntimeEnvelope only when work crosses that direct boundary:
-external or irreversible mutation, sensitive-material risk, an authority
-crossing, persistent coordinated work, or delegated mutation through material
-uncertainty. Multiple local steps alone are not a trigger. The envelope is
-produced by a trusted resolver; the model does not author it.
+External or persistent work does not automatically change the authority mode.
+A project may declare a bounded edit, check, commit, push, review, and merge
+lifecycle direct. Release, deploy, production mutation, and credential access
+remain separately controlled by the request and project.
 
-A human-readable excerpt may look like:
+Load optional protocols by task shape:
 
-```json
-{
-  "profile_verified": true,
-  "authority": ["edit repository files", "run local checks"],
-  "forbidden": ["publish", "deploy", "access credentials"],
-  "protocols": [],
-  "required_gates": ["focused-tests"]
-}
-```
+- [Program](protocols/program.md) for persistent dependent work;
+- [Experiment](protocols/experiment.md) for a controlled comparison; and
+- [Secrets](protocols/secrets.md) for a secret-capable path.
 
-For that example, no Noel protocol is needed: it is a standard bounded change.
-If a repository calls its own workflow `standard-change`, that is a local
-adapter, not a universal Noel protocol. The full machine envelope also binds
-the task, accepted policy receipt, gate definitions, and relevant controls.
+Protocols add procedure, never permission.
 
 ## Two adoption levels
 
@@ -51,36 +42,39 @@ Copy or reference `dist/pack/KERNEL.md` in the agent instructions. Keep normal
 task prompts short. Load Program, Experiment, or Secrets only when the task
 actually has that risk. This is the minimum useful adoption path.
 
-### 2. Guarded runner
+### 2. Optional resolved mode
 
-For consequential work outside the direct boundary, accept a
-[ProjectProfile](templates/project-profile.json) once per policy revision,
-create a [TaskRequest](templates/task-request.json), and resolve the compact
-runtime guardrail:
+Use resolved mode only when the project, current request, or consuming host
+explicitly selects it. The host authenticates the caller, protects an accepted
+[ProjectPolicy](templates/project-policy.json), binds a
+[TaskRequest](templates/task-request.json) to the approved conversation, and
+computes [ResolvedPermissions](schemas/resolved-permissions.schema.json):
 
 ```sh
 python3 dist/pack/tools/noel_method.py resolve \
-  --profile PROJECT-PROFILE.json \
-  --authorities PROFILE-AUTHORITIES.json \
+  --policy PROJECT-POLICY.json \
+  --authorities POLICY-AUTHORITIES.json \
   --task TASK-REQUEST.json
 ```
 
-Profile acceptance is an owner operation, not a model task:
+Policy acceptance is an owner or host operation, not a model task:
 
-1. Copy and edit `templates/project-profile.json` while its status is `draft`.
-2. Compute its policy digest with `noel_method.py profile-digest`.
+1. Copy and edit `templates/project-policy.json` while its status is `draft`.
+2. Compute its digest with `noel_method.py policy-digest`.
 3. An independent owner records that digest and acceptance metadata using
-   `templates/profile-authorities.json`, then puts the same receipt ID and
-   metadata in the profile and changes its status to `accepted`.
-4. Run `noel_method.py verify-profile` before resolving tasks.
+   `templates/policy-authorities.json`, then puts the same receipt ID and
+   metadata in the policy and changes its status to `accepted`.
+4. Run `noel_method.py verify-policy` before resolving tasks.
 
 Changing policy invalidates the digest. Changing acceptance metadata without
 an exact matching external receipt also fails. Keep the authority registry
 outside model write authority.
 
-The resolver rejects draft or altered profiles, unknown actions and gates, and
-attempts to weaken protocol selection. The model receives the TaskRequest,
-RuntimeEnvelope, Kernel, and only the selected protocol modules.
+The resolver rejects draft or altered policies, unknown actions and gates, and
+attempts to weaken protocol selection. It proves consistency, not caller
+identity or enforcement. The host remains responsible for authenticating the
+request, protecting inputs, supplying TaskRequest and ResolvedPermissions to
+the model, and restricting tools when enforcement is required.
 
 When Program is selected, the harness must also supply the current
 ProgramControl named by a non-authorizing TaskRequest reference. Structural
@@ -92,8 +86,8 @@ that identity against canonical project state.
 - `dist/pack/` — recommended progressively loaded pack
 - `dist/MONOLITH.md` — all normative runtime text for one-file systems
 - `src/` and `protocols/` — normative source
-- `schemas/` and `templates/` — guarded-runner contracts
-- `profiles/` — draft examples, not accepted authority
+- `schemas/` and `templates/` — optional resolved-mode contracts
+- `policies/` — draft examples, not accepted authority
 - `casebook/` and `MIGRATION.md` — rationale and source traceability
 - `evals/` — sparse, opt-in decision smoke test
 

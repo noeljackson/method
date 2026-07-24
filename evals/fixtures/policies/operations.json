@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "operations",
+  "method_version": "0.4.0",
+  "policy_id": "operations",
   "policy": {
     "scope": [
       "Synthetic operational evaluation workspace"
@@ -70,10 +70,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "a1966f8f997c11047b758b7bba1119947f830638e262897c56911c4b05cf72a4",
+    "policy_sha256": "56b5ecef70054e70ab6e3d68c9a9c4b134c198ee82502d3c412965c0840d9113",
     "authority_source": "eval-authority:operations",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z",
-    "receipt": "approval:operations-v3"
+    "receipt": "approval:operations-v4"
   }
 }

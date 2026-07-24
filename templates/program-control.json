@@ -9,6 +9,6 @@
   "forbidden_work": [],
   "reconciliation_receipt": {},
   "stop_condition": "This draft control cannot dispatch work",
-  "resume_condition": "Independent acceptance, reconciliation, and a newly resolved RuntimeEnvelope",
+  "resume_condition": "Independent acceptance, reconciliation, and applicable direct authority or new ResolvedPermissions",
   "terminal_disposition": null
 }

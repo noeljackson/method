@@ -2,6 +2,29 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.4.0 - 2026-07-24
+
+- Make direct authority mode the default for conversational work. The current
+  request and canonical project instructions may authorize external,
+  persistent, and bounded review-lifecycle actions without Method-specific
+  artifacts.
+- Make resolved mode explicit opt-in by the project, current request, or
+  consuming host. Missing resolved-mode controls fail closed only after that
+  mode has been selected.
+- Rename `ProjectProfile` to `ProjectPolicy` and `RuntimeEnvelope` to
+  `ResolvedPermissions` across contracts, schemas, resolver output, adapters,
+  and generated distribution.
+- Clarify that the deterministic resolver checks policy/request consistency;
+  it does not authenticate the caller, prove conversational fidelity, or
+  enforce tool permissions.
+- Route Program, Experiment, and Secrets by task shape in either authority
+  mode. Allow ProgramControl to use an existing canonical plan or host record
+  instead of requiring a second JSON artifact.
+- Record the Codewire v0.3 adoption deadlock as casebook observation `C-016`.
+- Keep model evaluations opt-in with no merge-time calls and an eight-call
+  ceiling; deterministic tests own authority-mode, routing, contract, and
+  distribution correctness.
+
 ## 0.3.0 - 2026-07-23
 
 - Replace the eight-rule Base and routine Session/Verification protocols with

@@ -1,8 +1,8 @@
 [
   {
     "section": "Runtime input",
-    "source_ids": ["I-014", "I-015", "I-021", "C-004"],
-    "failure_prevented": "Either under-specified autonomy or mandatory ceremony for trivial supervised work.",
+    "source_ids": ["I-014", "I-015", "I-021", "C-004", "C-016"],
+    "failure_prevented": "Either under-specified autonomy or mandatory control infrastructure for work already bounded by direct and canonical authority.",
     "eval_ids": ["direct-bounded-edit", "core-authority-boundary"]
   },
   {

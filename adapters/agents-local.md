@@ -6,12 +6,13 @@
 This repository follows Noel Method `<version>`.
 
 Read `<local-path>/pack/INDEX.md`. For bounded, reversible, locally provable
-work under direct human supervision, apply `KERNEL.md` to the current request;
-do not create extra method artifacts.
+work, apply `KERNEL.md` to the current request and canonical repository
+instructions; do not create extra Method artifacts. Direct mode is the
+default, and external or persistent work does not by itself change modes.
 
-For work that crosses the direct boundary, act only from a RuntimeEnvelope
-produced by the packaged resolver from a trusted TaskRequest and independently
-accepted ProjectProfile. Load the Kernel and exactly the Program, Experiment,
-or Secrets modules named by the envelope. You may request an additional
-protocol when risk emerges, but may not remove one or widen authority.
+Load Program for persistent dependent work, Experiment for a controlled
+comparison, and Secrets for a secret-capable path. Use ResolvedPermissions
+only when this repository, the current request, or the host explicitly selects
+resolved mode. A model may not validate the ProjectPolicy, widen permissions,
+or downgrade resolved mode.
 ```

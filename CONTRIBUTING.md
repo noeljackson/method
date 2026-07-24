@@ -20,7 +20,7 @@ Before proposing a new rule, ask:
 
 1. Which observed failure does it prevent?
 2. Why do the existing rules not already cover that failure?
-3. Is the rule universal, or does it belong in a protocol or profile?
+3. Is the rule universal, or does it belong in a protocol or policy?
 4. Can a human and an agent both apply it without product-specific context?
 5. What deterministic check or smallest decision scenario proves the wording
    is operational?

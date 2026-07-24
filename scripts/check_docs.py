@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate v0.3 source, contracts, distribution, routing, and sparse evals."""
+"""Validate source, contracts, distribution, routing, and sparse evals."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ from methodlib import (
     ROOT,
     context_spec,
     read_json,
-    resolve_runtime_envelope,
-    validate_project_profile,
+    resolve_permissions,
+    validate_project_policy,
     validate_task_request,
 )
 from render_eval import load_cases, render_decision
@@ -53,6 +53,11 @@ RETIRED_ACTIVE_TERMS = {
     "dist/NOEL-METHOD.md",
     "templates/work-contract.md",
     "PROJECT-PROFILE.md",
+    "ProjectProfile",
+    "RuntimeEnvelope",
+    "project-profile",
+    "profile-authorities",
+    "runtime-envelope",
 }
 KERNEL_SECTIONS = {
     "Runtime input",
@@ -155,9 +160,9 @@ def check_contracts(errors: list[str]) -> None:
         errors.append(f"kernel sections differ: {sorted(headings)}")
     contracts = (ROOT / "src/contracts.md").read_text(encoding="utf-8")
     expected_contracts = {
-        "ProjectProfile",
+        "ProjectPolicy",
         "TaskRequest",
-        "RuntimeEnvelope",
+        "ResolvedPermissions",
         "ControlledAction",
         "EvidenceReceipt",
         "ProgramControl",
@@ -165,9 +170,9 @@ def check_contracts(errors: list[str]) -> None:
     found = set(re.findall(r"^## ([A-Za-z]+)$", contracts, re.MULTILINE))
     if found != expected_contracts:
         errors.append(f"contract headings differ: {sorted(found)}")
-    public = read_json(ROOT / "migration/public-api-0.3.0.json")
+    public = read_json(ROOT / "migration/public-api-0.4.0.json")
     if public.get("version") != version:
-        errors.append("0.3 public-interface record does not match VERSION")
+        errors.append("0.4 public-interface record does not match VERSION")
     if set(public.get("kernel_sections", [])) != KERNEL_SECTIONS:
         errors.append("public-interface kernel sections differ")
     if set(public.get("contracts", [])) != expected_contracts:
@@ -176,11 +181,11 @@ def check_contracts(errors: list[str]) -> None:
         errors.append("public-interface protocols differ")
 
 
-def check_json_and_profiles(errors: list[str]) -> None:
+def check_json_and_policies(errors: list[str]) -> None:
     json_roots = (
         ROOT / "schemas",
         ROOT / "templates",
-        ROOT / "profiles",
+        ROOT / "policies",
         ROOT / "migration",
         ROOT / "casebook",
         ROOT / "evals/fixtures",
@@ -192,9 +197,9 @@ def check_json_and_profiles(errors: list[str]) -> None:
             except DataError as error:
                 errors.append(str(error))
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
-    for path in sorted((ROOT / "profiles").glob("*.json")):
+    for path in sorted((ROOT / "policies").glob("*.json")):
         try:
-            checked = validate_project_profile(
+            checked = validate_project_policy(
                 read_json(path), {}, require_accepted=False
             )
             if checked["method_version"] != version:
@@ -202,16 +207,16 @@ def check_json_and_profiles(errors: list[str]) -> None:
         except DataError as error:
             errors.append(f"{path.relative_to(ROOT)}: {error}")
     authorities = read_json(ROOT / "evals/fixtures/authorities.json")
-    for path in sorted((ROOT / "evals/fixtures/profiles").glob("*.json")):
+    for path in sorted((ROOT / "evals/fixtures/policies").glob("*.json")):
         try:
-            checked = validate_project_profile(read_json(path), authorities)
+            checked = validate_project_policy(read_json(path), authorities)
             if checked["method_version"] != version:
                 errors.append(f"{path.relative_to(ROOT)}: method version differs")
         except DataError as error:
             errors.append(f"{path.relative_to(ROOT)}: {error}")
-    template_authorities = read_json(ROOT / "templates/profile-authorities.json")
+    template_authorities = read_json(ROOT / "templates/policy-authorities.json")
     if not isinstance(template_authorities, dict) or len(template_authorities) != 1:
-        errors.append("profile-authorities template must contain one example receipt")
+        errors.append("policy-authorities template must contain one example receipt")
 
 
 def check_routing_and_evals(errors: list[str]) -> None:
@@ -219,15 +224,15 @@ def check_routing_and_evals(errors: list[str]) -> None:
     authorities = read_json(ROOT / "evals/fixtures/authorities.json")
     for case_id, case in cases.items():
         try:
-            profile = read_json(
-                ROOT / f"evals/fixtures/profiles/{case['profile']}.json"
+            project_policy = read_json(
+                ROOT / f"evals/fixtures/policies/{case['policy']}.json"
             )
             task = read_json(ROOT / f"evals/fixtures/tasks/{case['task']}.json")
             validate_task_request(task)
-            envelope = resolve_runtime_envelope(profile, authorities, task)
-            if envelope["protocols"] != case["expected_protocols"]:
+            permissions = resolve_permissions(project_policy, authorities, task)
+            if permissions["protocols"] != case["expected_protocols"]:
                 errors.append(
-                    f"{case_id}: routed {envelope['protocols']} "
+                    f"{case_id}: routed {permissions['protocols']} "
                     f"instead of {case['expected_protocols']}"
                 )
             for mode in ("neutral", "kernel", "routed", "wrong", "monolith"):
@@ -241,8 +246,8 @@ def check_routing_and_evals(errors: list[str]) -> None:
             errors.append(f"{case_id}: {error}")
     manifest = validate_manifest(read_json(ROOT / "evals/manifest.json"))
     plan = call_plan(manifest)
-    if plan["calls"] != 8:
-        errors.append(f"sparse release plan is {plan['calls']} calls, expected 8")
+    if plan["calls"] > 8:
+        errors.append(f"sparse release plan is {plan['calls']} calls, maximum is 8")
 
 
 def check_word_budgets(errors: list[str]) -> None:
@@ -268,7 +273,7 @@ def check_word_budgets(errors: list[str]) -> None:
     )
     if direct > 1300:
         errors.append(f"direct representative prompt is too large: {direct}")
-    if interaction > 2100:
+    if interaction > 2200:
         errors.append(f"multi-protocol representative prompt is too large: {interaction}")
     if interaction >= monolith:
         errors.append("multi-protocol route is not smaller than monolith")
@@ -370,7 +375,7 @@ def main() -> int:
         check_normative_boundaries,
         check_no_retired_interface,
         check_contracts,
-        check_json_and_profiles,
+        check_json_and_policies,
         check_routing_and_evals,
         check_word_budgets,
         check_provenance,

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "research-example",
+  "method_version": "0.4.0",
+  "policy_id": "research-example",
   "policy": {
     "scope": [
       "One bounded research question and its local analysis artifacts"

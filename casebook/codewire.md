@@ -72,7 +72,27 @@ and verified only permitted metadata or authenticated behavior.
 
 Generalized into `C8`, the secrets protocol, secret-aware work contracts, and
 non-revealing verification. Provider commands, secret paths, and response
-owners remain project-profile policy.
+owners remain ProjectPolicy content in resolved mode or project-local controls
+in direct mode.
+
+### Optional control infrastructure must not become an adoption prerequisite
+
+Observation ID: `C-016`
+
+Codewire pinned Noel Method v0.3.0 in Gitea issue `#1326` and PR `#1327`.
+The adopted instruction required a verified RuntimeEnvelope for external or
+persistent work, while the same instruction declared that Codewire had no
+ProjectProfile or resolver and must remain read-only when one was required.
+A later owner-directed program session therefore refused ordinary Gitea
+publication even though the repository's canonical program control already
+defined the coordinate, gates, and prohibitions.
+
+The failure was not missing care; it was an impossible bootstrap. A universal
+method had made optional host infrastructure mandatory based on task shape.
+Version 0.4 generalizes the correction by making direct conversational
+authority the default, routing protocols by risk, and requiring
+ResolvedPermissions only when a consumer explicitly selects and implements
+resolved mode.
 
 ## Experiment loop
 

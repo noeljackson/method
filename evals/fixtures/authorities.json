@@ -1,24 +1,24 @@
 {
-  "approval:operations-v3": {
-    "profile_id": "operations",
-    "method_version": "0.3.0",
-    "policy_sha256": "a1966f8f997c11047b758b7bba1119947f830638e262897c56911c4b05cf72a4",
+  "approval:operations-v4": {
+    "policy_id": "operations",
+    "method_version": "0.4.0",
+    "policy_sha256": "56b5ecef70054e70ab6e3d68c9a9c4b134c198ee82502d3c412965c0840d9113",
     "authority_source": "eval-authority:operations",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z"
   },
-  "approval:research-v3": {
-    "profile_id": "research",
-    "method_version": "0.3.0",
-    "policy_sha256": "b68efaba23dc18ccd8e25272b1d8e967976b828f0f7c0ca16c65f9714cc3804f",
+  "approval:research-v4": {
+    "policy_id": "research",
+    "method_version": "0.4.0",
+    "policy_sha256": "a91d9362c01ef0b687d63a692a1b71f9fb08a8d76bd9ee84f3ddd3a3d018b369",
     "authority_source": "eval-authority:research",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z"
   },
-  "approval:software-v3": {
-    "profile_id": "software",
-    "method_version": "0.3.0",
-    "policy_sha256": "4eb51a7a3346d21939f7fe1c1f6428cf78636469a1e9878709671e5f5c4118d6",
+  "approval:software-v4": {
+    "policy_id": "software",
+    "method_version": "0.4.0",
+    "policy_sha256": "0c8c1e5c2c7ba0bf0bab78bc999ccd4ae5243c4a9f86f9491b1d50c30bafe993",
     "authority_source": "eval-authority:software",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z"
