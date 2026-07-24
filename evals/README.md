@@ -1,6 +1,6 @@
 # Sparse Evaluation
 
-The active release smoke test asks one narrow question: does the routed v0.4
+The active release smoke test asks one narrow question: does the routed v0.5
 context avoid important decision failures without requiring a large model
 budget?
 
@@ -14,53 +14,10 @@ The frozen release manifest samples four high-signal cases—Core, Program,
 Experiment, and combined Program/Secrets—using one neutral and one routed
 decision each. That is exactly eight optional calls.
 
-## Default: no model calls
+## Execution status
 
-Inspect the plan:
-
-```sh
-python3 scripts/run_eval_batch.py
-```
-
-Render all eight prompts:
-
-```sh
-python3 scripts/run_eval_batch.py --render-dir /tmp/noel-method-prompts
-```
-
-Execute only when release evidence is worth the cost:
-
-```sh
-python3 scripts/run_eval_batch.py \
-  --execute --call-budget 8 --output-dir evals/runs/<run-id>
-```
-
-The runner requires a clean, commit-bound worktree and checks that inputs do
-not change during execution. Each call is ephemeral and read-only. It creates
-a blind map for human scoring and runs no model judge.
-
-Two distinct reviewers score every response using [RUBRIC.md](RUBRIC.md).
-Human score entries bind each judgment to its reviewer:
-
-```json
-{
-  "schema_version": 2,
-  "scores": {
-    "response-01": [
-      {"reviewer_id": "reviewer-a", "judgment": {}},
-      {"reviewer_id": "reviewer-b", "judgment": {}}
-    ]
-  }
-}
-```
-
-Publish only aggregate results:
-
-```sh
-python3 scripts/publish_eval.py evals/runs/<run-id> \
-  evals/runs/<run-id>/human-scores.json
-```
-
-Use `kernel`, `wrong`, and `monolith` render modes individually to diagnose a
-failure. They are not multiplied across the release matrix. Historical v0.2
-eval files and reports are retained as prototype evidence, not active results.
+The fixtures, rubric, and historical reports remain as evidence and regression
+inputs. The former Python evaluator has been retired with the executable
+fallback: release correctness is now covered by the Rust contract, routing,
+pack, and distribution tests. Do not treat the historical reports as a live
+release gate or invoke model calls from this repository by default.

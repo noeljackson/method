@@ -2,6 +2,27 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.5.0 - 2026-07-24
+
+- Add the installable Rust `method` CLI and `noel-method` Cargo package with an
+  embedded, manifest-verified runtime pack.
+- Add stateless commands for context assembly, pack verification, strict
+  contract validation, policy digest and acceptance verification, and
+  deterministic resolved-mode permission calculation.
+- Let `method context` consume a TaskRequest, ResolvedPermissions, or monotonic
+  model-selected protocol flags and return ready-to-inject Markdown or stable
+  JSON. The CLI does not create authority, broker tools, or retain task state.
+- Add a strict JSON Schema and native validator for EvidenceReceipt.
+- Require ResolvedPermissions Program and Secrets controls to match their
+  selected protocols exactly.
+- Make Rust the sole executable implementation. The generated pack contains
+  data and schemas only; it no longer ships a Python resolver or fallback.
+- Move generated-pack build and drift checking into `method dist build` and
+  `method dist check`, and retire the Python evaluator scripts and tests.
+- Add native Linux, macOS, and Windows release packaging, checksums, Cargo
+  publication support, and Rust checks to continuous integration.
+- Preserve the v0.4 Kernel and authority-mode decisions unchanged.
+
 ## 0.4.0 - 2026-07-24
 
 - Make direct authority mode the default for conversational work. The current

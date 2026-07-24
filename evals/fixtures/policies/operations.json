@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "method_version": "0.4.0",
+  "method_version": "0.5.0",
   "policy_id": "operations",
   "policy": {
     "scope": [
@@ -70,10 +70,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "56b5ecef70054e70ab6e3d68c9a9c4b134c198ee82502d3c412965c0840d9113",
+    "policy_sha256": "cbd3d2821f6a28e884118c6d57350793db493d9ed29023424f0aaad520584d0e",
     "authority_source": "eval-authority:operations",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z",
-    "receipt": "approval:operations-v4"
+    "receipt": "approval:operations-v5"
   }
 }

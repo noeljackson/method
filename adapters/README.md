@@ -8,6 +8,19 @@ Copy the complete `dist/pack/` directory and point repository instructions at
 `pack/INDEX.md`. Direct mode loads only `KERNEL.md` plus protocols selected by
 task shape. This is the recommended starting point.
 
+When the `method` binary is available, the consumer can load the embedded,
+verified equivalent without a repository-specific adapter:
+
+```sh
+method pack verify
+method context --program
+```
+
+Use `--format json` when a host needs module paths, digests, and content as a
+stable machine-readable value. For a vendored pack, pass its pinned release
+digest with `method pack verify PATH --expect-manifest-sha256 "$DIGEST"`;
+self-consistent file hashes alone are not an authority anchor.
+
 ## Optional resolved mode
 
 Also copy `tools/` and `schemas/` from the pack. The consuming host must select
@@ -15,6 +28,21 @@ resolved mode, authenticate the TaskRequest, keep the accepted ProjectPolicy
 and authority receipts outside model control, and enforce ResolvedPermissions.
 Program work also requires the separately reconciled live ProgramControl named
 by the task.
+
+The native CLI can perform the portable validation and resolution step:
+
+```sh
+method resolve \
+  --policy PROJECT-POLICY.json \
+  --authorities POLICY-AUTHORITIES.json \
+  --task TASK-REQUEST.json > RESOLVED-PERMISSIONS.json
+
+method context --permissions RESOLVED-PERMISSIONS.json
+```
+
+This does not replace the host boundary. The host still authenticates intent,
+protects authority inputs, injects the result, and enforces the allowed action
+set.
 
 ## Single-file fallback
 

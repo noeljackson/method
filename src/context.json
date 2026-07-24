@@ -39,6 +39,6 @@
     "task_schema": "schemas/task-request.schema.json",
     "permissions_schema": "schemas/resolved-permissions.schema.json",
     "program_schema": "schemas/program-control.schema.json",
-    "resolver": "tools/noel_method.py"
+    "evidence_schema": "schemas/evidence-receipt.schema.json"
   }
 }

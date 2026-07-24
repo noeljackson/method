@@ -1,7 +1,17 @@
 {
-  "method": "Noel Method",
-  "version": "0.4.0",
-  "schema_version": 3,
+  "authority_modes": {
+    "default": "direct",
+    "direct": {
+      "requires": []
+    },
+    "resolved": {
+      "requires": [
+        "TaskRequest",
+        "ResolvedPermissions"
+      ],
+      "selection": "explicit"
+    }
+  },
   "kernel": "KERNEL.md",
   "module_order": [
     "protocols/program.md",
@@ -9,38 +19,26 @@
     "protocols/secrets.md"
   ],
   "protocols": {
-    "program": {
-      "module": "protocols/program.md",
-      "task_signal": "persistent_program"
-    },
     "experiment": {
       "module": "protocols/experiment.md",
       "task_signal": "controlled_comparison"
+    },
+    "program": {
+      "module": "protocols/program.md",
+      "task_signal": "persistent_program"
     },
     "secrets": {
       "module": "protocols/secrets.md",
       "task_signal": "secret_risk"
     }
   },
-  "authority_modes": {
-    "default": "direct",
-    "direct": {
-      "requires": []
-    },
-    "resolved": {
-      "selection": "explicit",
-      "requires": [
-        "TaskRequest",
-        "ResolvedPermissions"
-      ]
-    }
-  },
   "resolved_mode": {
-    "policy_schema": "schemas/project-policy.schema.json",
     "authorities_schema": "schemas/policy-authorities.schema.json",
-    "task_schema": "schemas/task-request.schema.json",
+    "evidence_schema": "schemas/evidence-receipt.schema.json",
     "permissions_schema": "schemas/resolved-permissions.schema.json",
+    "policy_schema": "schemas/project-policy.schema.json",
     "program_schema": "schemas/program-control.schema.json",
-    "resolver": "tools/noel_method.py"
-  }
+    "task_schema": "schemas/task-request.schema.json"
+  },
+  "schema_version": 3
 }

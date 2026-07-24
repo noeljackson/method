@@ -1,4 +1,4 @@
-name: Documentation
+name: Method
 
 on:
   pull_request:
@@ -16,12 +16,27 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@2c7215f132e9ebf062739d9130488b56d53c060c
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
 
       - name: Check generated and source documentation
-        run: python3 scripts/check_docs.py
+        run: cargo run --locked -- dist check
 
-      - name: Run context and eval regression tests
-        run: python3 -m unittest discover -s tests
+      - name: Check native runtime
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --locked --all-targets -- -D warnings
+          cargo test --locked --all-targets
+
+      - name: Check Cargo package
+        run: |
+          cargo package --locked
 
       - name: Check external links
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
@@ -30,3 +45,20 @@ jobs:
           fail: true
           failIfEmpty: false
           jobSummary: true
+
+  msrv:
+    name: Rust 1.85
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install minimum supported Rust
+        uses: dtolnay/rust-toolchain@2c7215f132e9ebf062739d9130488b56d53c060c
+        with:
+          toolchain: 1.85.0
+
+      - name: Check minimum supported Rust
+        run: cargo check --locked --all-targets

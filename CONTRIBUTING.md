@@ -27,8 +27,16 @@ Before proposing a new rule, ask:
 6. Does it make the direct supervised path heavier? If so, is the added trust
    worth that cost?
 
-Prefer deterministic contract and routing tests over model calls. The default
-eval command renders an eight-call plan but does not execute it.
+Prefer deterministic contract and routing tests over model calls. The sparse
+eval fixtures remain regression evidence; they do not provide a runnable model
+call path in this repository.
 
-Run `python3 scripts/build_dist.py`, `python3 -m unittest discover -s tests`,
-and `python3 scripts/check_docs.py` before opening a pull request.
+Run the release checks before opening a pull request:
+
+```sh
+cargo run --locked -- dist check
+cargo fmt --all --check
+cargo clippy --all-targets -- -D warnings
+cargo test --all-targets
+cargo package --locked
+```
