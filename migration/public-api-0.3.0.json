@@ -1,0 +1,33 @@
+{
+  "version": "0.3.0",
+  "kernel_sections": [
+    "Runtime input",
+    "Observe",
+    "Bound",
+    "Act",
+    "Verify",
+    "Report",
+    "Permanent secret boundary"
+  ],
+  "contracts": [
+    "ProjectProfile",
+    "TaskRequest",
+    "RuntimeEnvelope",
+    "ControlledAction",
+    "EvidenceReceipt",
+    "ProgramControl"
+  ],
+  "protocols": [
+    "program",
+    "experiment",
+    "secrets"
+  ],
+  "distribution": {
+    "entrypoint": "dist/pack/INDEX.md",
+    "kernel": "dist/pack/KERNEL.md",
+    "monolith": "dist/MONOLITH.md"
+  },
+  "schemas": {
+    "profile_authorities": "schemas/profile-authorities.schema.json"
+  }
+}

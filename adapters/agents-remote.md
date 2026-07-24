@@ -1,19 +1,16 @@
 # Repository Instruction Snippet: Remote Reference
 
-Use only when the worker is expected to have network access:
-
 ```markdown
 ## Noel Method
 
-This repository follows Noel Method `<tag>` at:
+This repository follows Noel Method `<tag>` at
 `https://raw.githubusercontent.com/noeljackson/method/<tag>/dist/pack/INDEX.md`.
 
-Use this only after the tag exists and its digest has been verified. Start with
-that exact tagged index. Always load its linked Base and an independently
-accepted local `<path>/PROJECT-PROFILE.md`, then OR caller, profile, and model
-ContextFlags and fetch enabled protocols. Resolve relative links under the
-same `<tag>/dist/pack/` base.
-Do not substitute `main` or a remembered version. If a required module cannot
-be loaded, report the missing execution context and use an approved local
-copy.
+Use only that verified published tag and resolve its relative links under the
+same `<tag>/dist/pack/` path. Apply the Kernel directly to bounded supervised
+work. For work crossing that direct boundary, require a locally resolved
+verified RuntimeEnvelope and load exactly its named protocols.
+
+Do not substitute `main`, infer missing modules, or let the model validate its
+own profile. If required context cannot be loaded, remain read-only.
 ```

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "program": "replace-me",
+  "state": "STOPPED_FOR_REPLAN",
+  "active_coordinates": [],
+  "accepted_frontiers": [],
+  "authorized_queue": [],
+  "hard_gates": [],
+  "forbidden_work": [],
+  "reconciliation_receipt": {},
+  "stop_condition": "This draft control cannot dispatch work",
+  "resume_condition": "Independent acceptance, reconciliation, and a newly resolved RuntimeEnvelope",
+  "terminal_disposition": null
+}

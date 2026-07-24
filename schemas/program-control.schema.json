@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://noel-method.example/schemas/program-control.schema.json",
+  "title": "Noel Method ProgramControl",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "program",
+    "state",
+    "active_coordinates",
+    "accepted_frontiers",
+    "authorized_queue",
+    "hard_gates",
+    "forbidden_work",
+    "reconciliation_receipt",
+    "stop_condition",
+    "resume_condition",
+    "terminal_disposition"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "program": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "ACTIVE",
+        "STOPPED_FOR_REPLAN",
+        "COMPLETE",
+        "TERMINATED"
+      ]
+    },
+    "active_coordinates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "accepted_frontiers": {
+      "type": "array"
+    },
+    "authorized_queue": {
+      "type": "array"
+    },
+    "hard_gates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/hardGate"
+      }
+    },
+    "forbidden_work": {
+      "type": "array"
+    },
+    "reconciliation_receipt": {
+      "type": "object"
+    },
+    "stop_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resume_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terminal_disposition": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "$defs": {
+    "hardGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "state",
+        "evidence_receipt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state": {
+          "enum": [
+            "SATISFIED",
+            "UNSATISFIED"
+          ]
+        },
+        "evidence_receipt": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "SATISFIED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_receipt": {
+                "type": "object",
+                "minProperties": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "evidence_receipt": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "ACTIVE"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "hard_gates": {
+            "minItems": 1
+          },
+          "reconciliation_receipt": {
+            "minProperties": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "COMPLETE",
+              "TERMINATED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "active_coordinates": {
+            "maxItems": 0
+          },
+          "authorized_queue": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}

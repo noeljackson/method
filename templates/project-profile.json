@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "method_version": "0.3.0",
+  "profile_id": "replace-me",
+  "policy": {
+    "scope": [
+      "Describe the governed workspace"
+    ],
+    "canonical_sources": [
+      {
+        "id": "current-state",
+        "owns": "Describe the facts this source owns",
+        "precedence": 1
+      }
+    ],
+    "actions": {
+      "allowed": [
+        "repository.read"
+      ],
+      "forbidden": [
+        "external.mutate",
+        "secret.read"
+      ]
+    },
+    "protocols": {
+      "program": false,
+      "experiment": false,
+      "secrets": false
+    },
+    "gates": [
+      {
+        "id": "focused-verification",
+        "default": true,
+        "before": "completion",
+        "required_evidence": "Terminal evidence bound to the exact artifact and environment"
+      }
+    ],
+    "secrets": {
+      "routine_access": "forbidden unless a task-specific authority enables it",
+      "approved_references": [
+        "Define a non-authorizing logical reference syntax"
+      ],
+      "delivery": "Define the provider-managed opaque delivery path",
+      "artifact_scan": "Define a non-revealing durable-artifact scan",
+      "exposure_response": "Define the response owner and escalation path",
+      "forensic_quarantine": "Define access, retention, and audit or forbid retention",
+      "clean_context": "Define evidence required for a clean restart",
+      "encrypted_envelopes": "forbidden unless explicitly accepted"
+    },
+    "program": {
+      "trigger": "Define when persistent ProgramControl is required",
+      "repair_authority": "Define authority independent of an invalidated control"
+    },
+    "reporting": "Define the outcome and evidence destination"
+  },
+  "acceptance": {
+    "status": "draft",
+    "policy_sha256": "",
+    "authority_source": "",
+    "accepted_by": "",
+    "accepted_at": "",
+    "receipt": ""
+  }
+}

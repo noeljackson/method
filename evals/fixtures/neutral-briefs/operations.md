@@ -1,4 +1,4 @@
-# Neutral Operations Authority Brief
+# Operations Authority Brief
 
 This is a synthetic operations case. Supplied live-state observations and
 audit records own current state, while the stated change record owns approved

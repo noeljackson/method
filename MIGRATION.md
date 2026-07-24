@@ -14,6 +14,34 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.2.x to 0.3.0
+
+`0.3.0` is a breaking pre-1 simplification.
+
+- Replace `BASE.md`, C1–C8 recitation, and routine Session/Verification
+  protocol loading with `KERNEL.md`: Observe, Bound, Act, Verify, Report, and
+  the permanent secret boundary.
+- Do not translate every WorkContract. For bounded, reversible, locally
+  provable work under direct human supervision, use the current request as the
+  boundary and create no method artifact.
+- For consequential autonomous work, convert standing policy to the strict
+  JSON ProjectProfile, record its exact digest in an external authority
+  registry, express the task as a TaskRequest, and use the packaged resolver.
+- Replace caller/profile/model `ContextFlags` handling in the prompt with
+  deterministic resolver signals. Models may request additional protocols but
+  cannot validate a profile, remove a protocol, or widen authority.
+- Keep Program, Experiment, and Secrets only when selected. Session behavior
+  now belongs to the host agent. Ordinary verification is in the Kernel.
+- Replace `dist/NOEL-METHOD.md` with `dist/MONOLITH.md`; prefer
+  `dist/pack/INDEX.md` and progressive loading.
+- Treat `standard-change`, repository workflow names, forge mechanics, and
+  project-specific gates as local profile or adapter policy, not universal
+  protocols.
+
+The source tables below retain their v0.2 destination labels as historical
+traceability. Current kernel provenance is normalized in
+[`casebook/kernel-provenance.json`](casebook/kernel-provenance.json).
+
 ## Public interface migration from 0.1.0 to 0.2.0
 
 `0.2.0` is a breaking pre-1 minor release. Existing 0.1 contracts and profiles

@@ -1,41 +1,61 @@
 {
   "method": "Noel Method",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "entrypoint": "INDEX.md",
-  "base": "BASE.md",
-  "context_flags": [
+  "kernel": "KERNEL.md",
+  "protocols": [
     "program",
     "experiment",
     "secrets"
   ],
   "files": [
     {
-      "path": "BASE.md",
-      "sha256": "ab6ef7fbc525798c9053df242ccf0c516f571b0c9ddcce6e884dadf09ac16954"
-    },
-    {
       "path": "CONTEXT.json",
-      "sha256": "c3b86683f694691f761ebe38176a2035ef66612a8cfbe2450035fcc0c25f41e3"
+      "sha256": "6fb9e42ef78492313cbdd55467faed25146aeabe32186c49a156ff412872b807"
     },
     {
       "path": "INDEX.md",
-      "sha256": "018d12f892dc225fa857e82a28823b7532c7142f89c90df14453814740ff88d5"
+      "sha256": "76e450a34639e5a8863bc49b15082d89876fb52abcc7f43c17a3346e0f5eb4cc"
     },
     {
-      "path": "artifacts/project-profile.md",
-      "sha256": "4693ab642189888cee8016e5a67854392c180a739aee9a8391dd46d62d66560a"
+      "path": "KERNEL.md",
+      "sha256": "f90b79b382de6793fd8cb333bf9e17a29865bd32695ebd4744cabba19c8cbee0"
     },
     {
       "path": "protocols/experiment.md",
-      "sha256": "b17f3758050bb70f93f188373c894a1eeed3da8917a676158c3511741d21063e"
+      "sha256": "06c2bd3884b8d8616cc9d40411bb2093c463a1c32d09610eafbc5f932bd2bbe2"
     },
     {
       "path": "protocols/program.md",
-      "sha256": "a5cfed8495af1418145391f3ca24f85e766028e130317db0233cc8f399281dea"
+      "sha256": "9b324f932fdb22817fcfd2d65c74fbb1abc84cebcf1a6b2fa8a1040c07320283"
     },
     {
       "path": "protocols/secrets.md",
-      "sha256": "fe08c97c7ca0c5eff3afaf03a3b0def2bb0eaaf117c91524af01deb42b5d71ab"
+      "sha256": "54698d5ac187efc91d79620803058980153267cff97f7fdebf4f9e61e2075c87"
+    },
+    {
+      "path": "schemas/profile-authorities.schema.json",
+      "sha256": "671144e9604c8f548f770d799f45714a84522458abf0e2277c0ecbfc7bd25785"
+    },
+    {
+      "path": "schemas/program-control.schema.json",
+      "sha256": "0681f5225f1ec05cb9eccc84de406d380b96ee00ad629bc5b27f6ae19cde9947"
+    },
+    {
+      "path": "schemas/project-profile.schema.json",
+      "sha256": "9051227829fc5a157fbc70e85432ccfa4c01554eaa9c587000f9a90fe477aa46"
+    },
+    {
+      "path": "schemas/runtime-envelope.schema.json",
+      "sha256": "d8d6c5f4fa2dce4a2a53d96ac65642d2a15212a486f2460e502ce30dec7f6c7c"
+    },
+    {
+      "path": "schemas/task-request.schema.json",
+      "sha256": "f46ea907e2b8021122a4facf2e9eedc1b55c32f6232966ec65f33b3454c09a45"
+    },
+    {
+      "path": "tools/noel_method.py",
+      "sha256": "39d8979a08348e5fb3b775a33e18d5a62ef6daffc09c25d1dc514497b115c595"
     }
   ]
 }

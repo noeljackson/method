@@ -1,4 +1,4 @@
-# Neutral Research Authority Brief
+# Research Authority Brief
 
 This is a synthetic research case. Supplied observations and primary
 measurements own current facts, while the stated research contract owns the

@@ -1,27 +1,27 @@
 {
-  "schema_version": 1,
-  "id": "compact-method-eval-v1",
+  "schema_version": 2,
+  "id": "sparse-v0.3-release-gate",
   "frozen": true,
-  "created_at": "2026-07-21T00:00:00Z",
+  "created_at": "2026-07-23T00:00:00Z",
   "cases": [
-    "core-authority-bootstrap",
-    "core-evidence-identity",
-    "core-destructive-recovery",
-    "core-descriptive-normative",
-    "secrets-bearer-reference",
-    "secrets-exposure-recovery",
-    "program-concurrent-frontiers",
-    "program-owner-cancellation",
+    "core-authority-boundary",
+    "program-revoked-repair",
     "experiment-protected-regression",
-    "experiment-contaminated-state"
+    "interaction-program-secret"
   ],
-  "samples_per_cell": 2,
+  "arms": [
+    "neutral",
+    "routed"
+  ],
+  "samples_per_cell": 1,
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
-  "call_budget": 76,
-  "randomization_seed": "noel-method-compact-v1",
+  "call_budget": 8,
+  "randomization_seed": "noel-method-v0.3-sparse-gate",
   "limitations": [
-    "Human scoring is required; no model judge is part of the default run.",
-    "The suite is a compact release gate, not evidence of broad external validity."
+    "Execution is opt-in; the default command only renders a plan.",
+    "Eight calls are a smoke gate, not statistical evidence of broad validity.",
+    "Deterministic tests, not model calls, own profile and routing correctness.",
+    "Kernel, wrong-route, and monolith ablations are rendered individually when diagnosing a failure."
   ]
 }

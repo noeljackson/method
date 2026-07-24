@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "method_version": "0.3.0",
+  "profile_id": "research",
+  "policy": {
+    "scope": [
+      "Synthetic research evaluation workspace"
+    ],
+    "canonical_sources": [
+      {
+        "id": "trial-data",
+        "owns": "Observed inputs, environment, and measurements",
+        "precedence": 1
+      },
+      {
+        "id": "accepted-design",
+        "owns": "Baseline, metric, protected invariants, and promotion authority",
+        "precedence": 2
+      }
+    ],
+    "actions": {
+      "allowed": [
+        "source.read",
+        "analysis.local",
+        "trial.run"
+      ],
+      "forbidden": [
+        "baseline.replace-unverified",
+        "result.publish",
+        "secret.read"
+      ]
+    },
+    "protocols": {
+      "program": false,
+      "experiment": false,
+      "secrets": false
+    },
+    "gates": [
+      {
+        "id": "comparable-trial",
+        "default": true,
+        "before": "promotion",
+        "required_evidence": "Comparable controlled result with protected-invariant evidence"
+      }
+    ],
+    "secrets": {
+      "routine_access": "forbidden",
+      "approved_references": [
+        "restricted-source:<logical-id>"
+      ],
+      "delivery": "approved source-system access only",
+      "artifact_scan": "non-revealing publication scan",
+      "exposure_response": "fixture material owner",
+      "forensic_quarantine": "source-system quarantine",
+      "clean_context": "fresh analysis session after path closure",
+      "encrypted_envelopes": "forbidden"
+    },
+    "program": {
+      "trigger": "persistent dependent study",
+      "repair_authority": "fixture sponsor independent of invalidated control"
+    },
+    "reporting": "requested JSON decision"
+  },
+  "acceptance": {
+    "status": "accepted",
+    "policy_sha256": "b68efaba23dc18ccd8e25272b1d8e967976b828f0f7c0ca16c65f9714cc3804f",
+    "authority_source": "eval-authority:research",
+    "accepted_by": "fixture-owner",
+    "accepted_at": "2026-07-23T00:00:00Z",
+    "receipt": "approval:research-v3"
+  }
+}

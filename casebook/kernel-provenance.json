@@ -1,0 +1,44 @@
+[
+  {
+    "section": "Runtime input",
+    "source_ids": ["I-014", "I-015", "I-021", "C-004"],
+    "failure_prevented": "Either under-specified autonomy or mandatory ceremony for trivial supervised work.",
+    "eval_ids": ["direct-bounded-edit", "core-authority-boundary"]
+  },
+  {
+    "section": "Observe",
+    "source_ids": ["I-004", "I-024", "I-035", "C-013"],
+    "failure_prevented": "Conclusions and readiness claims detached from exact current evidence.",
+    "eval_ids": ["core-evidence-identity"]
+  },
+  {
+    "section": "Bound",
+    "source_ids": ["I-009", "I-014", "I-015", "C-006"],
+    "failure_prevented": "Ambient capability, useful follow-through, or old instructions treated as authority.",
+    "eval_ids": ["core-authority-boundary", "program-revoked-repair"]
+  },
+  {
+    "section": "Act",
+    "source_ids": ["I-007", "I-033", "I-036", "C-008"],
+    "failure_prevented": "Overbroad intervention and unauthorized neighboring work before failure classification.",
+    "eval_ids": ["direct-bounded-edit", "secrets-latent-helper"]
+  },
+  {
+    "section": "Verify",
+    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013"],
+    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence.",
+    "eval_ids": ["core-evidence-identity", "experiment-protected-regression"]
+  },
+  {
+    "section": "Report",
+    "source_ids": ["I-019", "I-026", "I-039"],
+    "failure_prevented": "Reports that hide uncertainty or leave consumers unable to audit acceptance claims.",
+    "eval_ids": ["core-evidence-identity"]
+  },
+  {
+    "section": "Permanent secret boundary",
+    "source_ids": ["I-047"],
+    "failure_prevented": "Secret-bearing diagnostics contaminate retained output and coordination context.",
+    "eval_ids": ["secrets-known-exposure", "secrets-latent-helper", "interaction-program-secret"]
+  }
+]

@@ -1,7 +1,9 @@
-"""Shared validation and context-loading helpers."""
+#!/usr/bin/env python3
+"""Noel Method v0.3 profile verification and runtime-envelope resolver."""
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
@@ -9,118 +11,216 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parents[1]
-PACK = ROOT / "dist" / "pack"
-CONTEXT_SOURCE = ROOT / "src" / "context.json"
-CONTEXT_KEYS = ("program", "experiment", "secrets")
+SCRIPT_ROOT = Path(__file__).resolve().parents[1]
+PACKAGED = (
+    (SCRIPT_ROOT / "CONTEXT.json").is_file()
+    and (SCRIPT_ROOT / "KERNEL.md").is_file()
+)
+ROOT = SCRIPT_ROOT
+PACK = ROOT if PACKAGED else ROOT / "dist" / "pack"
+CONTEXT_SOURCE = ROOT / "CONTEXT.json" if PACKAGED else ROOT / "src" / "context.json"
+PROTOCOL_KEYS = ("program", "experiment", "secrets")
+PROFILE_FIELDS = {
+    "schema_version", "method_version", "profile_id", "policy", "acceptance"
+}
+POLICY_FIELDS = {
+    "scope", "canonical_sources", "actions", "protocols", "gates", "secrets",
+    "program", "reporting",
+}
+SECRET_FIELDS = {
+    "routine_access", "approved_references", "delivery", "artifact_scan",
+    "exposure_response", "forensic_quarantine", "clean_context",
+    "encrypted_envelopes",
+}
+AUTHORITY_RECEIPT_FIELDS = {
+    "profile_id", "method_version", "policy_sha256", "authority_source",
+    "accepted_by", "accepted_at",
+}
+TASK_FIELDS = {
+    "schema_version", "task_id", "outcome", "scope", "resource_refs",
+    "requested_actions", "forbidden_actions", "signals", "required_gates",
+    "baseline_identity", "stop_conditions", "expires_on",
+}
+IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]*$")
+PROFILE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+METHOD_VERSION_RE = re.compile(r"^0\.3\.[0-9]+$")
+HEX_DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 class DataError(ValueError):
     """A user-facing structured-data error."""
 
 
+def _reject_duplicate_keys(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    value: dict[str, object] = {}
+    for key, item in pairs:
+        if key in value:
+            raise DataError(f"duplicate JSON field: {key}")
+        value[key] = item
+    return value
+
+
+def _reject_nonfinite(value: str) -> object:
+    raise DataError(f"non-finite JSON number is forbidden: {value}")
+
+
 def read_json(path: Path) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_reject_duplicate_keys,
+            parse_constant=_reject_nonfinite,
+        )
     except OSError as error:
-        try:
-            label = path.relative_to(ROOT)
-        except ValueError:
-            label = path
-        raise DataError(f"{label}: cannot read: {error}") from None
+        raise DataError(f"{path}: cannot read: {error}") from None
     except json.JSONDecodeError as error:
-        try:
-            label = path.relative_to(ROOT)
-        except ValueError:
-            label = path
         raise DataError(
-            f"{label}:{error.lineno}:{error.colno}: invalid JSON: {error.msg}"
+            f"{path}:{error.lineno}:{error.colno}: invalid JSON: {error.msg}"
         ) from None
+
+
+def canonical_json(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def _object(value: object, fields: set[str], label: str) -> dict[str, Any]:
+    if not isinstance(value, dict) or set(value) != fields:
+        raise DataError(f"{label}: fields must be exactly {sorted(fields)}")
+    return value
+
+
+def _text(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise DataError(f"{label}: must be non-empty text")
+    return value
+
+
+def _identifier(value: object, label: str, *, profile: bool = False) -> str:
+    text = _text(value, label)
+    pattern = PROFILE_ID_RE if profile else IDENTIFIER_RE
+    if not pattern.fullmatch(text):
+        raise DataError(f"{label}: invalid identifier")
+    return text
+
+
+def _strings(
+    value: object, label: str, *, allow_empty: bool = False
+) -> list[str]:
+    if not isinstance(value, list):
+        raise DataError(f"{label}: must be an array")
+    if not allow_empty and not value:
+        raise DataError(f"{label}: must not be empty")
+    if not all(isinstance(item, str) and item.strip() for item in value):
+        raise DataError(f"{label}: entries must be non-empty text")
+    if len(value) != len(set(value)):
+        raise DataError(f"{label}: entries must be unique")
+    return list(value)
+
+
+def _safe_module_path(module: object) -> str:
+    if not isinstance(module, str) or not module:
+        raise DataError("module names must be non-empty strings")
+    pure = PurePosixPath(module)
+    if (
+        pure.is_absolute()
+        or ".." in pure.parts
+        or str(pure) != module
+        or pure.suffix != ".md"
+    ):
+        raise DataError(f"unsafe modular-pack path: {module}")
+    return module
+
+
+def installed_method_version() -> str:
+    version_file = ROOT / "VERSION"
+    if version_file.is_file():
+        return version_file.read_text(encoding="utf-8").strip()
+    context = read_json(ROOT / "CONTEXT.json")
+    if not isinstance(context, dict):
+        raise DataError("installed CONTEXT.json must be an object")
+    return _text(context.get("version"), "installed method version")
 
 
 def context_spec() -> dict[str, Any]:
     raw = read_json(CONTEXT_SOURCE)
-    expected = {
-        "schema_version", "base_modules", "module_order",
-        "profile_requirement", "flags",
-    }
-    if not isinstance(raw, dict) or set(raw) != expected:
-        raise DataError(f"src/context.json: fields must be {sorted(expected)}")
-    if raw["schema_version"] != 1:
-        raise DataError("src/context.json: schema_version must be 1")
-    for field in ("base_modules", "module_order"):
-        values = raw[field]
-        if (
-            not isinstance(values, list)
-            or not values
-            or not all(isinstance(value, str) and value for value in values)
-            or len(values) != len(set(values))
-        ):
-            raise DataError(f"src/context.json: {field} must be a unique string array")
-    if raw["base_modules"] != ["BASE.md"]:
-        raise DataError("src/context.json: BASE.md must be the only base module")
-    profile = raw["profile_requirement"]
-    if (
-        not isinstance(profile, dict)
-        or set(profile) != {"normal", "missing_or_invalid"}
-        or not all(isinstance(value, str) and value for value in profile.values())
-    ):
-        raise DataError("src/context.json: invalid profile_requirement")
-    flags = raw["flags"]
-    if not isinstance(flags, dict) or tuple(flags) != CONTEXT_KEYS:
-        raise DataError(f"src/context.json: flags must be ordered as {CONTEXT_KEYS}")
+    fields = {"schema_version", "kernel", "module_order", "protocols", "runtime"}
+    if PACKAGED:
+        packaged_fields = fields | {"method", "version"}
+        value = _object(raw, packaged_fields, "CONTEXT.json")
+        _text(value["method"], "CONTEXT.json.method")
+        _text(value["version"], "CONTEXT.json.version")
+        raw = {field: value[field] for field in fields}
+    spec = _object(raw, fields, "src/context.json")
+    if spec["schema_version"] != 2:
+        raise DataError("src/context.json: schema_version must be 2")
+    if spec["kernel"] != "KERNEL.md":
+        raise DataError("src/context.json: kernel must be KERNEL.md")
+    module_order = _strings(spec["module_order"], "src/context.json.module_order")
+    protocols = _object(
+        spec["protocols"], set(PROTOCOL_KEYS), "src/context.json.protocols"
+    )
     modules: list[str] = []
-    for key in CONTEXT_KEYS:
-        value = flags[key]
-        if (
-            not isinstance(value, dict)
-            or set(value) != {"module", "activate_when"}
-            or not all(isinstance(item, str) and item for item in value.values())
-        ):
-            raise DataError(f"src/context.json: flags.{key} is invalid")
-        modules.append(value["module"])
-    if modules != raw["module_order"]:
-        raise DataError("src/context.json: flag modules must equal module_order")
-    return raw
+    for key in PROTOCOL_KEYS:
+        item = _object(
+            protocols[key], {"module", "task_signal"},
+            f"src/context.json.protocols.{key}",
+        )
+        modules.append(_safe_module_path(item["module"]))
+        _text(item["task_signal"], f"protocols.{key}.task_signal")
+    if modules != module_order:
+        raise DataError("src/context.json: module_order and protocols differ")
+    expected_modules = [f"protocols/{key}.md" for key in PROTOCOL_KEYS]
+    if modules != expected_modules:
+        raise DataError(
+            f"src/context.json: protocol modules must be {expected_modules}"
+        )
+    _object(
+        spec["runtime"],
+        {
+            "profile_schema", "authorities_schema", "task_schema",
+            "envelope_schema", "program_schema", "resolver",
+        },
+        "src/context.json.runtime",
+    )
+    return spec
 
 
-def validate_context_flags(value: object) -> dict[str, bool]:
-    """Validate the exact non-authoritative ContextFlags shape."""
-    if not isinstance(value, dict) or set(value) != set(CONTEXT_KEYS):
-        raise DataError(f"ContextFlags fields must be exactly {CONTEXT_KEYS}")
-    if not all(isinstance(value[key], bool) for key in CONTEXT_KEYS):
-        raise DataError("ContextFlags values must be boolean")
-    return {key: value[key] for key in CONTEXT_KEYS}
-
-
-def empty_context_flags() -> dict[str, bool]:
-    return {key: False for key in CONTEXT_KEYS}
-
-
-def merge_context_flags(*values: object) -> dict[str, bool]:
-    """OR caller, profile, and model flags; no source can clear another."""
-    merged = empty_context_flags()
-    for value in values:
-        checked = validate_context_flags(value)
-        for key in CONTEXT_KEYS:
-            merged[key] = merged[key] or checked[key]
-    return merged
+def validate_protocol_flags(value: object) -> dict[str, bool]:
+    flags = _object(value, set(PROTOCOL_KEYS), "protocol flags")
+    if not all(isinstance(flags[key], bool) for key in PROTOCOL_KEYS):
+        raise DataError("protocol flags must be boolean")
+    return {key: flags[key] for key in PROTOCOL_KEYS}
 
 
 def resolve_context_modules(
-    value: object, spec: dict[str, Any] | None = None
+    protocols: list[str], spec: dict[str, Any] | None = None
 ) -> list[str]:
     spec = spec or context_spec()
-    flags = validate_context_flags(value)
-    return [spec["flags"][key]["module"] for key in CONTEXT_KEYS if flags[key]]
+    if (
+        not isinstance(protocols, list)
+        or len(protocols) != len(set(protocols))
+        or any(item not in PROTOCOL_KEYS for item in protocols)
+    ):
+        raise DataError("protocols must be a unique array of known protocol names")
+    selected = set(protocols)
+    try:
+        return [
+            _safe_module_path(spec["protocols"][key]["module"])
+            for key in PROTOCOL_KEYS
+            if key in selected
+        ]
+    except (KeyError, TypeError) as error:
+        raise DataError(f"malformed context specification: {error}") from None
 
 
 def validate_module_name(module: object, allowed: set[str]) -> str:
-    if not isinstance(module, str) or not module:
-        raise DataError("module names must be non-empty strings")
-    pure = PurePosixPath(module)
-    if pure.is_absolute() or ".." in pure.parts or str(pure) != module:
-        raise DataError(f"unsafe modular-pack path: {module}")
+    module = _safe_module_path(module)
     if module not in allowed:
         raise DataError(f"module is not allowed by the context manifest: {module}")
     path = PACK / module
@@ -135,96 +235,453 @@ def validate_module_name(module: object, allowed: set[str]) -> str:
     return module
 
 
-def validate_module_list(value: object, allowed: set[str]) -> list[str]:
-    if not isinstance(value, list):
-        raise DataError("modules must be an array")
-    modules = [validate_module_name(module, allowed) for module in value]
-    if len(modules) != len(set(modules)):
-        raise DataError("modules must be unique")
-    return modules
-
-
 def allowed_context_modules(spec: dict[str, Any] | None = None) -> set[str]:
-    """Return protocol modules only when every one is manifest-listed."""
     spec = spec or context_spec()
-    manifest = read_json(PACK / "MANIFEST.json")
-    if not isinstance(manifest, dict) or not isinstance(manifest.get("files"), list):
-        raise DataError("dist/pack/MANIFEST.json: files must be an array")
-    paths: list[str] = []
-    for item in manifest["files"]:
-        if not isinstance(item, dict) or set(item) != {"path", "sha256"}:
-            raise DataError("dist/pack/MANIFEST.json: invalid file entry")
-        paths.append(item["path"])
-    if len(paths) != len(set(paths)):
-        raise DataError("dist/pack/MANIFEST.json: duplicate file entries")
-    routeable = set(spec["module_order"])
-    missing = routeable - set(paths)
-    if missing:
-        raise DataError(
-            "context modules missing from the generated manifest: "
-            + ", ".join(sorted(missing))
+    return set(spec["module_order"])
+
+
+def _validate_method_version(value: object, supported: str) -> str:
+    version = _text(value, "profile.method_version")
+    if not METHOD_VERSION_RE.fullmatch(version):
+        raise DataError("profile.method_version: expected a 0.3.x release")
+    if not METHOD_VERSION_RE.fullmatch(supported):
+        raise DataError(f"installed method version is unsupported: {supported}")
+    return version
+
+
+def validate_policy(policy: object) -> dict[str, Any]:
+    value = _object(policy, POLICY_FIELDS, "profile.policy")
+    _strings(value["scope"], "profile.policy.scope")
+
+    sources = value["canonical_sources"]
+    if not isinstance(sources, list) or not sources:
+        raise DataError("profile.policy.canonical_sources: must be a non-empty array")
+    source_ids: list[str] = []
+    precedences: list[int] = []
+    for index, source in enumerate(sources):
+        item = _object(
+            source, {"id", "owns", "precedence"},
+            f"profile.policy.canonical_sources[{index}]",
         )
-    return routeable
+        source_ids.append(_identifier(item["id"], f"canonical_sources[{index}].id"))
+        _text(item["owns"], f"canonical_sources[{index}].owns")
+        if not isinstance(item["precedence"], int) or isinstance(item["precedence"], bool):
+            raise DataError(f"canonical_sources[{index}].precedence: must be an integer")
+        precedences.append(item["precedence"])
+    if len(source_ids) != len(set(source_ids)):
+        raise DataError("profile.policy.canonical_sources: IDs must be unique")
+    if sorted(precedences) != list(range(1, len(precedences) + 1)):
+        raise DataError("profile.policy.canonical_sources: precedence must be contiguous")
+
+    actions = _object(value["actions"], {"allowed", "forbidden"}, "profile.policy.actions")
+    allowed = _strings(actions["allowed"], "profile.policy.actions.allowed", allow_empty=True)
+    forbidden = _strings(
+        actions["forbidden"], "profile.policy.actions.forbidden", allow_empty=True
+    )
+    overlap = set(allowed) & set(forbidden)
+    if overlap:
+        raise DataError(
+            "profile.policy.actions: allowed and forbidden overlap: "
+            + ", ".join(sorted(overlap))
+        )
+
+    validate_protocol_flags(value["protocols"])
+
+    gates = value["gates"]
+    if not isinstance(gates, list) or not gates:
+        raise DataError("profile.policy.gates: must be a non-empty array")
+    gate_ids: list[str] = []
+    for index, gate in enumerate(gates):
+        item = _object(
+            gate, {"id", "default", "before", "required_evidence"},
+            f"profile.policy.gates[{index}]",
+        )
+        gate_ids.append(_identifier(item["id"], f"gates[{index}].id"))
+        if not isinstance(item["default"], bool):
+            raise DataError(f"gates[{index}].default: must be boolean")
+        _text(item["before"], f"gates[{index}].before")
+        _text(item["required_evidence"], f"gates[{index}].required_evidence")
+    if len(gate_ids) != len(set(gate_ids)):
+        raise DataError("profile.policy.gates: IDs must be unique")
+
+    secrets = _object(value["secrets"], SECRET_FIELDS, "profile.policy.secrets")
+    _strings(
+        secrets["approved_references"],
+        "profile.policy.secrets.approved_references",
+    )
+    for field in SECRET_FIELDS - {"approved_references"}:
+        _text(secrets[field], f"profile.policy.secrets.{field}")
+
+    program = _object(
+        value["program"], {"trigger", "repair_authority"}, "profile.policy.program"
+    )
+    _text(program["trigger"], "profile.policy.program.trigger")
+    _text(program["repair_authority"], "profile.policy.program.repair_authority")
+    _text(value["reporting"], "profile.policy.reporting")
+    return value
 
 
-def profile_payload(text: str) -> str:
-    """Return the exact profile bytes covered by the acceptance digest."""
-    output: list[str] = []
-    skipping = False
-    for line in text.splitlines(keepends=True):
-        if line == "## Acceptance\n":
-            skipping = True
-            continue
-        if skipping and line.startswith("## "):
-            skipping = False
-        if not skipping:
-            output.append(line)
-    return "".join(output)
-
-
-def profile_metadata(text: str) -> dict[str, str]:
-    labels = {
-        "Profile status": "status",
-        "Authority source": "authority_source",
-        "Profile digest": "profile_digest",
-        "Accepted by": "accepted_by",
-        "Accepted at": "accepted_at",
-        "Acceptance receipt": "receipt",
+def profile_policy_payload(profile: object) -> bytes:
+    value = _object(profile, PROFILE_FIELDS, "profile")
+    validate_policy(value["policy"])
+    payload = {
+        "schema_version": value["schema_version"],
+        "method_version": value["method_version"],
+        "profile_id": value["profile_id"],
+        "policy": value["policy"],
     }
-    metadata: dict[str, str] = {}
-    for label, key in labels.items():
-        match = re.search(rf"^- {re.escape(label)}: `([^`]+)`$", text, re.MULTILINE)
-        if match:
-            metadata[key] = match.group(1)
-    return metadata
+    return canonical_json(payload)
 
 
-def validate_accepted_profile(
-    text: str,
-    profile_id: str,
-    authorities: object,
-) -> dict[str, str]:
-    metadata = profile_metadata(text)
-    required = {
-        "status", "authority_source", "profile_digest", "accepted_by",
-        "accepted_at", "receipt",
-    }
-    if set(metadata) != required:
-        raise DataError(f"profile {profile_id}: incomplete acceptance metadata")
-    if metadata["status"] != "ACCEPTED":
-        raise DataError(f"profile {profile_id}: status must be ACCEPTED")
-    digest = hashlib.sha256(profile_payload(text).encode()).hexdigest()
-    if metadata["profile_digest"] != digest:
-        raise DataError(f"profile {profile_id}: acceptance digest is stale")
+def profile_policy_digest(profile: object) -> str:
+    return hashlib.sha256(profile_policy_payload(profile)).hexdigest()
+
+
+def validate_authority_registry(authorities: object) -> dict[str, Any]:
     if not isinstance(authorities, dict):
-        raise DataError("fixture authorities must be an object")
+        raise DataError("authority receipts must be an object")
+    for receipt, raw in authorities.items():
+        _identifier(receipt, "authority receipt id")
+        item = _object(
+            raw, AUTHORITY_RECEIPT_FIELDS, f"authority receipt {receipt}"
+        )
+        _identifier(item["profile_id"], f"{receipt}.profile_id", profile=True)
+        if not METHOD_VERSION_RE.fullmatch(_text(
+            item["method_version"], f"{receipt}.method_version"
+        )):
+            raise DataError(f"{receipt}.method_version: expected a 0.3.x release")
+        digest = _text(item["policy_sha256"], f"{receipt}.policy_sha256")
+        if not HEX_DIGEST_RE.fullmatch(digest):
+            raise DataError(f"{receipt}.policy_sha256: expected lowercase SHA-256")
+        for field in ("authority_source", "accepted_by", "accepted_at"):
+            _text(item[field], f"{receipt}.{field}")
+    return authorities
+
+
+def validate_project_profile(
+    profile: object,
+    authorities: object,
+    *,
+    supported_version: str | None = None,
+    require_accepted: bool = True,
+) -> dict[str, Any]:
+    value = _object(profile, PROFILE_FIELDS, "profile")
+    if value["schema_version"] != 1:
+        raise DataError("profile.schema_version: must be 1")
+    supported = supported_version or installed_method_version()
+    version = _validate_method_version(value["method_version"], supported)
+    profile_id = _identifier(value["profile_id"], "profile.profile_id", profile=True)
+    policy = validate_policy(value["policy"])
+    acceptance = _object(
+        value["acceptance"],
+        {
+            "status", "policy_sha256", "authority_source", "accepted_by",
+            "accepted_at", "receipt",
+        },
+        "profile.acceptance",
+    )
+    if not require_accepted:
+        if acceptance["status"] not in {"draft", "accepted"}:
+            raise DataError("profile.acceptance.status: invalid value")
+        return {
+            "profile_id": profile_id,
+            "method_version": version,
+            "policy_sha256": profile_policy_digest(value),
+            "policy": policy,
+            "accepted": False,
+        }
+    if acceptance["status"] != "accepted":
+        raise DataError("profile.acceptance.status: must be accepted")
+    digest = profile_policy_digest(value)
+    if not HEX_DIGEST_RE.fullmatch(str(acceptance["policy_sha256"])):
+        raise DataError("profile.acceptance.policy_sha256: must be lowercase SHA-256")
+    if acceptance["policy_sha256"] != digest:
+        raise DataError("profile acceptance digest is stale")
+    for field in ("authority_source", "accepted_by", "accepted_at", "receipt"):
+        _text(acceptance[field], f"profile.acceptance.{field}")
+    checked_authorities = validate_authority_registry(authorities)
     expected = {
-        "profile": profile_id,
-        "authority_source": metadata["authority_source"],
-        "accepted_by": metadata["accepted_by"],
-        "accepted_at": metadata["accepted_at"],
-        "profile_digest": digest,
+        "profile_id": profile_id,
+        "method_version": version,
+        "policy_sha256": digest,
+        "authority_source": acceptance["authority_source"],
+        "accepted_by": acceptance["accepted_by"],
+        "accepted_at": acceptance["accepted_at"],
     }
-    if authorities.get(metadata["receipt"]) != expected:
-        raise DataError(f"profile {profile_id}: authority receipt does not match")
-    return metadata
+    if checked_authorities.get(acceptance["receipt"]) != expected:
+        raise DataError("profile authority receipt does not match")
+    return {
+        "profile_id": profile_id,
+        "method_version": version,
+        "policy_sha256": digest,
+        "acceptance_receipt": acceptance["receipt"],
+        "policy": policy,
+        "accepted": True,
+    }
+
+
+def validate_task_request(task: object) -> dict[str, Any]:
+    value = _object(task, TASK_FIELDS, "task")
+    if value["schema_version"] != 1:
+        raise DataError("task.schema_version: must be 1")
+    _identifier(value["task_id"], "task.task_id")
+    _text(value["outcome"], "task.outcome")
+    scope = _object(value["scope"], {"include", "exclude"}, "task.scope")
+    _strings(scope["include"], "task.scope.include")
+    _strings(scope["exclude"], "task.scope.exclude", allow_empty=True)
+    _strings(value["resource_refs"], "task.resource_refs", allow_empty=True)
+    _strings(value["requested_actions"], "task.requested_actions", allow_empty=True)
+    _strings(value["forbidden_actions"], "task.forbidden_actions", allow_empty=True)
+    signals = _object(
+        value["signals"],
+        {"persistent_program", "controlled_comparison", "secret_risk"},
+        "task.signals",
+    )
+    if not isinstance(signals["persistent_program"], bool):
+        raise DataError("task.signals.persistent_program: must be boolean")
+    if not isinstance(signals["controlled_comparison"], bool):
+        raise DataError("task.signals.controlled_comparison: must be boolean")
+    if signals["secret_risk"] not in {"none", "possible", "required"}:
+        raise DataError("task.signals.secret_risk: invalid value")
+    _strings(value["required_gates"], "task.required_gates", allow_empty=True)
+    _text(value["baseline_identity"], "task.baseline_identity")
+    _strings(value["stop_conditions"], "task.stop_conditions")
+    _strings(value["expires_on"], "task.expires_on")
+    return value
+
+
+def resolve_runtime_envelope(
+    profile: object,
+    authorities: object,
+    task: object,
+    model_flags: object | None = None,
+    *,
+    supported_version: str | None = None,
+) -> dict[str, Any]:
+    checked_profile = validate_project_profile(
+        profile, authorities, supported_version=supported_version
+    )
+    checked_task = validate_task_request(task)
+    flags = validate_protocol_flags(
+        model_flags
+        if model_flags is not None
+        else {key: False for key in PROTOCOL_KEYS}
+    )
+    policy = checked_profile["policy"]
+    profile_flags = validate_protocol_flags(policy["protocols"])
+    task_flags = {
+        "program": checked_task["signals"]["persistent_program"],
+        "experiment": checked_task["signals"]["controlled_comparison"],
+        "secrets": checked_task["signals"]["secret_risk"] != "none",
+    }
+    protocols = [
+        key
+        for key in PROTOCOL_KEYS
+        if profile_flags[key] or task_flags[key] or flags[key]
+    ]
+    if "program" in protocols and not any(
+        reference.startswith("program-control:")
+        for reference in checked_task["resource_refs"]
+    ):
+        raise DataError(
+            "Program protocol requires a program-control: logical reference"
+        )
+
+    profile_allowed = list(policy["actions"]["allowed"])
+    requested = list(checked_task["requested_actions"])
+    unknown_actions = set(requested) - set(profile_allowed)
+    if unknown_actions:
+        raise DataError(
+            "task requests actions not allowed by the profile: "
+            + ", ".join(sorted(unknown_actions))
+        )
+    forbidden = list(dict.fromkeys(
+        [*policy["actions"]["forbidden"], *checked_task["forbidden_actions"]]
+    ))
+    conflicts = set(requested) & set(forbidden)
+    if conflicts:
+        raise DataError(
+            "task requests forbidden actions: " + ", ".join(sorted(conflicts))
+        )
+
+    gate_by_id = {gate["id"]: gate for gate in policy["gates"]}
+    requested_gates = list(checked_task["required_gates"])
+    unknown_gates = set(requested_gates) - set(gate_by_id)
+    if unknown_gates:
+        raise DataError(
+            "task requests unknown gates: " + ", ".join(sorted(unknown_gates))
+        )
+    gate_ids = list(dict.fromkeys([
+        *(gate["id"] for gate in policy["gates"] if gate["default"]),
+        *requested_gates,
+    ]))
+
+    controls: dict[str, object] = {"reporting": policy["reporting"]}
+    if "secrets" in protocols:
+        controls["secrets"] = policy["secrets"]
+    if "program" in protocols:
+        controls["program_repair_authority"] = policy["program"]["repair_authority"]
+
+    return {
+        "schema_version": 1,
+        "method_version": checked_profile["method_version"],
+        "task_id": checked_task["task_id"],
+        "profile_verified": True,
+        "policy_ref": {
+            "id": checked_profile["profile_id"],
+            "policy_sha256": checked_profile["policy_sha256"],
+            "acceptance_receipt": checked_profile["acceptance_receipt"],
+        },
+        "canonical_sources": sorted(
+            policy["canonical_sources"], key=lambda item: item["precedence"]
+        ),
+        "authority": requested,
+        "forbidden": forbidden,
+        "protocols": protocols,
+        "required_gates": [gate_by_id[gate_id] for gate_id in gate_ids],
+        "controls": controls,
+    }
+
+
+def validate_program_control(value: object) -> dict[str, Any]:
+    fields = {
+        "schema_version", "program", "state", "active_coordinates",
+        "accepted_frontiers", "authorized_queue", "hard_gates", "forbidden_work",
+        "reconciliation_receipt", "stop_condition", "resume_condition",
+        "terminal_disposition",
+    }
+    control = _object(value, fields, "ProgramControl")
+    if control["schema_version"] != 1:
+        raise DataError("ProgramControl.schema_version: must be 1")
+    _text(control["program"], "ProgramControl.program")
+    if control["state"] not in {
+        "ACTIVE", "STOPPED_FOR_REPLAN", "COMPLETE", "TERMINATED",
+    }:
+        raise DataError("ProgramControl.state: invalid state")
+    for field in (
+        "active_coordinates", "accepted_frontiers", "authorized_queue",
+        "forbidden_work",
+    ):
+        if not isinstance(control[field], list):
+            raise DataError(f"ProgramControl.{field}: must be an array")
+    if not isinstance(control["hard_gates"], list):
+        raise DataError("ProgramControl.hard_gates: must be an array")
+    gate_ids: list[str] = []
+    for index, raw_gate in enumerate(control["hard_gates"]):
+        gate = _object(
+            raw_gate,
+            {"id", "state", "evidence_receipt"},
+            f"ProgramControl.hard_gates[{index}]",
+        )
+        gate_ids.append(_identifier(gate["id"], f"hard_gates[{index}].id"))
+        if gate["state"] not in {"SATISFIED", "UNSATISFIED"}:
+            raise DataError(f"hard_gates[{index}].state: invalid state")
+        receipt = gate["evidence_receipt"]
+        if gate["state"] == "SATISFIED":
+            if not isinstance(receipt, dict) or not receipt:
+                raise DataError(
+                    f"hard_gates[{index}]: SATISFIED requires evidence receipt"
+                )
+        elif receipt is not None:
+            raise DataError(
+                f"hard_gates[{index}]: UNSATISFIED evidence receipt must be null"
+            )
+    if len(gate_ids) != len(set(gate_ids)):
+        raise DataError("ProgramControl.hard_gates: IDs must be unique")
+    if not isinstance(control["reconciliation_receipt"], dict):
+        raise DataError("ProgramControl.reconciliation_receipt: must be an object")
+    _text(control["stop_condition"], "ProgramControl.stop_condition")
+    _text(control["resume_condition"], "ProgramControl.resume_condition")
+    if control["state"] in {"COMPLETE", "TERMINATED"} and (
+        control["active_coordinates"] or control["authorized_queue"]
+    ):
+        raise DataError("terminal ProgramControl cannot dispatch work")
+    if control["state"] == "COMPLETE" and any(
+        gate["state"] != "SATISFIED" for gate in control["hard_gates"]
+    ):
+        raise DataError("complete ProgramControl cannot have an unsatisfied hard gate")
+    if control["state"] == "ACTIVE" and (
+        not control["reconciliation_receipt"] or not control["hard_gates"]
+    ):
+        raise DataError(
+            "active ProgramControl needs a reconciliation receipt and hard gates"
+        )
+    if control["state"] == "TERMINATED":
+        disposition = control["terminal_disposition"]
+        if not isinstance(disposition, dict) or disposition.get("reason") not in {
+            "OWNER_CANCELLED", "ABANDONED", "SUPERSEDED", "SAFETY",
+        }:
+            raise DataError("terminated ProgramControl needs a valid disposition")
+    elif control["terminal_disposition"] is not None:
+        raise DataError("terminal_disposition is only valid for TERMINATED")
+    return control
+
+
+def _main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    digest_parser = subparsers.add_parser("profile-digest")
+    digest_parser.add_argument("profile", type=Path)
+
+    verify_parser = subparsers.add_parser("verify-profile")
+    verify_parser.add_argument("profile", type=Path)
+    verify_parser.add_argument("--authorities", type=Path, required=True)
+
+    resolve_parser = subparsers.add_parser("resolve")
+    resolve_parser.add_argument("--profile", type=Path, required=True)
+    resolve_parser.add_argument("--authorities", type=Path, required=True)
+    resolve_parser.add_argument("--task", type=Path, required=True)
+    resolve_parser.add_argument("--model-flags", type=Path)
+
+    program_parser = subparsers.add_parser("validate-program-control")
+    program_parser.add_argument("control", type=Path)
+
+    args = parser.parse_args()
+    try:
+        if args.command == "profile-digest":
+            profile = read_json(args.profile.resolve())
+            checked = validate_project_profile(
+                profile, {}, require_accepted=False
+            )
+            print(checked["policy_sha256"])
+        elif args.command == "verify-profile":
+            result = validate_project_profile(
+                read_json(args.profile.resolve()),
+                read_json(args.authorities.resolve()),
+            )
+            print(json.dumps({
+                "profile_id": result["profile_id"],
+                "method_version": result["method_version"],
+                "policy_sha256": result["policy_sha256"],
+                "verified": True,
+                "acceptance_receipt": result["acceptance_receipt"],
+            }, indent=2))
+        elif args.command == "resolve":
+            flags = (
+                read_json(args.model_flags.resolve())
+                if args.model_flags is not None
+                else None
+            )
+            envelope = resolve_runtime_envelope(
+                read_json(args.profile.resolve()),
+                read_json(args.authorities.resolve()),
+                read_json(args.task.resolve()),
+                flags,
+            )
+            print(json.dumps(envelope, indent=2))
+        else:
+            control = validate_program_control(read_json(args.control.resolve()))
+            print(json.dumps({
+                "program": control["program"],
+                "state": control["state"],
+                "schema_valid": True,
+                "authority_verified": False,
+            }, indent=2))
+    except (DataError, OSError, TypeError, ValueError) as error:
+        parser.error(str(error))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(_main())
