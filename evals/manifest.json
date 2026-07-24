@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "id": "sparse-v0.4-release-gate",
+  "id": "sparse-v0.5-release-gate",
   "frozen": true,
   "created_at": "2026-07-24T00:00:00Z",
   "cases": [
@@ -17,7 +17,7 @@
   "model": "gpt-5.6-sol",
   "reasoning_effort": "high",
   "call_budget": 8,
-  "randomization_seed": "noel-method-v0.4-sparse-gate",
+  "randomization_seed": "noel-method-v0.5-sparse-gate",
   "limitations": [
     "Execution is opt-in; the default command only renders a plan.",
     "Eight calls are a smoke gate, not statistical evidence of broad validity.",

@@ -1,0 +1,40 @@
+{
+  "version": "0.5.0",
+  "kernel_sections": [
+    "Runtime input",
+    "Observe",
+    "Bound",
+    "Act",
+    "Verify",
+    "Report",
+    "Permanent secret boundary"
+  ],
+  "contracts": [
+    "ProjectPolicy",
+    "TaskRequest",
+    "ResolvedPermissions",
+    "ControlledAction",
+    "EvidenceReceipt",
+    "ProgramControl"
+  ],
+  "protocols": [
+    "program",
+    "experiment",
+    "secrets"
+  ],
+  "authority_modes": {
+    "default": "direct",
+    "resolved": "explicit_opt_in"
+  },
+  "distribution": {
+    "entrypoint": "dist/pack/INDEX.md",
+    "kernel": "dist/pack/KERNEL.md",
+    "monolith": "dist/MONOLITH.md",
+    "cli": "method",
+    "cargo_package": "noel-method"
+  },
+  "schemas": {
+    "policy_authorities": "schemas/policy-authorities.schema.json",
+    "evidence_receipt": "schemas/evidence-receipt.schema.json"
+  }
+}

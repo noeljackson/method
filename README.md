@@ -36,11 +36,31 @@ Protocols add procedure, never permission.
 
 ## Two adoption levels
 
-### 1. Prompt-only
+### 1. Direct mode
 
 Copy or reference `dist/pack/KERNEL.md` in the agent instructions. Keep normal
 task prompts short. Load Program, Experiment, or Secrets only when the task
 actually has that risk. This is the minimum useful adoption path.
+
+The optional `method` CLI embeds the verified pack and makes this easy for a
+human, an agent, or a host:
+
+```sh
+# Kernel only
+method context
+
+# Kernel plus task-shaped procedure
+method context --program --secrets
+
+# Stable machine-readable module content and identities
+method context --experiment --format json
+```
+
+The Markdown output is ready to inject into an LLM's instruction context.
+An agent may run the command itself when it can load local instructions. The
+CLI remains stateless: it assembles context and checks data, but it does not
+create an authorization session, broker tools, or turn a model request into
+permission.
 
 ### 2. Optional resolved mode
 
@@ -51,20 +71,25 @@ explicitly selects it. The host authenticates the caller, protects an accepted
 computes [ResolvedPermissions](schemas/resolved-permissions.schema.json):
 
 ```sh
-python3 dist/pack/tools/noel_method.py resolve \
+method resolve \
   --policy PROJECT-POLICY.json \
   --authorities POLICY-AUTHORITIES.json \
-  --task TASK-REQUEST.json
+  --task TASK-REQUEST.json > RESOLVED-PERMISSIONS.json
+
+method context \
+  --task TASK-REQUEST.json \
+  --permissions RESOLVED-PERMISSIONS.json
 ```
 
 Policy acceptance is an owner or host operation, not a model task:
 
 1. Copy and edit `templates/project-policy.json` while its status is `draft`.
-2. Compute its digest with `noel_method.py policy-digest`.
+2. Compute its digest with `method policy digest PROJECT-POLICY.json`.
 3. An independent owner records that digest and acceptance metadata using
    `templates/policy-authorities.json`, then puts the same receipt ID and
    metadata in the policy and changes its status to `accepted`.
-4. Run `noel_method.py verify-policy` before resolving tasks.
+4. Run `method policy verify PROJECT-POLICY.json --authorities
+   POLICY-AUTHORITIES.json` before resolving tasks.
 
 Changing policy invalidates the digest. Changing acceptance metadata without
 an exact matching external receipt also fails. Keep the authority registry
@@ -76,15 +101,71 @@ identity or enforcement. The host remains responsible for authenticating the
 request, protecting inputs, supplying TaskRequest and ResolvedPermissions to
 the model, and restricting tools when enforcement is required.
 
+The LLM can use `method validate`, `method context`, and additional monotonic
+protocol flags. It must not author its own accepted policy, authority receipt,
+or trusted TaskRequest. Resolved mode is useful at an actual host boundary—
+for example, a service translating authenticated user intent into constrained
+tools—not as extra paperwork inside an ordinary chat.
+
 When Program is selected, the harness must also supply the current
 ProgramControl named by a non-authorizing TaskRequest reference. Structural
 validation does not prove that a control is live or authoritative; reconcile
 that identity against canonical project state.
 
+## Install the CLI
+
+Install the published crate:
+
+```sh
+cargo install noel-method --locked --version 0.5.0
+method version --json
+method pack verify
+```
+
+Release archives provide native `method` binaries for Linux, macOS, and
+Windows with a `SHA256SUMS` file. To build the current checkout instead:
+
+```sh
+cargo install --path . --locked
+```
+
+For a separately downloaded or vendored pack, bind verification to the
+manifest digest recorded by the consuming project or release:
+
+```sh
+method pack verify vendor/noel-method/dist/pack \
+  --expect-manifest-sha256 "$EXPECTED_SHA256"
+```
+
+All JSON-reading commands accept `-` for standard input. Validation supports
+`project-policy`, `policy-authorities`, `task-request`,
+`resolved-permissions`, `program-control`, and `evidence-receipt`:
+
+```sh
+method validate task-request TASK-REQUEST.json --json
+method validate evidence-receipt - --json < EVIDENCE-RECEIPT.json
+```
+
+Invalid data exits with status 2; file and stream errors exit with status 1.
+The runtime pack contains no executable fallback: use the matching `method`
+release for resolved-mode validation and resolution.
+
+## Development
+
+The repository has no Python runtime or test dependency. Regenerate or verify
+the checked-in distribution with Rust:
+
+```sh
+method dist build
+method dist check
+cargo test --all-targets
+```
+
 ## Distribution
 
 - `dist/pack/` — recommended progressively loaded pack
 - `dist/MONOLITH.md` — all normative runtime text for one-file systems
+- `method` / the `noel-method` crate — optional stateless runtime tooling
 - `src/` and `protocols/` — normative source
 - `schemas/` and `templates/` — optional resolved-mode contracts
 - `policies/` — draft examples, not accepted authority

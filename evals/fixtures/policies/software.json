@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "method_version": "0.4.0",
+  "method_version": "0.5.0",
   "policy_id": "software",
   "policy": {
     "scope": [
@@ -64,10 +64,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "0c8c1e5c2c7ba0bf0bab78bc999ccd4ae5243c4a9f86f9491b1d50c30bafe993",
+    "policy_sha256": "2307894f7d1fd47a60429c5d023c74462f3cf2c4749e1f99a03b5807462cc9d9",
     "authority_source": "eval-authority:software",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z",
-    "receipt": "approval:software-v4"
+    "receipt": "approval:software-v5"
   }
 }

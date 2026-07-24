@@ -1,41 +1,37 @@
 {
-  "method": "Noel Method",
-  "version": "0.4.0",
   "entrypoint": "INDEX.md",
-  "kernel": "KERNEL.md",
-  "protocols": [
-    "program",
-    "experiment",
-    "secrets"
-  ],
   "files": [
     {
       "path": "CONTEXT.json",
-      "sha256": "4ceebe54d429d68ab68c83aabeea3c03f816e89b7cfe5074149487dfb9711ee9"
+      "sha256": "01f1106219e6700e89648a0c0ae07ce624e6ee9210d47a4212d53b82e432fe81"
     },
     {
       "path": "INDEX.md",
-      "sha256": "7e91cca2ba5c9e28c3c6167804d17487f1ca417ebf2f7b8cf74d8239fb95668a"
+      "sha256": "9e0a77211f0a64b5ca6af03fcab044f8e3c9322e7c49466c906a9189b1af665c"
     },
     {
       "path": "KERNEL.md",
-      "sha256": "3565b8f31c53a0287301efd238dffbd2d3996105b1fa9557540ed9de0e28a621"
+      "sha256": "a2f5051bd18a2aa72f2526077c4df0e7f116fe6d9f3999f9c2bcfbef9eeac6b3"
     },
     {
       "path": "protocols/experiment.md",
-      "sha256": "f841c250c449d19f8322b3fedbee5816b996119b5eaf36f5809ec8ac7837d85c"
+      "sha256": "ff105d8104c3b3b61f6469b331d7fb869c2a73df0f004b533ea6a8381b851506"
     },
     {
       "path": "protocols/program.md",
-      "sha256": "5ee3d4be73cc1249dd98f46a0a5b1de7b06ba3a23f28e10ff3720a7b7963624e"
+      "sha256": "6ecd24f6bcee6f62cfa4805e232034729e11a6fccef003fae349ae26745d0762"
     },
     {
       "path": "protocols/secrets.md",
-      "sha256": "07d7df710e2b72505928bb8a420d2f05c315183e41ee79556916858d6475070b"
+      "sha256": "6af5fb743e2e25d5e47308ea99e6a9540f5f8201f38dda21f423e63ad1c22828"
+    },
+    {
+      "path": "schemas/evidence-receipt.schema.json",
+      "sha256": "e8d595182acfd2d9eac9be907412536646a1a107cc59fb6ccfb01887ccfedd33"
     },
     {
       "path": "schemas/policy-authorities.schema.json",
-      "sha256": "2f2608532f88e9a497722f137a0b2dfc7529c69d8e98d6024b32393dd4766ac2"
+      "sha256": "d8e58d506f4c022f23e91c9c5ea1316ce61080c2c25be15ab3fd732f099ebf70"
     },
     {
       "path": "schemas/program-control.schema.json",
@@ -43,19 +39,23 @@
     },
     {
       "path": "schemas/project-policy.schema.json",
-      "sha256": "6c0028eed3be09c5b3c5d204d6fe30d5d58d20cf38a1901258972a70acfbdc88"
+      "sha256": "2389e9106a6c52cc4c719bb855ee07912c42820e37051d932c56b52b506ddaa1"
     },
     {
       "path": "schemas/resolved-permissions.schema.json",
-      "sha256": "048b1d2f00a0af891f94ca04142ad4d8b0848a6bbf602a9e4db7de8a1551dd66"
+      "sha256": "a34a9923235fb27c5343dd84190a0f297ade54013f6fa1c75bc9634696860a03"
     },
     {
       "path": "schemas/task-request.schema.json",
       "sha256": "f46ea907e2b8021122a4facf2e9eedc1b55c32f6232966ec65f33b3454c09a45"
-    },
-    {
-      "path": "tools/noel_method.py",
-      "sha256": "94075e3a711d5da87da32b4755a101a968a960f140fe62943cf78f64b6ba5d70"
     }
-  ]
+  ],
+  "kernel": "KERNEL.md",
+  "method": "Noel Method",
+  "protocols": [
+    "program",
+    "experiment",
+    "secrets"
+  ],
+  "version": "0.5.0"
 }

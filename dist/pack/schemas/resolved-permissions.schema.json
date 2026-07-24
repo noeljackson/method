@@ -25,7 +25,7 @@
     },
     "method_version": {
       "type": "string",
-      "pattern": "^0\\.4\\.[0-9]+$"
+      "pattern": "^0\\.5\\.[0-9]+$"
     },
     "authority_mode": {
       "const": "resolved"
@@ -159,6 +159,70 @@
       "additionalProperties": false
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "protocols": {
+            "contains": {
+              "const": "program"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "controls": {
+            "required": [
+              "program_repair_authority"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "controls": {
+            "not": {
+              "required": [
+                "program_repair_authority"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "protocols": {
+            "contains": {
+              "const": "secrets"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "controls": {
+            "required": [
+              "secrets"
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "controls": {
+            "not": {
+              "required": [
+                "secrets"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "stringArray": {
       "type": "array",

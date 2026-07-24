@@ -25,7 +25,9 @@ actor-neutral, and domain-neutral.
 Run before publishing:
 
 ```sh
-python3 scripts/build_dist.py
-python3 -m unittest discover -s tests
-python3 scripts/check_docs.py
+cargo run --locked -- dist check
+cargo fmt --all --check
+cargo clippy --all-targets -- -D warnings
+cargo test --all-targets
+cargo package --locked
 ```

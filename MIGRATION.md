@@ -14,6 +14,32 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.4.x to 0.5.0
+
+`0.5.0` adds portable tooling without changing the Kernel or authority modes.
+
+- Existing prompt-only and vendored-pack consumers may continue unchanged.
+- The optional native executable is named `method`; its Cargo package is
+  `noel-method`. It embeds the exact generated runtime pack and can replace
+  repository-specific context-loading wrappers.
+- Use `method context` to produce Kernel plus task-selected protocols. In
+  resolved mode, pass `--permissions` so policy-default protocols are loaded
+  as well as any protocol requested monotonically by the model.
+- Use `method validate`, `method policy digest`, `method policy verify`, and
+  `method resolve` in new integrations. The generated pack no longer contains
+  `tools/noel_method.py`; install the matching `method` release for resolved
+  mode instead of invoking a vendored executable fallback.
+- Migrate active ProjectPolicy and authority-registry documents to
+  `method_version: "0.5.0"` and record a new independent acceptance receipt;
+  the policy digest changes with the method version.
+- EvidenceReceipt now has a published strict JSON Schema and native validator.
+  Existing template-shaped receipts already satisfy the schema.
+- ResolvedPermissions validators now reject missing or stray Program and
+  Secrets controls; regenerate permissions instead of repairing them by hand.
+- Do not interpret CLI availability as a third authority mode. Direct remains
+  the default; resolved remains explicit opt-in and requires a trusted host
+  boundary.
+
 ## Public interface migration from 0.3.x to 0.4.0
 
 `0.4.0` is a breaking pre-1 simplification.
