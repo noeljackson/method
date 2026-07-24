@@ -39,7 +39,7 @@
   ],
   "expires_on": [
     "task-end",
-    "profile-change",
+    "policy-change",
     "baseline-change"
   ]
 }

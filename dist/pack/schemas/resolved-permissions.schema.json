@@ -1,18 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://noel-method.example/schemas/runtime-envelope.schema.json",
-  "title": "Noel Method RuntimeEnvelope",
+  "$id": "https://noel-method.example/schemas/resolved-permissions.schema.json",
+  "title": "Noel Method ResolvedPermissions",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
     "method_version",
+    "authority_mode",
     "task_id",
-    "profile_verified",
+    "task_sha256",
+    "policy_verified",
     "policy_ref",
     "canonical_sources",
-    "authority",
-    "forbidden",
+    "allowed_actions",
+    "forbidden_actions",
     "protocols",
     "required_gates",
     "controls"
@@ -23,13 +25,20 @@
     },
     "method_version": {
       "type": "string",
-      "pattern": "^0\\.3\\.[0-9]+$"
+      "pattern": "^0\\.4\\.[0-9]+$"
+    },
+    "authority_mode": {
+      "const": "resolved"
     },
     "task_id": {
       "type": "string",
       "minLength": 1
     },
-    "profile_verified": {
+    "task_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_verified": {
       "const": true
     },
     "policy_ref": {
@@ -82,10 +91,10 @@
         }
       }
     },
-    "authority": {
+    "allowed_actions": {
       "$ref": "#/$defs/stringArray"
     },
-    "forbidden": {
+    "forbidden_actions": {
       "$ref": "#/$defs/stringArray"
     },
     "protocols": {

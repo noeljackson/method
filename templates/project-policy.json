@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "replace-me",
+  "method_version": "0.4.0",
+  "policy_id": "replace-me",
   "policy": {
     "scope": [
       "Describe the governed workspace"

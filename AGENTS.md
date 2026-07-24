@@ -7,7 +7,7 @@ actor-neutral, and domain-neutral.
 
 - Files under `src/` and `protocols/` are the normative source.
 - `dist/MONOLITH.md` and `dist/pack/` are generated. Never edit them by hand.
-- Templates, profiles, adapters, case studies, and migration notes may explain
+- Templates, policies, adapters, case studies, and migration notes may explain
   or specialize the method, but they may not silently add hard-core rules.
 
 ## Change rules

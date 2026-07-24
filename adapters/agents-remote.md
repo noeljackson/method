@@ -7,10 +7,12 @@ This repository follows Noel Method `<tag>` at
 `https://raw.githubusercontent.com/noeljackson/method/<tag>/dist/pack/INDEX.md`.
 
 Use only that verified published tag and resolve its relative links under the
-same `<tag>/dist/pack/` path. Apply the Kernel directly to bounded supervised
-work. For work crossing that direct boundary, require a locally resolved
-verified RuntimeEnvelope and load exactly its named protocols.
+same `<tag>/dist/pack/` path. Apply the Kernel in direct mode to the current
+request and canonical repository instructions. Load Program, Experiment, or
+Secrets by task shape.
 
-Do not substitute `main`, infer missing modules, or let the model validate its
-own profile. If required context cannot be loaded, remain read-only.
+Require locally verified ResolvedPermissions only when this repository, the
+current request, or the host explicitly selects resolved mode. Do not
+substitute `main`, infer missing modules, let the model validate its own
+ProjectPolicy, or let it downgrade resolved mode.
 ```

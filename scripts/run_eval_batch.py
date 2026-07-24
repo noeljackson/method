@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plan, render, or explicitly execute the sparse v0.3 evaluation."""
+"""Plan, render, or explicitly execute the sparse Noel Method evaluation."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from render_eval import DECISION_FIELDS, load_cases, render_decision
 
 
 RELEASE_ARMS = ("neutral", "routed")
-MAX_CALLS = 12
+MAX_CALLS = 8
 BATCH_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
 
@@ -133,9 +133,15 @@ def _input_inventory(manifest_path: Path, manifest: dict[str, Any]) -> list[dict
     paths.update(path for path in (ROOT / "dist" / "pack").rglob("*") if path.is_file())
     for case_id in manifest["cases"]:
         case = cases[case_id]
-        paths.add(ROOT / "evals" / "fixtures" / "profiles" / f"{case['profile']}.json")
+        paths.add(
+            ROOT / "evals" / "fixtures" / "policies"
+            / f"{case['policy']}.json"
+        )
         paths.add(ROOT / "evals" / "fixtures" / "tasks" / f"{case['task']}.json")
-        paths.add(ROOT / "evals" / "fixtures" / "neutral-briefs" / f"{case['profile']}.md")
+        paths.add(
+            ROOT / "evals" / "fixtures" / "neutral-briefs"
+            / f"{case['policy']}.md"
+        )
     return [
         {
             "path": str(path.relative_to(ROOT)),

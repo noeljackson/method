@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "method_version": "0.3.0",
-  "profile_id": "software",
+  "method_version": "0.4.0",
+  "policy_id": "software",
   "policy": {
     "scope": [
       "Synthetic software evaluation workspace"
@@ -64,10 +64,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "4eb51a7a3346d21939f7fe1c1f6428cf78636469a1e9878709671e5f5c4118d6",
+    "policy_sha256": "0c8c1e5c2c7ba0bf0bab78bc999ccd4ae5243c4a9f86f9491b1d50c30bafe993",
     "authority_source": "eval-authority:software",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-23T00:00:00Z",
-    "receipt": "approval:software-v3"
+    "receipt": "approval:software-v4"
   }
 }

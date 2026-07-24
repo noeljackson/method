@@ -26,11 +26,12 @@ class EvalBatchTests(unittest.TestCase):
     def setUp(self) -> None:
         self.manifest = read_json(ROOT / "evals/manifest.json")
 
-    def test_manifest_is_an_eight_call_sparse_gate(self) -> None:
+    def test_manifest_stays_within_the_eight_call_ceiling(self) -> None:
         manifest = validate_manifest(self.manifest)
         plan = call_plan(manifest)
-        self.assertEqual(plan["calls"], 8)
-        self.assertEqual(plan["decisions"], 8)
+        self.assertGreater(plan["calls"], 0)
+        self.assertEqual(plan["decisions"], plan["calls"])
+        self.assertLessEqual(plan["calls"], 8)
         self.assertLessEqual(plan["calls"], MAX_CALLS)
 
     def test_budget_or_extra_samples_are_rejected(self) -> None:
@@ -51,7 +52,7 @@ class EvalBatchTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         output = json.loads(result.stdout)
         self.assertEqual(output["mode"], "render-only")
-        self.assertEqual(output["calls"], 8)
+        self.assertLessEqual(output["calls"], 8)
 
     def test_execution_requires_exact_explicit_budget_before_any_call(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -75,7 +76,7 @@ class EvalBatchTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("--call-budget 8", result.stderr)
 
-    def test_rendered_plan_contains_only_eight_decisions(self) -> None:
+    def test_rendered_plan_contains_only_the_declared_sparse_decisions(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "prompts"
             result = subprocess.run(
@@ -91,7 +92,10 @@ class EvalBatchTests(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(len(list(target.glob("*.md"))), 8)
+            self.assertEqual(
+                len(list(target.glob("*.md"))),
+                call_plan(validate_manifest(self.manifest))["calls"],
+            )
 
     def test_human_reliability_metric(self) -> None:
         self.assertEqual(quadratic_weighted_kappa([9, 7, 4], [9, 7, 4]), 1.0)

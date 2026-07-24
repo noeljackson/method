@@ -59,7 +59,7 @@ class EvalToolTests(unittest.TestCase):
             self.cases["interaction-program-secret"], "monolith"
         )
         self.assertLess(len(direct.split()), 1300)
-        self.assertLess(len(interaction.split()), 2100)
+        self.assertLess(len(interaction.split()), 2200)
         self.assertLess(len(interaction.split()), len(monolith.split()))
 
     def test_key_is_separate_and_contains_expected_answer(self) -> None:

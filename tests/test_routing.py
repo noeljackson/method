@@ -17,7 +17,7 @@ from methodlib import (  # noqa: E402
     context_spec,
     read_json,
     resolve_context_modules,
-    resolve_runtime_envelope,
+    resolve_permissions,
     validate_module_name,
     validate_program_control,
 )
@@ -31,11 +31,11 @@ class RoutingTests(unittest.TestCase):
 
     def resolve(self, case_id: str, flags: object | None = None) -> dict[str, object]:
         case = self.cases[case_id]
-        profile = read_json(
-            ROOT / f"evals/fixtures/profiles/{case['profile']}.json"
+        project_policy = read_json(
+            ROOT / f"evals/fixtures/policies/{case['policy']}.json"
         )
         task = read_json(ROOT / f"evals/fixtures/tasks/{case['task']}.json")
-        return resolve_runtime_envelope(profile, self.authorities, task, flags)
+        return resolve_permissions(project_policy, self.authorities, task, flags)
 
     def test_every_case_routes_exactly_from_structured_signals(self) -> None:
         for case_id, case in self.cases.items():
@@ -45,11 +45,11 @@ class RoutingTests(unittest.TestCase):
                 )
 
     def test_model_may_only_escalate_protocols(self) -> None:
-        envelope = self.resolve(
+        permissions = self.resolve(
             "direct-bounded-edit",
             {"program": False, "experiment": False, "secrets": True},
         )
-        self.assertEqual(envelope["protocols"], ["secrets"])
+        self.assertEqual(permissions["protocols"], ["secrets"])
         with self.assertRaises(DataError):
             self.resolve(
                 "direct-bounded-edit",
@@ -58,20 +58,24 @@ class RoutingTests(unittest.TestCase):
 
     def test_requested_actions_and_gates_fail_closed(self) -> None:
         case = self.cases["direct-bounded-edit"]
-        profile = read_json(ROOT / "evals/fixtures/profiles/software.json")
+        project_policy = read_json(
+            ROOT / "evals/fixtures/policies/software.json"
+        )
         task = read_json(ROOT / f"evals/fixtures/tasks/{case['task']}.json")
         unknown_action = copy.deepcopy(task)
         unknown_action["requested_actions"].append("deployment.mutate")
         with self.assertRaisesRegex(DataError, "not allowed"):
-            resolve_runtime_envelope(profile, self.authorities, unknown_action)
+            resolve_permissions(project_policy, self.authorities, unknown_action)
         unknown_gate = copy.deepcopy(task)
         unknown_gate["required_gates"].append("imaginary-gate")
         with self.assertRaisesRegex(DataError, "unknown gates"):
-            resolve_runtime_envelope(profile, self.authorities, unknown_gate)
+            resolve_permissions(project_policy, self.authorities, unknown_gate)
 
     def test_program_route_requires_a_control_reference(self) -> None:
         case = self.cases["program-revoked-repair"]
-        profile = read_json(ROOT / "evals/fixtures/profiles/operations.json")
+        project_policy = read_json(
+            ROOT / "evals/fixtures/policies/operations.json"
+        )
         task = read_json(ROOT / f"evals/fixtures/tasks/{case['task']}.json")
         task["resource_refs"] = [
             reference
@@ -79,26 +83,30 @@ class RoutingTests(unittest.TestCase):
             if not reference.startswith("program-control:")
         ]
         with self.assertRaisesRegex(DataError, "program-control"):
-            resolve_runtime_envelope(profile, self.authorities, task)
+            resolve_permissions(project_policy, self.authorities, task)
 
-    def test_envelope_is_compact_and_controls_are_progressive(self) -> None:
+    def test_permissions_are_compact_and_controls_are_progressive(self) -> None:
         direct = self.resolve("direct-bounded-edit")
         self.assertEqual(
             set(direct),
             {
                 "schema_version",
                 "method_version",
+                "authority_mode",
                 "task_id",
-                "profile_verified",
+                "task_sha256",
+                "policy_verified",
                 "policy_ref",
                 "canonical_sources",
-                "authority",
-                "forbidden",
+                "allowed_actions",
+                "forbidden_actions",
                 "protocols",
                 "required_gates",
                 "controls",
             },
         )
+        self.assertEqual(direct["authority_mode"], "resolved")
+        self.assertEqual(len(direct["task_sha256"]), 64)
         self.assertEqual(set(direct["controls"]), {"reporting"})
         secret = self.resolve("secrets-known-exposure")
         self.assertIn("secrets", secret["controls"])
@@ -143,8 +151,8 @@ class RoutingTests(unittest.TestCase):
                     sys.executable,
                     str(isolated / "tools/noel_method.py"),
                     "resolve",
-                    "--profile",
-                    str(ROOT / "evals/fixtures/profiles/software.json"),
+                    "--policy",
+                    str(ROOT / "evals/fixtures/policies/software.json"),
                     "--authorities",
                     str(ROOT / "evals/fixtures/authorities.json"),
                     "--task",
@@ -156,7 +164,24 @@ class RoutingTests(unittest.TestCase):
                 check=False,
             )
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn('"profile_verified": true', result.stdout)
+        self.assertIn('"policy_verified": true', result.stdout)
+
+    def test_resolved_mode_cli_fails_closed_without_authoritative_inputs(self) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "dist/pack/tools/noel_method.py"),
+                "resolve",
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("--policy", result.stderr)
+        self.assertIn("--authorities", result.stderr)
+        self.assertIn("--task", result.stderr)
 
     def test_active_program_control_requires_reconciliation_and_gates(self) -> None:
         control = read_json(ROOT / "templates/program-control.json")

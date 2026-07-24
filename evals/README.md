@@ -1,10 +1,10 @@
 # Sparse Evaluation
 
-The active release smoke test asks one narrow question: does the routed v0.3
+The active release smoke test asks one narrow question: does the routed v0.4
 context avoid important decision failures without requiring a large model
 budget?
 
-Deterministic unit tests own profile verification, routing, monotonic
+Deterministic unit tests own policy verification, routing, monotonic
 escalation, protocol order, path containment, terminal program states, prompt
 leakage, generated drift, and context budgets. Model calls do not test those
 properties.

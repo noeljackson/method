@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render sparse Noel Method v0.3 decision-evaluation prompts."""
+"""Render sparse Noel Method v0.4 decision-evaluation prompts."""
 
 from __future__ import annotations
 
@@ -16,11 +16,11 @@ from methodlib import (
     ROOT,
     read_json,
     resolve_context_modules,
-    resolve_runtime_envelope,
+    resolve_permissions,
 )
 
 
-PROFILE_ROOT = ROOT / "evals" / "fixtures" / "profiles"
+POLICY_ROOT = ROOT / "evals" / "fixtures" / "policies"
 TASK_ROOT = ROOT / "evals" / "fixtures" / "tasks"
 BRIEF_ROOT = ROOT / "evals" / "fixtures" / "neutral-briefs"
 AUTHORITIES = ROOT / "evals" / "fixtures" / "authorities.json"
@@ -39,7 +39,7 @@ DECISION_FIELDS = {
 CASE_FIELDS = {
     "id",
     "family",
-    "profile",
+    "policy",
     "task",
     "situation",
     "evidence",
@@ -104,17 +104,19 @@ def load_cases() -> dict[str, dict[str, Any]]:
 def case_inputs(
     case: dict[str, Any]
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    profile = read_json(
-        _fixture(PROFILE_ROOT, case["profile"], ".json", "profile")
+    project_policy = read_json(
+        _fixture(POLICY_ROOT, case["policy"], ".json", "policy")
     )
     task = read_json(_fixture(TASK_ROOT, case["task"], ".json", "task"))
-    envelope = resolve_runtime_envelope(profile, read_json(AUTHORITIES), task)
-    if envelope["protocols"] != case["expected_protocols"]:
+    permissions = resolve_permissions(
+        project_policy, read_json(AUTHORITIES), task
+    )
+    if permissions["protocols"] != case["expected_protocols"]:
         raise DataError(
-            f"{case['id']}: resolver returned {envelope['protocols']}, "
+            f"{case['id']}: resolver returned {permissions['protocols']}, "
             f"expected {case['expected_protocols']}"
         )
-    return profile, task, envelope
+    return project_policy, task, permissions
 
 
 def document(label: str, content: str) -> str:
@@ -134,16 +136,16 @@ def _facts(case: dict[str, Any]) -> str:
 
 
 def _neutral_authority(
-    task: dict[str, Any], envelope: dict[str, Any]
+    task: dict[str, Any], permissions: dict[str, Any]
 ) -> dict[str, Any]:
     """Give the neutral arm equivalent facts and authority, without method rules."""
     return {
         "task": task,
-        "canonical_sources": envelope["canonical_sources"],
-        "authority": envelope["authority"],
-        "forbidden": envelope["forbidden"],
-        "required_gates": envelope["required_gates"],
-        "controls": envelope["controls"],
+        "canonical_sources": permissions["canonical_sources"],
+        "allowed_actions": permissions["allowed_actions"],
+        "forbidden_actions": permissions["forbidden_actions"],
+        "required_gates": permissions["required_gates"],
+        "controls": permissions["controls"],
     }
 
 
@@ -172,39 +174,39 @@ Do not perform any action. Return JSON with exactly this action envelope:
 def render_decision(case: dict[str, Any], mode: str) -> str:
     if mode not in MODES:
         raise DataError(f"unknown context mode: {mode}")
-    profile, task, envelope = case_inputs(case)
+    project_policy, task, permissions = case_inputs(case)
     presented_task = copy.deepcopy(task)
     presented_task["task_id"] = "eval-task"
-    presented_envelope = copy.deepcopy(envelope)
-    presented_envelope["task_id"] = "eval-task"
+    presented_permissions = copy.deepcopy(permissions)
+    presented_permissions["task_id"] = "eval-task"
     parts = ["# Delegated decision task\n"]
 
     if mode == "neutral":
-        brief = _fixture(BRIEF_ROOT, case["profile"], ".md", "neutral brief")
+        brief = _fixture(BRIEF_ROOT, case["policy"], ".md", "neutral brief")
         parts.append(document("authority-brief.md", brief.read_text()))
         parts.append(
             _json_document(
                 "resolved authority and task",
-                _neutral_authority(presented_task, presented_envelope),
+                _neutral_authority(presented_task, presented_permissions),
             )
         )
     else:
         parts.append(document("dist/pack/KERNEL.md", (PACK / "KERNEL.md").read_text()))
-        selected_envelope = copy.deepcopy(presented_envelope)
+        selected_permissions = copy.deepcopy(presented_permissions)
         if mode == "kernel":
-            selected_envelope["protocols"] = []
+            selected_permissions["protocols"] = []
         elif mode == "wrong":
-            selected_envelope["protocols"] = list(case["wrong_protocols"])
+            selected_permissions["protocols"] = list(case["wrong_protocols"])
             controls: dict[str, object] = {
-                "reporting": profile["policy"]["reporting"]
+                "reporting": project_policy["policy"]["reporting"]
             }
-            if "program" in selected_envelope["protocols"]:
+            if "program" in selected_permissions["protocols"]:
                 controls["program_repair_authority"] = (
-                    profile["policy"]["program"]["repair_authority"]
+                    project_policy["policy"]["program"]["repair_authority"]
                 )
-            if "secrets" in selected_envelope["protocols"]:
-                controls["secrets"] = profile["policy"]["secrets"]
-            selected_envelope["controls"] = controls
+            if "secrets" in selected_permissions["protocols"]:
+                controls["secrets"] = project_policy["policy"]["secrets"]
+            selected_permissions["controls"] = controls
 
         if mode == "monolith":
             parts = [
@@ -212,10 +214,12 @@ def render_decision(case: dict[str, Any], mode: str) -> str:
                 document("dist/MONOLITH.md", (ROOT / "dist" / "MONOLITH.md").read_text()),
             ]
         elif mode in {"routed", "wrong"}:
-            for module in resolve_context_modules(selected_envelope["protocols"]):
+            for module in resolve_context_modules(selected_permissions["protocols"]):
                 parts.append(document(f"dist/pack/{module}", (PACK / module).read_text()))
         parts.append(_json_document("TaskRequest", presented_task))
-        parts.append(_json_document("RuntimeEnvelope", selected_envelope))
+        parts.append(
+            _json_document("ResolvedPermissions", selected_permissions)
+        )
 
     parts.extend((_facts(case), _task_block()))
     return "\n---\n\n".join(parts)

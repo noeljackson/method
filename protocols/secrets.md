@@ -7,7 +7,8 @@ authority.
 
 ## Preflight without retrieval
 
-Before access or mutation, establish from the RuntimeEnvelope:
+Before access or mutation, establish from the current request and canonical
+project controls, or from ResolvedPermissions when resolved mode is selected:
 
 - approved non-authorizing reference, owner, target, and intended use;
 - approved provider, delivery boundary, and receiving process;
@@ -35,8 +36,8 @@ one, constrain location, permissions, audience, lifetime, and cleanup.
 
 A destination-encrypted envelope is allowed only when plaintext is created and
 decrypted outside the coordinator and model, only the destination holds the
-decryption capability, and the profile names its audience, key, retention, and
-delivery boundary.
+decryption capability, and the applicable project controls name its audience,
+key, retention, and delivery boundary.
 
 ## Verify and scan without revealing
 
@@ -44,12 +45,12 @@ Use provider status, permitted metadata, expected reference shape, or intended
 authenticated behavior with sensitive fields suppressed. For rotation, verify
 new acceptance and old rejection without rendering either value.
 
-Before durable publication, run the RuntimeEnvelope's secret-scan gate. The
-scanner may emit only a safe location, category, approved reference, and
-terminal result. It must not print matched bytes, lines, encodings,
-fingerprints, or hashes derived from a candidate secret. Raw scanner captures,
-when legally or operationally required, belong only in the profile's authorized
-forensic quarantine and never in model context.
+Before durable publication, run the applicable secret-scan gate. The scanner
+may emit only a safe location, category, approved reference, and terminal
+result. It must not print matched bytes, lines, encodings, fingerprints, or
+hashes derived from a candidate secret. Raw scanner captures, when legally or
+operationally required, belong only in the configured forensic quarantine and
+never in model context.
 
 A clean scan is a detection backstop, not permission to disclose.
 
@@ -59,8 +60,8 @@ When exposure is possible:
 
 1. Stop the actor's own output or foreground command when safe, without
    repeating the value.
-2. Do not mutate an external process or service unless the RuntimeEnvelope
-   names pre-existing containment authority.
+2. Do not mutate an external process or service unless the applicable
+   authority names pre-existing containment authority.
 3. If containment authority is absent, cease initiating propagation, mark
    affected gates `UNSATISFIED`, and immediately invoke the response path.
 4. Identify plausible affected references, audience, surfaces, and time window

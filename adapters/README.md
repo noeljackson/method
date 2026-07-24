@@ -5,16 +5,16 @@ Use the smallest integration your trust boundary needs.
 ## Prompt-only local pack
 
 Copy the complete `dist/pack/` directory and point repository instructions at
-`pack/INDEX.md`. Direct supervised tasks load only `KERNEL.md`. This is the
-recommended starting point.
+`pack/INDEX.md`. Direct mode loads only `KERNEL.md` plus protocols selected by
+task shape. This is the recommended starting point.
 
-## Guarded runner
+## Optional resolved mode
 
-Also copy `tools/` and `schemas/` from the pack. Keep the accepted
-ProjectProfile and its authority receipts outside model control. Resolve a
-RuntimeEnvelope before work crosses the direct boundary, then supply the model
-only the TaskRequest, envelope, Kernel, and named protocols. Program work also
-requires the separately reconciled live ProgramControl named by the task.
+Also copy `tools/` and `schemas/` from the pack. The consuming host must select
+resolved mode, authenticate the TaskRequest, keep the accepted ProjectPolicy
+and authority receipts outside model control, and enforce ResolvedPermissions.
+Program work also requires the separately reconciled live ProgramControl named
+by the task.
 
 ## Single-file fallback
 

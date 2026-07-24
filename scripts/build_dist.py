@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the v0.3 runtime pack and equivalent monolith."""
+"""Build the Noel Method runtime pack and equivalent monolith."""
 
 from __future__ import annotations
 
@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 PACK = DIST / "pack"
 SCHEMAS = (
-    "project-profile.schema.json",
-    "profile-authorities.schema.json",
+    "project-policy.schema.json",
+    "policy-authorities.schema.json",
     "task-request.schema.json",
-    "runtime-envelope.schema.json",
+    "resolved-permissions.schema.json",
     "program-control.schema.json",
 )
 
@@ -50,29 +50,42 @@ def render_index(version: str, spec: dict[str, object]) -> str:
 
 Version: `{version}`
 
-## Direct work
+## Default: direct mode
 
-For bounded, reversible, locally provable work under direct human supervision,
-load [Kernel](KERNEL.md). The current request supplies the outcome, constraints,
-source of truth, and next action. Do not create a RuntimeEnvelope merely to
-answer, inspect, or make a small supervised local change.
+Load [Kernel](KERNEL.md). The current request and canonical project
+instructions supply authority. Direct mode may include external or persistent
+work when those sources authorize its scope, actions, gates, and prohibitions.
+Do not create Method artifacts merely because work has several steps, uses a
+remote service, or persists across a conversation.
 
-## Controlled work
+Load protocols by task shape:
 
-Consequential work outside the direct boundary requires a RuntimeEnvelope
-produced by the packaged resolver from an independently accepted ProjectProfile
-and trusted TaskRequest:
+| Protocol | Task signal | Module |
+| --- | --- | --- |
+| `program` | `{protocols['program']['task_signal']}` | [Program](protocols/program.md) |
+| `experiment` | `{protocols['experiment']['task_signal']}` | [Experiment](protocols/experiment.md) |
+| `secrets` | `{protocols['secrets']['task_signal']}` | [Secrets](protocols/secrets.md) |
+
+Protocols add procedure, never permission.
+
+## Optional: resolved mode
+
+Use resolved mode only when the project, current request, or consuming host
+explicitly selects it. The host authenticates the TaskRequest, protects the
+accepted ProjectPolicy and authority registry, runs the deterministic resolver,
+and enforces ResolvedPermissions:
 
 ```sh
 python3 tools/noel_method.py resolve \\
-  --profile PROJECT-PROFILE.json \\
-  --authorities PROFILE-AUTHORITIES.json \\
+  --policy PROJECT-POLICY.json \\
+  --authorities POLICY-AUTHORITIES.json \\
   --task TASK-REQUEST.json
 ```
 
-Load [Kernel](KERNEL.md), the complete RuntimeEnvelope, and exactly the protocol
-modules named by `protocols`. If the envelope is missing, unverified, expired,
-or inconsistent with current state, remain read-only.
+Load [Kernel](KERNEL.md), TaskRequest, ResolvedPermissions, and exactly the
+protocol modules named by `protocols`. If resolved mode is selected and its
+permissions are missing, unverified, expired, or inconsistent with current
+state, remain read-only.
 
 When Program is selected, separately validate and supply the ProgramControl
 named by the TaskRequest:
@@ -84,15 +97,9 @@ python3 tools/noel_method.py validate-program-control PROGRAM-CONTROL.json
 This validates structure and terminal-state invariants only. The harness must
 still bind the control to current canonical state and authority.
 
-| Protocol | Resolver signal | Module |
-| --- | --- | --- |
-| `program` | `{protocols['program']['task_signal']}` or profile/model escalation | [Program](protocols/program.md) |
-| `experiment` | `{protocols['experiment']['task_signal']}` or profile/model escalation | [Experiment](protocols/experiment.md) |
-| `secrets` | `{protocols['secrets']['task_signal']}` or profile/model escalation | [Secrets](protocols/secrets.md) |
-
 The model may request another protocol when risk emerges. Only the resolver may
-issue an updated envelope; the model cannot remove a protocol or widen action
-authority.
+issue updated ResolvedPermissions in resolved mode; the model cannot remove a
+protocol, widen actions, or downgrade the authority mode.
 
 Machine-readable routing and schemas are in [CONTEXT.json](CONTEXT.json) and
 [`schemas/`](schemas/).
@@ -100,8 +107,8 @@ Machine-readable routing and schemas are in [CONTEXT.json](CONTEXT.json) and
 ## Single-file fallback
 
 Use [`../MONOLITH.md`](../MONOLITH.md) only when linked modules cannot be
-loaded. It contains the same Kernel and all three protocols; the RuntimeEnvelope
-still supplies project policy and authority.
+loaded. It contains the same Kernel and all three protocols. It does not grant
+project authority or select resolved mode.
 """.lstrip()
 
 

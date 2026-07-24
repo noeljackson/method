@@ -12,28 +12,82 @@ class NormativeContractTests(unittest.TestCase):
     def test_kernel_is_small_and_direct_work_needs_no_artifact(self) -> None:
         kernel = (ROOT / "src/KERNEL.md").read_text(encoding="utf-8")
         self.assertLessEqual(len(kernel.split()), 700)
-        self.assertIn("the current request may be the task boundary", kernel)
-        self.assertIn("compact guardrail, not a work plan", kernel)
+        self.assertIn("Direct mode is the default", kernel)
+        self.assertIn(
+            "Several steps, a remote service, or a",
+            kernel,
+        )
+        self.assertIn("Resolved mode is explicit opt-in", kernel)
         self.assertFalse((ROOT / "protocols/session.md").exists())
         self.assertFalse((ROOT / "protocols/verification.md").exists())
 
-    def test_runtime_envelope_does_not_repeat_task_or_inactive_controls(self) -> None:
+    def test_resolved_permissions_do_not_repeat_task_or_inactive_controls(self) -> None:
         contracts = (ROOT / "src/contracts.md").read_text(encoding="utf-8")
         self.assertIn("does not repeat them", contracts)
-        self.assertIn("omitted unless", contracts)
+        self.assertIn("Secret and program controls are omitted", contracts)
         schema = json.loads(
-            (ROOT / "schemas/runtime-envelope.schema.json").read_text()
+            (ROOT / "schemas/resolved-permissions.schema.json").read_text()
         )
         required = set(schema["required"])
-        self.assertIn("profile_verified", required)
+        self.assertIn("policy_verified", required)
+        self.assertIn("authority_mode", required)
+        self.assertIn("task_sha256", required)
         self.assertIn("canonical_sources", required)
         self.assertNotIn("outcome", required)
         self.assertNotIn("scope", required)
 
+    def test_authority_modes_are_unambiguous_and_direct_is_artifact_free(self) -> None:
+        context = json.loads((ROOT / "src/context.json").read_text())
+        modes = context["authority_modes"]
+        self.assertEqual(modes["default"], "direct")
+        self.assertEqual(modes["direct"]["requires"], [])
+        self.assertEqual(modes["resolved"]["selection"], "explicit")
+        self.assertEqual(
+            modes["resolved"]["requires"],
+            ["TaskRequest", "ResolvedPermissions"],
+        )
+
+    def test_direct_mode_does_not_infer_high_risk_authority(self) -> None:
+        kernel = (ROOT / "src/KERNEL.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "Available credentials, tool access, historical practice, and plausible",
+            kernel,
+        )
+        self.assertIn("never widen the boundary", kernel)
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "bounded edit, check, commit, push, review, and merge",
+            readme,
+        )
+        self.assertIn(
+            "Release, deploy, production mutation, and credential access",
+            readme,
+        )
+
+    def test_resolved_mode_cannot_be_relabelled_direct(self) -> None:
+        schema = json.loads(
+            (ROOT / "schemas/resolved-permissions.schema.json").read_text()
+        )
+        self.assertEqual(
+            schema["properties"]["authority_mode"]["const"],
+            "resolved",
+        )
+
+    def test_program_direct_mode_uses_canonical_control(self) -> None:
+        program = (ROOT / "protocols/program.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "current request and canonical plan must identify the live",
+            program,
+        )
+        self.assertIn(
+            "In resolved mode, the TaskRequest also names it",
+            program,
+        )
+
     def test_program_contract_represents_repair_and_terminal_states(self) -> None:
         program = (ROOT / "protocols/program.md").read_text(encoding="utf-8")
         for phrase in (
-            "independent of every invalidated field and control",
+            "explicit repair authority independent of",
             "cannot authorize its own repair",
             "have no active coordinates or dispatchable",
             "A terminated control cannot resume",

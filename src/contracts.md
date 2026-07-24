@@ -1,30 +1,33 @@
 # Runtime Contracts
 
-These contracts define the small public interface between people, resolvers,
-tools, and delegated actors. JSON Schemas under `schemas/` are authoritative
-for document shape; the packaged resolver owns semantic acceptance checks that
-schemas cannot express, such as source precedence and action-set relations.
+These contracts define the small public interface between people, hosts,
+tools, and delegated actors. Direct mode requires no Method-specific document.
+The JSON forms under `schemas/` are optional automation serializations. The
+packaged resolver owns semantic checks that schemas cannot express, such as
+source precedence and action-set relations.
 
-## ProjectProfile
+## ProjectPolicy
 
-A ProjectProfile is standing project policy, accepted once per policy revision.
-It defines canonical sources, default action boundaries, protocol defaults,
+A ProjectPolicy is standing policy for resolved mode, accepted once per policy
+revision. It defines canonical sources, action boundaries, protocol defaults,
 gates, secret controls, program repair authority, and reporting.
 
 The canonical JSON has exactly five top-level fields: `schema_version`,
-`method_version`, `profile_id`, `policy`, and `acceptance`. The policy digest
+`method_version`, `policy_id`, `policy`, and `acceptance`. The policy digest
 covers the canonical JSON representation of every field except `acceptance`.
 Unknown or duplicate fields fail closed. Acceptance metadata is evidence only
 when an independently authoritative receipt matches the exact policy digest.
-The ProfileAuthorityRegistry shape is published under `schemas/`; it must live
+The PolicyAuthorityRegistry shape is published under `schemas/`; it must live
 outside the delegated model's write authority.
 
-The coordinating model does not validate or load the ProjectProfile. A trusted
-resolver validates it and emits the applicable policy as a RuntimeEnvelope.
+The coordinating model does not validate or load the ProjectPolicy. The
+consuming host validates it and supplies the accepted input to the resolver.
 
 ## TaskRequest
 
-A TaskRequest is trusted caller input for one controlled task. It states:
+A TaskRequest is a host-authenticated snapshot of the caller's request for one
+resolved-mode task. A model draft is not authoritative merely because it
+matches the schema. It states:
 
 - task identity and outcome;
 - included and excluded scope;
@@ -34,14 +37,15 @@ A TaskRequest is trusted caller input for one controlled task. It states:
 - additional required gates;
 - baseline identity, stop conditions, and expiry conditions.
 
-Requested actions must be a subset of profile-allowed actions and must not
+Requested actions must be a subset of policy-allowed actions and must not
 intersect any forbidden action.
 
-## RuntimeEnvelope
+## ResolvedPermissions
 
-A RuntimeEnvelope is generated, task-scoped capability context. It contains:
+ResolvedPermissions is generated, task-scoped capability context. It contains:
 
-- exact profile identity, policy digest, and acceptance receipt;
+- the explicit `resolved` authority mode and exact TaskRequest digest;
+- exact policy identity, digest, and acceptance receipt;
 - canonical sources and their precedence;
 - allowed and forbidden actions;
 - selected protocols;
@@ -49,13 +53,16 @@ A RuntimeEnvelope is generated, task-scoped capability context. It contains:
 - only the project controls needed by the selected protocols, plus reporting.
 
 The TaskRequest carries outcome, scope, logical references, baseline, stop, and
-expiry data; the envelope does not repeat them. References must never be bearer
-or authorizing material. Secret and program controls are omitted unless their
-protocols are selected.
+expiry data; ResolvedPermissions does not repeat them. References must never
+be bearer or authorizing material. Secret and program controls are omitted
+unless their protocols are selected.
 
-Only a trusted resolver may set `profile_verified` to `true`. The envelope does
-not itself enforce a permission; the consuming harness should map action and
-gate identifiers to enforceable tools where available.
+Only the consuming host may treat `policy_verified: true` as meaningful. The
+resolver proves structural consistency and a matching acceptance receipt; it
+does not authenticate the caller, prove that a TaskRequest preserves the
+conversation, or enforce a permission. The host must protect the ProjectPolicy
+and authority registry, bind the accepted TaskRequest, and map action and gate
+identifiers to enforceable tools where available.
 
 ## ControlledAction
 
@@ -67,8 +74,8 @@ Before a consequential mutation, restate only:
 - recovery or accepted irreversibility; and
 - stop condition.
 
-Do not create a separate controlled-action artifact when the RuntimeEnvelope
-already states these fields clearly.
+Do not create a separate controlled-action artifact when the applicable direct
+boundary or ResolvedPermissions already states these fields clearly.
 
 ## EvidenceReceipt
 
@@ -82,6 +89,8 @@ material environment change invalidates the old receipt for the changed claim.
 ProgramControl exists only for persistent dependent workstreams. It records one
 live program state, active coordinates, accepted frontiers, authorized queue,
 hard gates, forbidden work, reconciliation receipt, and stop/resume conditions.
+It may be a canonical plan block, tracker record, host state, or the optional
+JSON serialization.
 
 Only `ACTIVE` controls dispatch normal work. `STOPPED_FOR_REPLAN` permits
 read-only diagnosis and independently authorized plan repair. `COMPLETE` and
@@ -89,6 +98,7 @@ read-only diagnosis and independently authorized plan repair. `COMPLETE` and
 Authority invalidated by a finding cannot authorize its own repair or
 acceptance.
 
-The resolver selects Program but does not infer live program state. The harness
-must separately validate and supply the ProgramControl named by the
-TaskRequest. A missing or mismatched control keeps program work read-only.
+Protocol routing does not infer live program state. The actor or host must
+reconcile the ProgramControl identified by the current request and canonical
+plan, or by the TaskRequest in resolved mode. A missing or mismatched control
+keeps program work read-only.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Noel Method v0.3 profile verification and runtime-envelope resolver."""
+"""Noel Method v0.4 policy verification and permissions resolver."""
 
 from __future__ import annotations
 
@@ -20,8 +20,8 @@ ROOT = SCRIPT_ROOT
 PACK = ROOT if PACKAGED else ROOT / "dist" / "pack"
 CONTEXT_SOURCE = ROOT / "CONTEXT.json" if PACKAGED else ROOT / "src" / "context.json"
 PROTOCOL_KEYS = ("program", "experiment", "secrets")
-PROFILE_FIELDS = {
-    "schema_version", "method_version", "profile_id", "policy", "acceptance"
+PROJECT_POLICY_FIELDS = {
+    "schema_version", "method_version", "policy_id", "policy", "acceptance"
 }
 POLICY_FIELDS = {
     "scope", "canonical_sources", "actions", "protocols", "gates", "secrets",
@@ -33,7 +33,7 @@ SECRET_FIELDS = {
     "encrypted_envelopes",
 }
 AUTHORITY_RECEIPT_FIELDS = {
-    "profile_id", "method_version", "policy_sha256", "authority_source",
+    "policy_id", "method_version", "policy_sha256", "authority_source",
     "accepted_by", "accepted_at",
 }
 TASK_FIELDS = {
@@ -42,8 +42,8 @@ TASK_FIELDS = {
     "baseline_identity", "stop_conditions", "expires_on",
 }
 IDENTIFIER_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]*$")
-PROFILE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
-METHOD_VERSION_RE = re.compile(r"^0\.3\.[0-9]+$")
+POLICY_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+METHOD_VERSION_RE = re.compile(r"^0\.4\.[0-9]+$")
 HEX_DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -101,9 +101,9 @@ def _text(value: object, label: str) -> str:
     return value
 
 
-def _identifier(value: object, label: str, *, profile: bool = False) -> str:
+def _identifier(value: object, label: str, *, policy: bool = False) -> str:
     text = _text(value, label)
-    pattern = PROFILE_ID_RE if profile else IDENTIFIER_RE
+    pattern = POLICY_ID_RE if policy else IDENTIFIER_RE
     if not pattern.fullmatch(text):
         raise DataError(f"{label}: invalid identifier")
     return text
@@ -149,7 +149,10 @@ def installed_method_version() -> str:
 
 def context_spec() -> dict[str, Any]:
     raw = read_json(CONTEXT_SOURCE)
-    fields = {"schema_version", "kernel", "module_order", "protocols", "runtime"}
+    fields = {
+        "schema_version", "kernel", "module_order", "protocols",
+        "authority_modes", "resolved_mode",
+    }
     if PACKAGED:
         packaged_fields = fields | {"method", "version"}
         value = _object(raw, packaged_fields, "CONTEXT.json")
@@ -157,8 +160,8 @@ def context_spec() -> dict[str, Any]:
         _text(value["version"], "CONTEXT.json.version")
         raw = {field: value[field] for field in fields}
     spec = _object(raw, fields, "src/context.json")
-    if spec["schema_version"] != 2:
-        raise DataError("src/context.json: schema_version must be 2")
+    if spec["schema_version"] != 3:
+        raise DataError("src/context.json: schema_version must be 3")
     if spec["kernel"] != "KERNEL.md":
         raise DataError("src/context.json: kernel must be KERNEL.md")
     module_order = _strings(spec["module_order"], "src/context.json.module_order")
@@ -180,13 +183,34 @@ def context_spec() -> dict[str, Any]:
         raise DataError(
             f"src/context.json: protocol modules must be {expected_modules}"
         )
+    modes = _object(
+        spec["authority_modes"],
+        {"default", "direct", "resolved"},
+        "src/context.json.authority_modes",
+    )
+    if modes["default"] != "direct":
+        raise DataError("src/context.json: direct must be the default authority mode")
+    direct = _object(
+        modes["direct"], {"requires"}, "src/context.json.authority_modes.direct"
+    )
+    if direct["requires"] != []:
+        raise DataError("src/context.json: direct mode requires no Method artifacts")
+    resolved = _object(
+        modes["resolved"],
+        {"selection", "requires"},
+        "src/context.json.authority_modes.resolved",
+    )
+    if resolved["selection"] != "explicit":
+        raise DataError("src/context.json: resolved mode selection must be explicit")
+    if resolved["requires"] != ["TaskRequest", "ResolvedPermissions"]:
+        raise DataError("src/context.json: resolved mode requirements differ")
     _object(
-        spec["runtime"],
+        spec["resolved_mode"],
         {
-            "profile_schema", "authorities_schema", "task_schema",
-            "envelope_schema", "program_schema", "resolver",
+            "policy_schema", "authorities_schema", "task_schema",
+            "permissions_schema", "program_schema", "resolver",
         },
-        "src/context.json.runtime",
+        "src/context.json.resolved_mode",
     )
     return spec
 
@@ -241,27 +265,29 @@ def allowed_context_modules(spec: dict[str, Any] | None = None) -> set[str]:
 
 
 def _validate_method_version(value: object, supported: str) -> str:
-    version = _text(value, "profile.method_version")
+    version = _text(value, "policy.method_version")
     if not METHOD_VERSION_RE.fullmatch(version):
-        raise DataError("profile.method_version: expected a 0.3.x release")
+        raise DataError("policy.method_version: expected a 0.4.x release")
     if not METHOD_VERSION_RE.fullmatch(supported):
         raise DataError(f"installed method version is unsupported: {supported}")
     return version
 
 
 def validate_policy(policy: object) -> dict[str, Any]:
-    value = _object(policy, POLICY_FIELDS, "profile.policy")
-    _strings(value["scope"], "profile.policy.scope")
+    value = _object(policy, POLICY_FIELDS, "ProjectPolicy.policy")
+    _strings(value["scope"], "ProjectPolicy.policy.scope")
 
     sources = value["canonical_sources"]
     if not isinstance(sources, list) or not sources:
-        raise DataError("profile.policy.canonical_sources: must be a non-empty array")
+        raise DataError(
+            "ProjectPolicy.policy.canonical_sources: must be a non-empty array"
+        )
     source_ids: list[str] = []
     precedences: list[int] = []
     for index, source in enumerate(sources):
         item = _object(
             source, {"id", "owns", "precedence"},
-            f"profile.policy.canonical_sources[{index}]",
+            f"ProjectPolicy.policy.canonical_sources[{index}]",
         )
         source_ids.append(_identifier(item["id"], f"canonical_sources[{index}].id"))
         _text(item["owns"], f"canonical_sources[{index}].owns")
@@ -269,19 +295,27 @@ def validate_policy(policy: object) -> dict[str, Any]:
             raise DataError(f"canonical_sources[{index}].precedence: must be an integer")
         precedences.append(item["precedence"])
     if len(source_ids) != len(set(source_ids)):
-        raise DataError("profile.policy.canonical_sources: IDs must be unique")
+        raise DataError("ProjectPolicy.policy.canonical_sources: IDs must be unique")
     if sorted(precedences) != list(range(1, len(precedences) + 1)):
-        raise DataError("profile.policy.canonical_sources: precedence must be contiguous")
+        raise DataError(
+            "ProjectPolicy.policy.canonical_sources: precedence must be contiguous"
+        )
 
-    actions = _object(value["actions"], {"allowed", "forbidden"}, "profile.policy.actions")
-    allowed = _strings(actions["allowed"], "profile.policy.actions.allowed", allow_empty=True)
+    actions = _object(
+        value["actions"], {"allowed", "forbidden"}, "ProjectPolicy.policy.actions"
+    )
+    allowed = _strings(
+        actions["allowed"], "ProjectPolicy.policy.actions.allowed", allow_empty=True
+    )
     forbidden = _strings(
-        actions["forbidden"], "profile.policy.actions.forbidden", allow_empty=True
+        actions["forbidden"],
+        "ProjectPolicy.policy.actions.forbidden",
+        allow_empty=True,
     )
     overlap = set(allowed) & set(forbidden)
     if overlap:
         raise DataError(
-            "profile.policy.actions: allowed and forbidden overlap: "
+            "ProjectPolicy.policy.actions: allowed and forbidden overlap: "
             + ", ".join(sorted(overlap))
         )
 
@@ -289,12 +323,12 @@ def validate_policy(policy: object) -> dict[str, Any]:
 
     gates = value["gates"]
     if not isinstance(gates, list) or not gates:
-        raise DataError("profile.policy.gates: must be a non-empty array")
+        raise DataError("ProjectPolicy.policy.gates: must be a non-empty array")
     gate_ids: list[str] = []
     for index, gate in enumerate(gates):
         item = _object(
             gate, {"id", "default", "before", "required_evidence"},
-            f"profile.policy.gates[{index}]",
+            f"ProjectPolicy.policy.gates[{index}]",
         )
         gate_ids.append(_identifier(item["id"], f"gates[{index}].id"))
         if not isinstance(item["default"], bool):
@@ -302,39 +336,46 @@ def validate_policy(policy: object) -> dict[str, Any]:
         _text(item["before"], f"gates[{index}].before")
         _text(item["required_evidence"], f"gates[{index}].required_evidence")
     if len(gate_ids) != len(set(gate_ids)):
-        raise DataError("profile.policy.gates: IDs must be unique")
+        raise DataError("ProjectPolicy.policy.gates: IDs must be unique")
 
-    secrets = _object(value["secrets"], SECRET_FIELDS, "profile.policy.secrets")
+    secrets = _object(
+        value["secrets"], SECRET_FIELDS, "ProjectPolicy.policy.secrets"
+    )
     _strings(
         secrets["approved_references"],
-        "profile.policy.secrets.approved_references",
+        "ProjectPolicy.policy.secrets.approved_references",
     )
     for field in SECRET_FIELDS - {"approved_references"}:
-        _text(secrets[field], f"profile.policy.secrets.{field}")
+        _text(secrets[field], f"ProjectPolicy.policy.secrets.{field}")
 
     program = _object(
-        value["program"], {"trigger", "repair_authority"}, "profile.policy.program"
+        value["program"],
+        {"trigger", "repair_authority"},
+        "ProjectPolicy.policy.program",
     )
-    _text(program["trigger"], "profile.policy.program.trigger")
-    _text(program["repair_authority"], "profile.policy.program.repair_authority")
-    _text(value["reporting"], "profile.policy.reporting")
+    _text(program["trigger"], "ProjectPolicy.policy.program.trigger")
+    _text(
+        program["repair_authority"],
+        "ProjectPolicy.policy.program.repair_authority",
+    )
+    _text(value["reporting"], "ProjectPolicy.policy.reporting")
     return value
 
 
-def profile_policy_payload(profile: object) -> bytes:
-    value = _object(profile, PROFILE_FIELDS, "profile")
+def project_policy_payload(project_policy: object) -> bytes:
+    value = _object(project_policy, PROJECT_POLICY_FIELDS, "ProjectPolicy")
     validate_policy(value["policy"])
     payload = {
         "schema_version": value["schema_version"],
         "method_version": value["method_version"],
-        "profile_id": value["profile_id"],
+        "policy_id": value["policy_id"],
         "policy": value["policy"],
     }
     return canonical_json(payload)
 
 
-def profile_policy_digest(profile: object) -> str:
-    return hashlib.sha256(profile_policy_payload(profile)).hexdigest()
+def project_policy_digest(project_policy: object) -> str:
+    return hashlib.sha256(project_policy_payload(project_policy)).hexdigest()
 
 
 def validate_authority_registry(authorities: object) -> dict[str, Any]:
@@ -345,11 +386,11 @@ def validate_authority_registry(authorities: object) -> dict[str, Any]:
         item = _object(
             raw, AUTHORITY_RECEIPT_FIELDS, f"authority receipt {receipt}"
         )
-        _identifier(item["profile_id"], f"{receipt}.profile_id", profile=True)
+        _identifier(item["policy_id"], f"{receipt}.policy_id", policy=True)
         if not METHOD_VERSION_RE.fullmatch(_text(
             item["method_version"], f"{receipt}.method_version"
         )):
-            raise DataError(f"{receipt}.method_version: expected a 0.3.x release")
+            raise DataError(f"{receipt}.method_version: expected a 0.4.x release")
         digest = _text(item["policy_sha256"], f"{receipt}.policy_sha256")
         if not HEX_DIGEST_RE.fullmatch(digest):
             raise DataError(f"{receipt}.policy_sha256: expected lowercase SHA-256")
@@ -358,19 +399,21 @@ def validate_authority_registry(authorities: object) -> dict[str, Any]:
     return authorities
 
 
-def validate_project_profile(
-    profile: object,
+def validate_project_policy(
+    project_policy: object,
     authorities: object,
     *,
     supported_version: str | None = None,
     require_accepted: bool = True,
 ) -> dict[str, Any]:
-    value = _object(profile, PROFILE_FIELDS, "profile")
+    value = _object(project_policy, PROJECT_POLICY_FIELDS, "ProjectPolicy")
     if value["schema_version"] != 1:
-        raise DataError("profile.schema_version: must be 1")
+        raise DataError("ProjectPolicy.schema_version: must be 1")
     supported = supported_version or installed_method_version()
     version = _validate_method_version(value["method_version"], supported)
-    profile_id = _identifier(value["profile_id"], "profile.profile_id", profile=True)
+    policy_id = _identifier(
+        value["policy_id"], "ProjectPolicy.policy_id", policy=True
+    )
     policy = validate_policy(value["policy"])
     acceptance = _object(
         value["acceptance"],
@@ -378,30 +421,32 @@ def validate_project_profile(
             "status", "policy_sha256", "authority_source", "accepted_by",
             "accepted_at", "receipt",
         },
-        "profile.acceptance",
+        "ProjectPolicy.acceptance",
     )
     if not require_accepted:
         if acceptance["status"] not in {"draft", "accepted"}:
-            raise DataError("profile.acceptance.status: invalid value")
+            raise DataError("ProjectPolicy.acceptance.status: invalid value")
         return {
-            "profile_id": profile_id,
+            "policy_id": policy_id,
             "method_version": version,
-            "policy_sha256": profile_policy_digest(value),
+            "policy_sha256": project_policy_digest(value),
             "policy": policy,
             "accepted": False,
         }
     if acceptance["status"] != "accepted":
-        raise DataError("profile.acceptance.status: must be accepted")
-    digest = profile_policy_digest(value)
+        raise DataError("ProjectPolicy.acceptance.status: must be accepted")
+    digest = project_policy_digest(value)
     if not HEX_DIGEST_RE.fullmatch(str(acceptance["policy_sha256"])):
-        raise DataError("profile.acceptance.policy_sha256: must be lowercase SHA-256")
+        raise DataError(
+            "ProjectPolicy.acceptance.policy_sha256: must be lowercase SHA-256"
+        )
     if acceptance["policy_sha256"] != digest:
-        raise DataError("profile acceptance digest is stale")
+        raise DataError("ProjectPolicy acceptance digest is stale")
     for field in ("authority_source", "accepted_by", "accepted_at", "receipt"):
-        _text(acceptance[field], f"profile.acceptance.{field}")
+        _text(acceptance[field], f"ProjectPolicy.acceptance.{field}")
     checked_authorities = validate_authority_registry(authorities)
     expected = {
-        "profile_id": profile_id,
+        "policy_id": policy_id,
         "method_version": version,
         "policy_sha256": digest,
         "authority_source": acceptance["authority_source"],
@@ -409,9 +454,9 @@ def validate_project_profile(
         "accepted_at": acceptance["accepted_at"],
     }
     if checked_authorities.get(acceptance["receipt"]) != expected:
-        raise DataError("profile authority receipt does not match")
+        raise DataError("ProjectPolicy authority receipt does not match")
     return {
-        "profile_id": profile_id,
+        "policy_id": policy_id,
         "method_version": version,
         "policy_sha256": digest,
         "acceptance_receipt": acceptance["receipt"],
@@ -450,16 +495,16 @@ def validate_task_request(task: object) -> dict[str, Any]:
     return value
 
 
-def resolve_runtime_envelope(
-    profile: object,
+def resolve_permissions(
+    project_policy: object,
     authorities: object,
     task: object,
     model_flags: object | None = None,
     *,
     supported_version: str | None = None,
 ) -> dict[str, Any]:
-    checked_profile = validate_project_profile(
-        profile, authorities, supported_version=supported_version
+    checked_policy = validate_project_policy(
+        project_policy, authorities, supported_version=supported_version
     )
     checked_task = validate_task_request(task)
     flags = validate_protocol_flags(
@@ -467,8 +512,8 @@ def resolve_runtime_envelope(
         if model_flags is not None
         else {key: False for key in PROTOCOL_KEYS}
     )
-    policy = checked_profile["policy"]
-    profile_flags = validate_protocol_flags(policy["protocols"])
+    policy = checked_policy["policy"]
+    policy_flags = validate_protocol_flags(policy["protocols"])
     task_flags = {
         "program": checked_task["signals"]["persistent_program"],
         "experiment": checked_task["signals"]["controlled_comparison"],
@@ -477,7 +522,7 @@ def resolve_runtime_envelope(
     protocols = [
         key
         for key in PROTOCOL_KEYS
-        if profile_flags[key] or task_flags[key] or flags[key]
+        if policy_flags[key] or task_flags[key] or flags[key]
     ]
     if "program" in protocols and not any(
         reference.startswith("program-control:")
@@ -487,12 +532,12 @@ def resolve_runtime_envelope(
             "Program protocol requires a program-control: logical reference"
         )
 
-    profile_allowed = list(policy["actions"]["allowed"])
+    policy_allowed = list(policy["actions"]["allowed"])
     requested = list(checked_task["requested_actions"])
-    unknown_actions = set(requested) - set(profile_allowed)
+    unknown_actions = set(requested) - set(policy_allowed)
     if unknown_actions:
         raise DataError(
-            "task requests actions not allowed by the profile: "
+            "task requests actions not allowed by the ProjectPolicy: "
             + ", ".join(sorted(unknown_actions))
         )
     forbidden = list(dict.fromkeys(
@@ -524,19 +569,23 @@ def resolve_runtime_envelope(
 
     return {
         "schema_version": 1,
-        "method_version": checked_profile["method_version"],
+        "method_version": checked_policy["method_version"],
+        "authority_mode": "resolved",
         "task_id": checked_task["task_id"],
-        "profile_verified": True,
+        "task_sha256": hashlib.sha256(
+            canonical_json(checked_task)
+        ).hexdigest(),
+        "policy_verified": True,
         "policy_ref": {
-            "id": checked_profile["profile_id"],
-            "policy_sha256": checked_profile["policy_sha256"],
-            "acceptance_receipt": checked_profile["acceptance_receipt"],
+            "id": checked_policy["policy_id"],
+            "policy_sha256": checked_policy["policy_sha256"],
+            "acceptance_receipt": checked_policy["acceptance_receipt"],
         },
         "canonical_sources": sorted(
             policy["canonical_sources"], key=lambda item: item["precedence"]
         ),
-        "authority": requested,
-        "forbidden": forbidden,
+        "allowed_actions": requested,
+        "forbidden_actions": forbidden,
         "protocols": protocols,
         "required_gates": [gate_by_id[gate_id] for gate_id in gate_ids],
         "controls": controls,
@@ -621,15 +670,15 @@ def _main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    digest_parser = subparsers.add_parser("profile-digest")
-    digest_parser.add_argument("profile", type=Path)
+    digest_parser = subparsers.add_parser("policy-digest")
+    digest_parser.add_argument("policy", type=Path)
 
-    verify_parser = subparsers.add_parser("verify-profile")
-    verify_parser.add_argument("profile", type=Path)
+    verify_parser = subparsers.add_parser("verify-policy")
+    verify_parser.add_argument("policy", type=Path)
     verify_parser.add_argument("--authorities", type=Path, required=True)
 
     resolve_parser = subparsers.add_parser("resolve")
-    resolve_parser.add_argument("--profile", type=Path, required=True)
+    resolve_parser.add_argument("--policy", type=Path, required=True)
     resolve_parser.add_argument("--authorities", type=Path, required=True)
     resolve_parser.add_argument("--task", type=Path, required=True)
     resolve_parser.add_argument("--model-flags", type=Path)
@@ -639,19 +688,19 @@ def _main() -> int:
 
     args = parser.parse_args()
     try:
-        if args.command == "profile-digest":
-            profile = read_json(args.profile.resolve())
-            checked = validate_project_profile(
-                profile, {}, require_accepted=False
+        if args.command == "policy-digest":
+            project_policy = read_json(args.policy.resolve())
+            checked = validate_project_policy(
+                project_policy, {}, require_accepted=False
             )
             print(checked["policy_sha256"])
-        elif args.command == "verify-profile":
-            result = validate_project_profile(
-                read_json(args.profile.resolve()),
+        elif args.command == "verify-policy":
+            result = validate_project_policy(
+                read_json(args.policy.resolve()),
                 read_json(args.authorities.resolve()),
             )
             print(json.dumps({
-                "profile_id": result["profile_id"],
+                "policy_id": result["policy_id"],
                 "method_version": result["method_version"],
                 "policy_sha256": result["policy_sha256"],
                 "verified": True,
@@ -663,13 +712,13 @@ def _main() -> int:
                 if args.model_flags is not None
                 else None
             )
-            envelope = resolve_runtime_envelope(
-                read_json(args.profile.resolve()),
+            permissions = resolve_permissions(
+                read_json(args.policy.resolve()),
                 read_json(args.authorities.resolve()),
                 read_json(args.task.resolve()),
                 flags,
             )
-            print(json.dumps(envelope, indent=2))
+            print(json.dumps(permissions, indent=2))
         else:
             control = validate_program_control(read_json(args.control.resolve()))
             print(json.dumps({

@@ -9,8 +9,10 @@ useful authorized action. Verify the exact claim with the sharpest relevant
 check. Report the outcome, evidence, limitations, remaining gates, and next
 decision.
 
-Do not create a RuntimeEnvelope merely because the work has several local
-steps. If it crosses the direct boundary, require one from the trusted resolver
-and load only the protocols it names. Never place secret or bearer material in
-model or tool context.
+Do not require ResolvedPermissions merely because the work has several local
+steps, uses a remote service, or persists across a conversation. Direct mode is
+the default. Require ResolvedPermissions only when the project, current
+request, or host explicitly selects resolved mode. Load Program, Experiment,
+or Secrets by task shape. Never place secret or bearer material in model or
+tool context.
 ```
