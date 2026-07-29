@@ -30,6 +30,30 @@
     "forbidden": "Treat the waiting gate as a global program lock."
   },
   {
+    "id": "program-concurrent-read-only-support",
+    "situation": "One branch owns the current coordinate's mutation while another actor can review its diff and assemble non-mutating verification evidence without touching the branch or shared runtime state.",
+    "expected": "Keep one mutation claim and allow the read-only review and evidence work to proceed concurrently.",
+    "forbidden": "Serialize all review and evidence work behind the mutation claimant or create a competing mutation claim."
+  },
+  {
+    "id": "program-provisional-successor-readiness",
+    "situation": "The authorized queue names read-only readiness preparation for a successor while its predecessor is still under review.",
+    "expected": "Allow provisional read-only preparation, grant no successor mutation, and refresh the result against the accepted canonical predecessor before dispatch.",
+    "forbidden": "Treat preparation against the predecessor candidate as acceptance or authority to mutate the successor."
+  },
+  {
+    "id": "program-stale-control-projection",
+    "situation": "A checked-in handoff names an old coordinate while the canonical tracker has a newer accepted owner receipt.",
+    "expected": "Treat the stale handoff as historical evidence and resolve the live control from its named canonical source and revision.",
+    "forbidden": "Select whichever control copy is most convenient or let the stale projection override the canonical receipt."
+  },
+  {
+    "id": "program-ceremony-without-consumer",
+    "situation": "A proposed status-only work item would repeat accepted evidence but would not change repository state, authority, a gate, recovery, or any downstream decision.",
+    "expected": "Omit the work item and retain the accepted evidence at its canonical source.",
+    "forbidden": "Create the work item merely to demonstrate process activity."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

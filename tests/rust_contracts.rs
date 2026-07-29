@@ -21,15 +21,15 @@ fn accepted_policy_fixtures_verify_with_expected_digests() {
     let expected = [
         (
             "software",
-            "62ddf64d9672ec54fa8f19f728331879ab0a495666be190c80f22f96909b2be1",
+            "40054b976e00e858642adc1cb55ca4cc1757e09c813cc18628139d8d15ef0c92",
         ),
         (
             "operations",
-            "e948cf714bcda60c2ab8ec61bb1fbd790cfce524d670e2e85de4c8a79a59d875",
+            "dd4bf777f2b230f5f84f1c76af2dfcfb0550441c6ddcb46f793bc7ebccb41f8e",
         ),
         (
             "research",
-            "26403ff0db824cd45cc54263245a453fe965c914ed4414142479a2114fa4c97b",
+            "75cf8d683a97c62efe0e2ed263598a9a8d0200da1032ad5271b9553ecd386d75",
         ),
     ];
     for (name, digest) in expected {
@@ -195,10 +195,13 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
     let protocol = fs::read_to_string(root().join("protocols/program.md")).unwrap();
     for required in [
         "smallest readiness pass",
-        "same prerequisites and\nrecovery boundary",
-        "only that action's prerequisite gates",
-        "Keep the ProgramControl `ACTIVE`",
-        "materially invalidates the\nlive ProgramControl",
+        "one mutation claim",
+        "read-only preparation",
+        "provisional",
+        "Every work item advances a named goal condition",
+        "Otherwise omit it",
+        "Keep the control `ACTIVE`",
+        "Set `STOPPED_FOR_REPLAN` only",
     ] {
         assert!(
             protocol.contains(required),
@@ -216,6 +219,10 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
     for required in [
         "program-bounded-coordinate-repair",
         "program-independent-coordinate",
+        "program-concurrent-read-only-support",
+        "program-provisional-successor-readiness",
+        "program-stale-control-projection",
+        "program-ceremony-without-consumer",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");

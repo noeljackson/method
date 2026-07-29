@@ -14,6 +14,31 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.6.x to 0.7.0
+
+`0.7.0` simplifies Program execution without changing authority modes or the
+optional ProgramControl JSON schema.
+
+- Keep one mutation claim per coordinate while allowing non-mutating review,
+  verification, monitoring, and evidence assembly to proceed concurrently.
+- A queue may authorize read-only successor preparation. Treat that result as
+  provisional and refresh it against the accepted canonical predecessor before
+  dispatching successor mutation.
+- Bind copied or rendered live controls to their canonical source and revision.
+  Treat a stale projection as evidence, not live authority.
+- Require each work item to advance a named goal condition through a cohesive
+  recoverable outcome. Omit an additional control artifact, gate, or receipt
+  when it prevents no named failure, carries no authority, and supplies no
+  evidence consumed by a later decision.
+- Keep direct adoption artifact-free. The `method` binary, generated pack,
+  schemas, templates, and JSON serializations remain optional aids.
+- Existing ProgramControl schema-version-2 documents remain structurally
+  valid. Their reconciliation receipts should identify canonical source and
+  revision when the control is copied or rendered.
+- Update resolved-mode policies to `method_version: "0.7.0"` and record new
+  independent acceptance receipts. Direct-mode consumers need only adopt the
+  new normative text or verified runtime pack.
+
 ## Public interface migration from 0.5.x to 0.6.0
 
 `0.6.0` changes Program decisions without changing authority modes.
