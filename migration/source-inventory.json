@@ -65,8 +65,10 @@
     {"id": "C-014", "heading": "Superseding execution-control block accumulation"},
     {"id": "C-015", "heading": "One selector drives local and remote verification"},
     {"id": "C-016", "heading": "Optional authority infrastructure caused an impossible adoption bootstrap"},
-    {"id": "C-017", "heading": "Bounded defects caused full-program stops and fragmented work items"},
-    {"id": "C-018", "heading": "Control activity must not replace outcome flow"}
+    {"id": "C-017", "heading": "Bounded defects caused full-program stops and fragmented work items"}
+  ],
+  "program": [
+    {"id": "P-001", "heading": "Control activity must not replace outcome flow"}
   ],
   "autoagent": [
     {"id": "A-001", "heading": "Unmodified baseline first"},

@@ -120,32 +120,6 @@ right-sizing work items around one recovery boundary, scoping gates to the
 actions they block, and keeping the program active for repairs that remain
 inside an accepted coordinate.
 
-### Control activity must not replace outcome flow
-
-Observation ID: `C-018`
-
-After the bounded-repair correction, Connect Wave 5 still produced 54
-canonical commits between formal entry and the adoption of version 0.6 with
-WI-8B ready to begin. Twenty-four were explicitly governance or documentation
-control commits before counting selector repairs. Mutation, review,
-verification, evidence assembly, and successor readiness were often treated as
-one serial activity. The checked-in master and handoff also continued to
-present an old coordinate after canonical tracker receipts had advanced the
-live state.
-
-The safety decisions remained useful: exact artifacts, recovery boundaries,
-and live-state evidence caught real defects. The remaining failure was that
-control activity could become work in its own right, while safe non-mutating
-support waited behind the mutation claimant and stale projections competed
-with the canonical tracker.
-
-Version 0.7 generalizes the correction narrowly. A coordinate has one mutation
-claim while non-mutating review, verification, monitoring, and evidence may
-run concurrently. Named successor preparation is provisional until refreshed
-against its accepted predecessor. Copies of live control identify their source
-and revision, and additional ceremony without a named failure, authority
-purpose, or downstream evidence consumer is omitted.
-
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

@@ -20,8 +20,8 @@ All notable changes to the Noel Method are recorded here.
 - Clarify that the Method is the normative Markdown; the stateless CLI,
   generated pack, schemas, templates, and structured controls are optional
   aids rather than adoption requirements.
-- Record Codewire control activity and stale projection drift as casebook
-  observation `C-018` and add deterministic Program scenarios.
+- Record the generalized control-activity and stale-projection failure as
+  casebook observation `P-001` and add deterministic Program scenarios.
 
 ## 0.6.0 - 2026-07-29
 
