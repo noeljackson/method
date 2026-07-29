@@ -94,6 +94,32 @@ authority the default, routing protocols by risk, and requiring
 ResolvedPermissions only when a consumer explicitly selects and implements
 resolved mode.
 
+### Bounded defects must not stop an entire program
+
+Observation ID: `C-017`
+
+During a long Connect migration, the program repeatedly treated defects inside
+an already accepted work-item boundary as discoveries that invalidated the
+whole plan. It created additional status, correction, and evidence work items,
+serialized independent work behind unrelated verification, and required
+docs-first resume cycles even when outcome, authority, dependencies, contracts,
+external state, acceptance, and recovery boundaries had not changed.
+
+Codewire recorded the corrective program-control decision as WI-M131 and
+accepted it through Gitea PR `#1477`.
+
+Some discoveries did change those boundaries, and the full stop correctly
+prevented silent scope expansion. The failure was that the Program protocol did
+not state the difference. Its broad stop list encouraged conservative actors to
+equate a failed implementation hypothesis with an invalid ProgramControl, while
+its "one reviewable outcome" language did not tie work-item size to a cohesive
+change and recovery boundary.
+
+Version 0.6 generalizes the correction by adding a bounded readiness pass,
+right-sizing work items around one recovery boundary, scoping gates to the
+actions they block, and keeping the program active for repairs that remain
+inside an accepted coordinate.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

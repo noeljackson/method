@@ -17,7 +17,7 @@
     },
     "method_version": {
       "type": "string",
-      "pattern": "^0\\.5\\.[0-9]+$"
+      "pattern": "^0\\.6\\.[0-9]+$"
     },
     "policy_id": {
       "type": "string",

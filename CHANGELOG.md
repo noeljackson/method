@@ -2,6 +2,20 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.6.0 - 2026-07-29
+
+- Distinguish bounded coordinate repair from a finding that materially
+  invalidates the live ProgramControl.
+- Keep independent authorized coordinates dispatchable while another
+  coordinate's scoped gate is unsatisfied.
+- Add explicit blocked-action or blocked-coordinate targets to ProgramControl
+  hard gates and bump that optional JSON serialization to schema version 2.
+- Right-size work items around one cohesive change and recovery boundary,
+  avoiding status, evidence, repair, and bookkeeping fragmentation.
+- Add a bounded readiness pass before fixing a work-item boundary.
+- Record the Codewire full-stop and fragmented-work failure as casebook
+  observation `C-017` and add focused decision scenarios.
+
 ## 0.5.0 - 2026-07-24
 
 - Add the installable Rust `method` CLI and `noel-method` Cargo package with an

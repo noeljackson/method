@@ -190,6 +190,7 @@ pub struct ProgramControl {
 #[serde(deny_unknown_fields)]
 pub struct HardGate {
     pub id: String,
+    pub blocks: Vec<String>,
     pub state: String,
     pub evidence_receipt: Option<Map<String, Value>>,
 }

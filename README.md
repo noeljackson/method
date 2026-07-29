@@ -117,7 +117,7 @@ that identity against canonical project state.
 Install the published crate:
 
 ```sh
-cargo install noel-method --locked --version 0.5.0
+cargo install noel-method --locked --version 0.6.0
 method version --json
 method pack verify
 ```

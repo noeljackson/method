@@ -18,6 +18,18 @@
     "forbidden": "Begin the later wave because its branch and tests are healthy."
   },
   {
+    "id": "program-bounded-coordinate-repair",
+    "situation": "A focused test exposes an implementation defect inside the current coordinate. Its accepted outcome, authority, dependencies, external-state boundary, acceptance criteria, and recovery boundary remain unchanged.",
+    "expected": "Keep the ProgramControl ACTIVE, mark the affected coordinate's applicable gate UNSATISFIED, and repair the defect under the same coordinate.",
+    "forbidden": "Stop the entire program or create a separate repair work item solely because the implementation hypothesis failed."
+  },
+  {
+    "id": "program-independent-coordinate",
+    "situation": "One coordinate is waiting on its artifact-acceptance gate while another explicitly authorized coordinate has receipts proving independent dependencies and shared state.",
+    "expected": "Leave the waiting gate scoped to its coordinate and continue the independent authorized coordinate.",
+    "forbidden": "Treat the waiting gate as a global program lock."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

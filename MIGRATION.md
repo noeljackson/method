@@ -14,6 +14,34 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.5.x to 0.6.0
+
+`0.6.0` changes Program decisions without changing authority modes.
+
+- Keep an `ACTIVE` ProgramControl active when a defect remains within the
+  affected coordinate's accepted outcome, authority, dependencies,
+  external-state boundary, acceptance criteria, and recovery boundary. Mark
+  only that coordinate's applicable gates `UNSATISFIED` and repair it under the
+  same coordinate.
+- Use `STOPPED_FOR_REPLAN` only when a finding materially invalidates the live
+  ProgramControl. Existing independently authorized repair authority remains
+  necessary before accepting or resuming an invalidated control.
+- Scope each hard gate to the action or downstream coordinate it blocks.
+  Unsatisfied gates do not block coordinates whose dependency and shared-state
+  receipts prove independence.
+- Migrate optional ProgramControl JSON from schema version 1 to version 2. Each
+  hard-gate object now requires a non-empty, unique `blocks` list naming the
+  actions or downstream coordinates that depend on it.
+- Define work items around one cohesive change and recovery boundary. Do not
+  manufacture status, evidence, repair, or bookkeeping work items when their
+  prerequisites and recovery boundary are the same.
+- Perform a bounded readiness pass before fixing the work-item boundary. The
+  protocol names portable risk surfaces; project controls may specialize their
+  concrete checks.
+- Update resolved-mode policies to `method_version: "0.6.0"` and record new
+  independent acceptance receipts. Policy digests change with the Method
+  version. Direct-mode consumers need only adopt the new runtime pack.
+
 ## Public interface migration from 0.4.x to 0.5.0
 
 `0.5.0` adds portable tooling without changing the Kernel or authority modes.
@@ -188,6 +216,7 @@ remain historical evidence but are incomplete as live 0.2 control surfaces.
 | C-013 | Exact revision evidence | C1, C5, EvidenceRecord | Generalized to exact artifact receipts |
 | C-014 | Control-block accumulation | Program protocol, casebook | Corrected with one live control and a decision ledger |
 | C-015 | Shared verification selector | C6, verification protocol | One classification drives local and remote gates |
+| C-017 | Bounded defects caused global stops and fragmented work | Program protocol, casebook | Corrected with localized repair, scoped gates, cohesive work items, and bounded readiness |
 
 ## AutoAgent experiment loop
 

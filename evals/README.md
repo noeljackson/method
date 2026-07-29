@@ -1,8 +1,8 @@
 # Sparse Evaluation
 
-The active release smoke test asks one narrow question: does the routed v0.5
-context avoid important decision failures without requiring a large model
-budget?
+The active release smoke test asks one narrow question: does the routed current
+context avoid important decision failures without requiring broad model
+evaluation?
 
 Deterministic unit tests own policy verification, routing, monotonic
 escalation, protocol order, path containment, terminal program states, prompt

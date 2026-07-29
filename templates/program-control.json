@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "program": "replace-me",
   "state": "STOPPED_FOR_REPLAN",
   "active_coordinates": [],
