@@ -34,8 +34,17 @@ receipts establish independence. Shared or external mutations remain serialized
 unless the applicable authority and live ProgramControl identify the
 concurrency boundary.
 
-Each work item produces one reviewable outcome and its evidence. Split source
-implementation from real-world evidence when their prerequisites differ.
+Before fixing a work-item boundary, perform the smallest readiness pass capable
+of checking the actual operating surface, state ownership, authority and
+sensitive-data paths, delivery and verification mechanisms, and recovery
+boundary. Record only findings that materially determine the work.
+
+Each work item produces one cohesive reviewable outcome and its evidence. Its
+default boundary is the smallest change that can be reviewed, accepted, and
+recovered or withdrawn together. Do not create separate status, evidence,
+repair, or bookkeeping work items when they have the same prerequisites and
+recovery boundary. Split implementation from real-world evidence when their
+prerequisites genuinely differ.
 
 ## Dispatch
 
@@ -52,15 +61,27 @@ publication, merge, release, or external mutation, reconcile:
 A passing test, healthy local state, or previous-head receipt is evidence, not
 authority.
 
-Work begins only when every named hard gate is `SATISFIED`. Later dependent work
-does not begin while an earlier gate is `UNSATISFIED`. Same-wave preparation
-must be named in the authorized queue with its prerequisites.
+Each hard gate names the mutation or downstream coordinate that it blocks.
+Before an action, only that action's prerequisite gates must be `SATISFIED`.
+An `UNSATISFIED` gate does not block an explicitly authorized coordinate whose
+dependency and shared-state receipts establish independence. Distinguish a gate
+that accepts the current artifact from one that permits downstream work.
+Same-wave preparation must be named in the authorized queue with its
+prerequisites.
 
 ## Stop and repair
 
-Set state to `STOPPED_FOR_REPLAN` when a finding changes scope, dependencies,
-gates, authority, repositories, contracts, external controls, or acceptance.
-While stopped:
+Keep the ProgramControl `ACTIVE` when a defect or failed hypothesis remains
+inside the affected coordinate's accepted outcome, authority, dependencies,
+external-state boundary, acceptance criteria, and recovery boundary. Mark that
+coordinate's applicable gates `UNSATISFIED`, repair it under the same
+coordinate, and leave explicitly independent authorized coordinates
+dispatchable.
+
+Set state to `STOPPED_FOR_REPLAN` only when a finding materially invalidates the
+live ProgramControl by changing scope, dependencies, gates, authority,
+controlled artifacts or systems, contracts, external controls, acceptance
+criteria, or recovery boundaries. While stopped:
 
 - read-only diagnosis and issue capture may continue;
 - normal dispatch and unrelated work remain forbidden;

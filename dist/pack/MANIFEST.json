@@ -7,23 +7,23 @@
     },
     {
       "path": "INDEX.md",
-      "sha256": "9e0a77211f0a64b5ca6af03fcab044f8e3c9322e7c49466c906a9189b1af665c"
+      "sha256": "b5063c4429556d87c67ea8ccd3925a4c7728c3513a51497ba63c2fa36fb3c85a"
     },
     {
       "path": "KERNEL.md",
-      "sha256": "a2f5051bd18a2aa72f2526077c4df0e7f116fe6d9f3999f9c2bcfbef9eeac6b3"
+      "sha256": "c61759dd6227c914e9c59ff80d55a2d54e2c8e6347838e897423089863c4c543"
     },
     {
       "path": "protocols/experiment.md",
-      "sha256": "ff105d8104c3b3b61f6469b331d7fb869c2a73df0f004b533ea6a8381b851506"
+      "sha256": "23b477e841c5434f50a705edd6abd12d59f41ab594b7bbec3518c95ada300c88"
     },
     {
       "path": "protocols/program.md",
-      "sha256": "6ecd24f6bcee6f62cfa4805e232034729e11a6fccef003fae349ae26745d0762"
+      "sha256": "7bbd76918574bba99e7dff14904f9438f5865ce6f43d95b7b7e7dcf7e34d8300"
     },
     {
       "path": "protocols/secrets.md",
-      "sha256": "6af5fb743e2e25d5e47308ea99e6a9540f5f8201f38dda21f423e63ad1c22828"
+      "sha256": "45f78ea0800888f5f37472fb1c6f8aa3358adfec5f6a0c419ac1a5483dc1d226"
     },
     {
       "path": "schemas/evidence-receipt.schema.json",
@@ -31,19 +31,19 @@
     },
     {
       "path": "schemas/policy-authorities.schema.json",
-      "sha256": "d8e58d506f4c022f23e91c9c5ea1316ce61080c2c25be15ab3fd732f099ebf70"
+      "sha256": "6194db5363e4e8a44658a39eeb25ab095f3412618a72bb4aa7d1eaad30ddc451"
     },
     {
       "path": "schemas/program-control.schema.json",
-      "sha256": "0681f5225f1ec05cb9eccc84de406d380b96ee00ad629bc5b27f6ae19cde9947"
+      "sha256": "ed9b156a2d120291686e2ac5dc44d43ebd4642254dd8053b6cc2e9c2ccb21264"
     },
     {
       "path": "schemas/project-policy.schema.json",
-      "sha256": "2389e9106a6c52cc4c719bb855ee07912c42820e37051d932c56b52b506ddaa1"
+      "sha256": "628edecddf81f8e40b58115082beaac2e842ea813d2a876dfccd44603ff6d7cd"
     },
     {
       "path": "schemas/resolved-permissions.schema.json",
-      "sha256": "a34a9923235fb27c5343dd84190a0f297ade54013f6fa1c75bc9634696860a03"
+      "sha256": "cf90652dc10c81e3c2e88afd363ab9bcc77646f81e795d41704aca792c4c2fb3"
     },
     {
       "path": "schemas/task-request.schema.json",
@@ -57,5 +57,5 @@
     "experiment",
     "secrets"
   ],
-  "version": "0.5.0"
+  "version": "0.6.0"
 }

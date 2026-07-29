@@ -21,15 +21,15 @@ fn accepted_policy_fixtures_verify_with_expected_digests() {
     let expected = [
         (
             "software",
-            "2307894f7d1fd47a60429c5d023c74462f3cf2c4749e1f99a03b5807462cc9d9",
+            "62ddf64d9672ec54fa8f19f728331879ab0a495666be190c80f22f96909b2be1",
         ),
         (
             "operations",
-            "cbd3d2821f6a28e884118c6d57350793db493d9ed29023424f0aaad520584d0e",
+            "e948cf714bcda60c2ab8ec61bb1fbd790cfce524d670e2e85de4c8a79a59d875",
         ),
         (
             "research",
-            "8585446b2223af10d493ec30069b3eaa4823b266795568ce73fba706dfe48d1c",
+            "26403ff0db824cd45cc54263245a453fe965c914ed4414142479a2114fa4c97b",
         ),
     ];
     for (name, digest) in expected {
@@ -148,6 +148,29 @@ fn program_terminal_and_evidence_contracts_are_enforced() {
 }
 
 #[test]
+fn program_hard_gates_name_what_they_block() {
+    let mut control = json(root().join("templates/program-control.json"));
+    control["state"] = Value::String("ACTIVE".to_owned());
+    control["active_coordinates"] = serde_json::json!(["Program / Wave 1 / Workstream / WI-1"]);
+    control["hard_gates"] = serde_json::json!([{
+        "id": "candidate-acceptance",
+        "blocks": ["accept candidate"],
+        "state": "UNSATISFIED",
+        "evidence_receipt": null
+    }]);
+    control["reconciliation_receipt"] = serde_json::json!({"state": "current"});
+    assert!(validate_program_control(&control).is_ok());
+
+    control["hard_gates"][0]["blocks"] = serde_json::json!([]);
+    let error = validate_program_control(&control).unwrap_err();
+    assert!(
+        error
+            .to_string()
+            .contains("ProgramControl.hard_gates.blocks")
+    );
+}
+
+#[test]
 fn external_pack_verification_detects_changes_and_extras() {
     let temp = tempfile::tempdir().unwrap();
     copy_directory(&root().join("dist/pack"), temp.path());
@@ -165,6 +188,38 @@ fn external_pack_verification_detects_changes_and_extras() {
 fn generated_distribution_is_current_and_contains_no_executable_fallback() {
     method_core::dist::check_distribution(&root()).unwrap();
     assert!(!root().join("dist/pack/tools/noel_method.py").exists());
+}
+
+#[test]
+fn program_protocol_distinguishes_bounded_repair_from_replan() {
+    let protocol = fs::read_to_string(root().join("protocols/program.md")).unwrap();
+    for required in [
+        "smallest readiness pass",
+        "same prerequisites and\nrecovery boundary",
+        "only that action's prerequisite gates",
+        "Keep the ProgramControl `ACTIVE`",
+        "materially invalidates the\nlive ProgramControl",
+    ] {
+        assert!(
+            protocol.contains(required),
+            "program protocol is missing decision rule: {required}"
+        );
+    }
+
+    let scenarios = json(root().join("evals/scenarios.json"));
+    let ids = scenarios
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter_map(|scenario| scenario["id"].as_str())
+        .collect::<Vec<_>>();
+    for required in [
+        "program-bounded-coordinate-repair",
+        "program-independent-coordinate",
+        "finding-changes-contract",
+    ] {
+        assert!(ids.contains(&required), "missing scenario: {required}");
+    }
 }
 
 fn copy_directory(source: &Path, destination: &Path) {

@@ -256,8 +256,8 @@ pub fn validate_resolved_permissions(value: &Value) -> Result<ResolvedPermission
 
 pub fn validate_program_control(value: &Value) -> Result<ProgramControl> {
     let control: ProgramControl = decode(value, "ProgramControl")?;
-    if control.schema_version != 1 {
-        return data("ProgramControl.schema_version: must be 1");
+    if control.schema_version != 2 {
+        return data("ProgramControl.schema_version: must be 2");
     }
     nonempty(&control.program, "ProgramControl.program")?;
     match control.state.as_str() {
@@ -286,6 +286,7 @@ pub fn validate_program_control(value: &Value) -> Result<ProgramControl> {
         if !gate_ids.insert(gate.id.as_str()) {
             return data("ProgramControl.hard_gates: IDs must be unique");
         }
+        strings(&gate.blocks, "ProgramControl.hard_gates.blocks", false)?;
         match gate.state.as_str() {
             "SATISFIED" => {
                 if gate
@@ -643,21 +644,34 @@ fn protocol_list(values: &[String]) -> Result<()> {
 }
 
 fn validate_method_version(value: &str, label: &str) -> Result<()> {
-    let Some(patch) = value.strip_prefix("0.5.") else {
-        return data(format!("{label}: expected a 0.5.x release"));
-    };
-    if patch.is_empty() || !patch.chars().all(|value| value.is_ascii_digit()) {
-        return data(format!("{label}: expected a 0.5.x release"));
-    }
-    let supported = METHOD_VERSION
-        .strip_prefix("0.5.")
-        .is_some_and(|patch| !patch.is_empty() && patch.chars().all(|c| c.is_ascii_digit()));
-    if !supported {
+    let Some((supported_major, supported_minor)) = version_minor(METHOD_VERSION) else {
         return data(format!(
             "installed Method version is unsupported: {METHOD_VERSION}"
         ));
+    };
+    let expected = format!("{supported_major}.{supported_minor}.x");
+    let Some((major, minor)) = version_minor(value) else {
+        return data(format!("{label}: expected a {expected} release"));
+    };
+    if (major, minor) != (supported_major, supported_minor) {
+        return data(format!("{label}: expected a {expected} release"));
     }
     Ok(())
+}
+
+fn version_minor(value: &str) -> Option<(&str, &str)> {
+    let mut parts = value.split('.');
+    let major = parts.next()?;
+    let minor = parts.next()?;
+    let patch = parts.next()?;
+    if parts.next().is_some()
+        || [major, minor, patch].iter().any(|part| {
+            part.is_empty() || !part.chars().all(|character| character.is_ascii_digit())
+        })
+    {
+        return None;
+    }
+    Some((major, minor))
 }
 
 fn identifier(value: &str, label: &str, policy: bool) -> Result<()> {
@@ -764,5 +778,15 @@ mod tests {
             context_protocols(Some(&task), &flags),
             ["experiment", "secrets"]
         );
+    }
+
+    #[test]
+    fn method_version_accepts_only_the_installed_minor_line() {
+        assert!(validate_method_version(METHOD_VERSION, "test").is_ok());
+        assert!(validate_method_version("0.6.99", "test").is_ok());
+        let error = validate_method_version("0.5.99", "test").unwrap_err();
+        assert!(error.to_string().contains("expected a 0.6.x release"));
+        assert!(validate_method_version("0.6", "test").is_err());
+        assert!(validate_method_version("0.6.0-alpha", "test").is_err());
     }
 }

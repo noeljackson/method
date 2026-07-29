@@ -64,7 +64,8 @@
     {"id": "C-013", "heading": "Exact-head, exact-main, and exact-source evidence"},
     {"id": "C-014", "heading": "Superseding execution-control block accumulation"},
     {"id": "C-015", "heading": "One selector drives local and remote verification"},
-    {"id": "C-016", "heading": "Optional authority infrastructure caused an impossible adoption bootstrap"}
+    {"id": "C-016", "heading": "Optional authority infrastructure caused an impossible adoption bootstrap"},
+    {"id": "C-017", "heading": "Bounded defects caused full-program stops and fragmented work items"}
   ],
   "autoagent": [
     {"id": "A-001", "heading": "Unmodified baseline first"},

@@ -88,15 +88,18 @@ material environment change invalidates the old receipt for the changed claim.
 
 ProgramControl exists only for persistent dependent workstreams. It records one
 live program state, active coordinates, accepted frontiers, authorized queue,
-hard gates, forbidden work, reconciliation receipt, and stop/resume conditions.
-It may be a canonical plan block, tracker record, host state, or the optional
-JSON serialization.
+hard gates with the actions or coordinates they block, forbidden work,
+reconciliation receipt, and stop/resume conditions. It may be a canonical plan
+block, tracker record, host state, or the optional JSON serialization.
 
-Only `ACTIVE` controls dispatch normal work. `STOPPED_FOR_REPLAN` permits
-read-only diagnosis and independently authorized plan repair. `COMPLETE` and
-`TERMINATED` controls have no active coordinates or dispatchable queue.
-Authority invalidated by a finding cannot authorize its own repair or
-acceptance.
+Only `ACTIVE` controls dispatch normal work. A defect that remains inside the
+accepted coordinate boundaries keeps the control active, makes the affected
+coordinate's applicable gates unsatisfied, and does not block explicitly
+independent authorized coordinates. A finding that materially invalidates the
+live control sets `STOPPED_FOR_REPLAN`, which permits read-only diagnosis and
+independently authorized plan repair. `COMPLETE` and `TERMINATED` controls have
+no active coordinates or dispatchable queue. Authority invalidated by a finding
+cannot authorize its own repair or acceptance.
 
 Protocol routing does not infer live program state. The actor or host must
 reconcile the ProgramControl identified by the current request and canonical
