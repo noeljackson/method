@@ -4,6 +4,11 @@ The Noel Method is a small runtime discipline for delegated work: observe the
 real state, bound authority, take the smallest useful action, verify the exact
 claim, and report what others may rely on.
 
+The Method is the normative Markdown in `src/` and `protocols/`. The binary,
+schemas, templates, and generated pack are optional aids. A person or agent
+must be able to follow the complete Method without installing a tool or
+creating a Method-specific artifact.
+
 ## When to use it
 
 Use the [Kernel](src/KERNEL.md) for any delegated task where a wrong answer or
@@ -60,7 +65,8 @@ The Markdown output is ready to inject into an LLM's instruction context.
 An agent may run the command itself when it can load local instructions. The
 CLI remains stateless: it assembles context and checks data, but it does not
 create an authorization session, broker tools, or turn a model request into
-permission.
+permission. It does not schedule work, fetch live controls, retain program
+state, manage repositories or external systems, or infer authority.
 
 ### 2. Optional resolved mode
 
@@ -117,7 +123,7 @@ that identity against canonical project state.
 Install the published crate:
 
 ```sh
-cargo install noel-method --locked --version 0.6.0
+cargo install noel-method --locked --version 0.7.0
 method version --json
 method pack verify
 ```
@@ -167,7 +173,7 @@ cargo test --all-targets
 - `dist/MONOLITH.md` — all normative runtime text for one-file systems
 - `method` / the `noel-method` crate — optional stateless runtime tooling
 - `src/` and `protocols/` — normative source
-- `schemas/` and `templates/` — optional resolved-mode contracts
+- `schemas/` and `templates/` — optional structured contracts
 - `policies/` — draft examples, not accepted authority
 - `casebook/` and `MIGRATION.md` — rationale and source traceability
 - `evals/` — sparse, opt-in decision smoke test

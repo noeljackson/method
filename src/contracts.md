@@ -90,7 +90,10 @@ ProgramControl exists only for persistent dependent workstreams. It records one
 live program state, active coordinates, accepted frontiers, authorized queue,
 hard gates with the actions or coordinates they block, forbidden work,
 reconciliation receipt, and stop/resume conditions. It may be a canonical plan
-block, tracker record, host state, or the optional JSON serialization.
+block, tracker record, host state, or the optional JSON serialization. The
+Method does not require JSON or the `method` binary. A copied or rendered
+control identifies its canonical source and revision; if that identity is stale
+or ambiguous, the copy is evidence rather than live authority.
 
 Only `ACTIVE` controls dispatch normal work. A defect that remains inside the
 accepted coordinate boundaries keeps the control active, makes the affected

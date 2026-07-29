@@ -2,6 +2,27 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.7.0 - 2026-07-29
+
+- Simplify the Program protocol around one live control, cohesive recovery
+  boundaries, named mutation claims, action-scoped gates, local repair, and
+  terminal evidence.
+- Allow non-mutating review, verification, monitoring, and evidence assembly
+  to proceed concurrently with one coordinate's mutation claim.
+- Allow explicitly queued successor-readiness preparation while making it
+  provisional until refreshed against the accepted predecessor.
+- Require copied or rendered live controls to identify their canonical source
+  and revision; stale projections are evidence rather than authority.
+- Require each work item to advance a named goal condition through a cohesive
+  recoverable outcome, and omit additional control artifacts, gates, or
+  receipts that prevent no named failure, carry no authority, and provide no
+  evidence consumed by a later decision.
+- Clarify that the Method is the normative Markdown; the stateless CLI,
+  generated pack, schemas, templates, and structured controls are optional
+  aids rather than adoption requirements.
+- Record the generalized control-activity and stale-projection failure as
+  casebook observation `P-001` and add deterministic Program scenarios.
+
 ## 0.6.0 - 2026-07-29
 
 - Distinguish bounded coordinate repair from a finding that materially

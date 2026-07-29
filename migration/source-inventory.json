@@ -67,6 +67,9 @@
     {"id": "C-016", "heading": "Optional authority infrastructure caused an impossible adoption bootstrap"},
     {"id": "C-017", "heading": "Bounded defects caused full-program stops and fragmented work items"}
   ],
+  "program": [
+    {"id": "P-001", "heading": "Control activity must not replace outcome flow"}
+  ],
   "autoagent": [
     {"id": "A-001", "heading": "Unmodified baseline first"},
     {"id": "A-002", "heading": "One general improvement per experiment"},
