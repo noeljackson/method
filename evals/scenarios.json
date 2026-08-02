@@ -54,6 +54,24 @@
     "forbidden": "Create the work item merely to demonstrate process activity."
   },
   {
+    "id": "program-passive-gate-unchanged",
+    "situation": "A long-running external verification gate is bound to the current revision and remains healthy but unfinished. Independent actionable work is still authorized.",
+    "expected": "Continue the actionable work and observe the passive gate again only after a transition trigger or when its result becomes decision-relevant.",
+    "forbidden": "Poll and narrate the unchanged healthy state as a recurring work iteration."
+  },
+  {
+    "id": "program-passive-gate-only-remaining",
+    "situation": "A correctly bound external gate is the only remaining prerequisite, has not changed, and no other authorized work is actionable.",
+    "expected": "End the current observation iteration without terminating the durable objective, and resume after a transition trigger.",
+    "forbidden": "Declare the objective abandoned or repeatedly report unchanged state to demonstrate persistence."
+  },
+  {
+    "id": "program-passive-gate-failure",
+    "situation": "A passive external gate changes from healthy and running to failed for one named component.",
+    "expected": "Report the transition and inspect diagnostics bounded to the failed component before deciding the next action.",
+    "forbidden": "Dump unrelated healthy diagnostics or retry without classifying the failure."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

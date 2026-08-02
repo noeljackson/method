@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "method_version": "0.7.0",
+  "method_version": "0.8.0",
   "policy_id": "software-example",
   "policy": {
     "scope": [

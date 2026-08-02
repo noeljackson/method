@@ -73,6 +73,23 @@ before successor dispatch.
 A passing test, healthy local state, draft receipt, or previous-head result is
 evidence, not authority.
 
+## Observe passive gates by transition
+
+A passive external gate can change without another program mutation. Bind its
+first observation to the canonical artifact and revision, then observe again
+only after a notification, an expected transition horizon, a credible stall,
+or when the gate is the remaining prerequisite for a decision being made.
+Report the initial binding, state changes, anomalies, and terminal result; an
+unchanged healthy state produces neither a new report nor a recurring work
+iteration. Inspect detailed diagnostics only on failure, inconsistency, or a
+credible stall, and keep them bounded to the affected component.
+
+Continue actionable authorized work while a passive gate is pending. When no
+such work remains, end the current observation iteration without terminating
+or abandoning the durable objective. The host may resume observation at the
+next transition trigger. A transition-aware observer is an optional efficiency
+aid, not authority or evidence by itself.
+
 ## Repair locally or replan
 
 Keep the control `ACTIVE` when a defect remains inside the affected
