@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "method_version": "0.7.0",
+  "method_version": "0.8.0",
   "policy_id": "research",
   "policy": {
     "scope": [
@@ -63,10 +63,10 @@
   },
   "acceptance": {
     "status": "accepted",
-    "policy_sha256": "75cf8d683a97c62efe0e2ed263598a9a8d0200da1032ad5271b9553ecd386d75",
+    "policy_sha256": "9dc7bdf41f6195f5f26b85699657d9a306317f28daf173395905a2ed2c8a89de",
     "authority_source": "eval-authority:research",
     "accepted_by": "fixture-owner",
     "accepted_at": "2026-07-29T00:00:00Z",
-    "receipt": "approval:research-v7"
+    "receipt": "approval:research-v8"
   }
 }

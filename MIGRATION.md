@@ -14,6 +14,33 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.7.x to 0.8.0
+
+`0.8.0` changes Program observation behavior without changing authority modes
+or the optional ProgramControl JSON schema.
+
+- Bind a passive external gate to its canonical artifact and revision once,
+  then reobserve it after a notification, expected transition horizon,
+  credible stall, or when it is the remaining prerequisite for a current
+  decision.
+- Report initial binding, transitions, anomalies, and terminal state. Do not
+  create a new work iteration or status report for unchanged healthy state.
+- Continue independent actionable work while a passive gate is pending. When
+  no actionable work remains, end the observation iteration while keeping the
+  durable objective active for the next transition trigger.
+- Use transition-aware observers when available, but do not treat observer
+  output as authority or as evidence until it is bound and reconciled under
+  the existing Program rules. No observer tool is required for adoption.
+- Existing ProgramControl schema-version-2 documents remain structurally
+  valid. Existing exact-artifact, gate, and terminal-evidence requirements are
+  unchanged.
+- Update resolved-mode policies to `method_version: "0.8.0"` and record new
+  independent acceptance receipts. Direct-mode consumers need only adopt the
+  new normative text or a verified runtime pack.
+- This source migration does not itself publish `0.8.0` or update a downstream
+  consumer. Release publication and consumer adoption remain separate,
+  explicitly authorized operations.
+
 ## Public interface migration from 0.6.x to 0.7.0
 
 `0.7.0` simplifies Program execution without changing authority modes or the
@@ -242,6 +269,7 @@ remain historical evidence but are incomplete as live 0.2 control surfaces.
 | C-014 | Control-block accumulation | Program protocol, casebook | Corrected with one live control and a decision ledger |
 | C-015 | Shared verification selector | C6, verification protocol | One classification drives local and remote gates |
 | C-017 | Bounded defects caused global stops and fragmented work | Program protocol, casebook | Corrected with localized repair, scoped gates, cohesive work items, and bounded readiness |
+| C-018 | Unchanged external state became recurring work | Program protocol, casebook | Corrected with transition-triggered observation that preserves durable objectives |
 
 ## AutoAgent experiment loop
 

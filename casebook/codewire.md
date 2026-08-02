@@ -120,6 +120,35 @@ right-sizing work items around one recovery boundary, scoping gates to the
 actions they block, and keeping the program active for repairs that remain
 inside an accepted coordinate.
 
+### Unchanged external state must not become recurring work
+
+Observation ID: `C-018`
+
+During Codewire's Rust web cutover in issue `#1555` and pull request `#1569`,
+local product, integration, image, and supply-chain verification had already
+produced the evidence needed for development. Remote CI still proved useful:
+its Docker-container Buildx driver exposed that a successfully built image had
+not been loaded for the verification step. The correction was real and kept
+exact-head CI valuable as final attestation.
+
+After that finding, however, healthy 30-to-40-minute jobs were polled roughly
+once a minute. Repeated full run state, healthy log tails, and unchanged status
+narration added no evidence. The retrospective estimated that only 15-to-25
+percent of those observation interactions were needed; six-to-ten meaningful
+checks would have captured the binding, failures, retry, corrected head, and
+terminal conclusions.
+
+The existing Program rule allowed monitoring to proceed concurrently, but did
+not distinguish active evidence work from repeatedly observing a passive
+external gate. That omission let persistence be interpreted as continuous
+polling and narration.
+
+Version 0.8 generalizes the correction by binding a passive gate once,
+observing it on transitions or decision-relevant triggers, and treating an
+unchanged healthy result as no new work. Actionable authorized work continues;
+when none remains, ending the current observation iteration preserves the
+durable objective rather than abandoning it.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

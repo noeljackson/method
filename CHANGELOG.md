@@ -2,6 +2,19 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.8.0 - Unreleased
+
+- Observe passive external gates after notifications, expected transition
+  horizons, credible stalls, or when they become decision-relevant, instead of
+  treating unchanged healthy state as a recurring work iteration.
+- Preserve persistent objectives across passive waits while continuing any
+  actionable authorized work.
+- Bound detailed diagnostics to failures, inconsistencies, and credible stalls.
+- Record the Codewire CI-observation failure as casebook observation `C-018`
+  and add deterministic Program scenarios.
+- Keep the ProgramControl schema and authority modes unchanged. Merging this
+  source change does not publish a release or update downstream consumers.
+
 ## 0.7.0 - 2026-07-29
 
 - Simplify the Program protocol around one live control, cohesive recovery

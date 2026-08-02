@@ -783,10 +783,10 @@ mod tests {
     #[test]
     fn method_version_accepts_only_the_installed_minor_line() {
         assert!(validate_method_version(METHOD_VERSION, "test").is_ok());
-        assert!(validate_method_version("0.7.99", "test").is_ok());
-        let error = validate_method_version("0.6.99", "test").unwrap_err();
-        assert!(error.to_string().contains("expected a 0.7.x release"));
-        assert!(validate_method_version("0.7", "test").is_err());
-        assert!(validate_method_version("0.8.0-alpha", "test").is_err());
+        assert!(validate_method_version("0.8.99", "test").is_ok());
+        let error = validate_method_version("0.7.99", "test").unwrap_err();
+        assert!(error.to_string().contains("expected a 0.8.x release"));
+        assert!(validate_method_version("0.8", "test").is_err());
+        assert!(validate_method_version("0.9.0-alpha", "test").is_err());
     }
 }

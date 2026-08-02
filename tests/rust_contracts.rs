@@ -21,15 +21,15 @@ fn accepted_policy_fixtures_verify_with_expected_digests() {
     let expected = [
         (
             "software",
-            "40054b976e00e858642adc1cb55ca4cc1757e09c813cc18628139d8d15ef0c92",
+            "43a73a78ca313b879fa8e7e6695558023b79860c18723aa542ca3639ea650cd6",
         ),
         (
             "operations",
-            "dd4bf777f2b230f5f84f1c76af2dfcfb0550441c6ddcb46f793bc7ebccb41f8e",
+            "379501e469dfeac2ec4833ad829bcc9506394e29d4a2c33f22c462b498b2afed",
         ),
         (
             "research",
-            "75cf8d683a97c62efe0e2ed263598a9a8d0200da1032ad5271b9553ecd386d75",
+            "9dc7bdf41f6195f5f26b85699657d9a306317f28daf173395905a2ed2c8a89de",
         ),
     ];
     for (name, digest) in expected {
@@ -200,6 +200,9 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "provisional",
         "Every work item advances a named goal condition",
         "Otherwise omit it",
+        "Observe passive gates by transition",
+        "unchanged healthy state",
+        "end the current observation iteration without terminating",
         "Keep the control `ACTIVE`",
         "Set `STOPPED_FOR_REPLAN` only",
     ] {
@@ -223,6 +226,9 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-provisional-successor-readiness",
         "program-stale-control-projection",
         "program-ceremony-without-consumer",
+        "program-passive-gate-unchanged",
+        "program-passive-gate-only-remaining",
+        "program-passive-gate-failure",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");
