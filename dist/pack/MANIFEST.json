@@ -11,7 +11,7 @@
     },
     {
       "path": "KERNEL.md",
-      "sha256": "351b73d46112a02132ec2e222aca0bdbbbdcc9d6ed3ae154483e7151276c1c8d"
+      "sha256": "f18b8708f3cc1986a23f5ed542286f267373ecc9af6064615165a51756d69130"
     },
     {
       "path": "protocols/experiment.md",
@@ -19,7 +19,7 @@
     },
     {
       "path": "protocols/program.md",
-      "sha256": "db6b751b06ce81e432241677fe86e91bd132ee2064b57b07eb448a4b89f403f9"
+      "sha256": "124de6ca3852d790cdff6834e1c1dd0816e90c78488c3ed802461a61cd7c0f77"
     },
     {
       "path": "protocols/secrets.md",

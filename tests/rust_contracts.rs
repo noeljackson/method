@@ -229,10 +229,46 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-passive-gate-unchanged",
         "program-passive-gate-only-remaining",
         "program-passive-gate-failure",
+        "program-bind-once-claim",
+        "program-material-transition-reconciliation",
+        "program-archived-control-opt-in",
+        "program-logical-concerns-one-artifact",
+        "automatic-consequence-authority",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");
     }
+}
+
+#[test]
+fn runtime_text_keeps_v08_semantics_concise() {
+    let kernel = fs::read_to_string(root().join("src/KERNEL.md")).unwrap();
+    let program = fs::read_to_string(root().join("protocols/program.md")).unwrap();
+    let normalized_kernel = kernel.split_whitespace().collect::<Vec<_>>().join(" ");
+    let normalized_program = program.split_whitespace().collect::<Vec<_>>().join(" ");
+    for required in [
+        "automatic consequence only when canonical policy already declares it",
+        "Load archived or superseded material only when it bears on a current claim",
+        "Report material transitions and decisions; omit unchanged state",
+    ] {
+        assert!(
+            normalized_kernel.contains(required),
+            "kernel is missing rule: {required}"
+        );
+    }
+    for required in [
+        "they may share one control or artifact",
+        "Bind each mutation claim once",
+        "Routine actions against the same claim and unchanged admission inherit",
+        "repair, rebase, retry, and verify under the same claim and admission",
+    ] {
+        assert!(
+            normalized_program.contains(required),
+            "program is missing rule: {required}"
+        );
+    }
+    assert!(kernel.split_whitespace().count() <= 650);
+    assert!(program.split_whitespace().count() <= 800);
 }
 
 fn copy_directory(source: &Path, destination: &Path) {

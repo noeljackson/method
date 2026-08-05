@@ -149,6 +149,33 @@ unchanged healthy result as no new work. Actionable authorized work continues;
 when none remains, ending the current observation iteration preserves the
 durable objective rather than abandoning it.
 
+### Coordination procedure must inherit unchanged decisions
+
+Observation ID: `C-019`
+
+During a later Codewire methodology audit, canonical issue state, current
+comments, and a checked-in master named different frontiers. Agents repeatedly
+restated coordinates and authority, reloaded historical controls, reconciled
+unchanged state before routine actions, and turned bounded repairs and CI waits
+into new receipt cycles. Separately, an authorized merge triggered existing
+repository CI that published support artifacts with configured credentials;
+the session paused as though it had initiated a new credential operation.
+
+Version 0.7 already required one live control, omitted ceremony without a
+consumer, and kept bounded defects local. It did not state clearly enough that
+goal, plan, and control were logical concerns rather than separate artifacts;
+that a claim and admission persist across routine actions; that archived state
+is opt-in context; or that a declared unchanged automatic consequence belongs
+to its authorized triggering action. Conservative actors therefore rebuilt
+procedure without controlling another failure.
+
+Version 0.8 generalizes the correction by loading only relevant archived
+evidence, binding claims once, reconciling material transitions, inheriting an
+unchanged admission across repair and verification, reporting outcomes rather
+than unchanged state, and bounding automatic-consequence authority. Repository
+workflow names, environments, credential mechanisms, and risk tiers remain
+project-local policy.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

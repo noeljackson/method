@@ -16,8 +16,8 @@ Destination labels:
 
 ## Public interface migration from 0.7.x to 0.8.0
 
-`0.8.0` changes Program observation behavior without changing authority modes
-or the optional ProgramControl JSON schema.
+`0.8.0` simplifies Program observation and coordination without changing
+authority modes or the optional ProgramControl JSON schema.
 
 - Bind a passive external gate to its canonical artifact and revision once,
   then reobserve it after a notification, expected transition horizon,
@@ -31,6 +31,18 @@ or the optional ProgramControl JSON schema.
 - Use transition-aware observers when available, but do not treat observer
   output as authority or as evidence until it is bound and reconciled under
   the existing Program rules. No observer tool is required for adoption.
+- Treat goal, plan, and live control as logical concerns that may share one
+  canonical artifact. Load archived controls only when relevant to a current
+  claim.
+- Bind a coordinate and mutation claim once. Reconcile again on a material
+  transition or immediately before acceptance, merge, publication, release, or
+  external mutation; routine work inherits unchanged admission.
+- Keep bounded repair, rebase, retry, and verification under that admission
+  when scope, dependencies, authority, gates, external state, acceptance, and
+  recovery remain unchanged.
+- An authorized action inherits only a pre-existing, unchanged automatic
+  consequence declared by canonical policy and triggered solely by that action.
+  Manual retry, recovery, expansion, or reconfiguration remains separate.
 - Existing ProgramControl schema-version-2 documents remain structurally
   valid. Existing exact-artifact, gate, and terminal-evidence requirements are
   unchanged.
