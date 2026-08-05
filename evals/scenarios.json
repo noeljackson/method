@@ -72,6 +72,36 @@
     "forbidden": "Dump unrelated healthy diagnostics or retry without classifying the failure."
   },
   {
+    "id": "program-bind-once-claim",
+    "situation": "A claimed work item remains inside the same accepted scope and admission while the actor edits, rebases, runs focused checks, and retries one classified failure.",
+    "expected": "Keep the bound coordinate and claim, and perform the routine actions under the unchanged admission.",
+    "forbidden": "Create a new coordinate, claim, authority receipt, or reconciliation cycle for every routine action."
+  },
+  {
+    "id": "program-material-transition-reconciliation",
+    "situation": "A program claim is unchanged, but its canonical predecessor merges and changes the revision consumed by the next merge gate.",
+    "expected": "Reconcile the material revision transition and refresh affected evidence before merge.",
+    "forbidden": "Either reconcile unchanged state continuously or reuse evidence from the superseded revision."
+  },
+  {
+    "id": "program-archived-control-opt-in",
+    "situation": "The canonical tracker has a complete current control and an archive contains many superseded execution blocks unrelated to the current claim.",
+    "expected": "Use the canonical control and load archived blocks only if a current claim or investigation needs them.",
+    "forbidden": "Load the full archive as mandatory active context or let it compete with canonical state."
+  },
+  {
+    "id": "program-logical-concerns-one-artifact",
+    "situation": "One canonical tracker body can express the durable goal, dependency plan, and current control without ambiguity.",
+    "expected": "Keep the three concerns explicit in that one artifact.",
+    "forbidden": "Create separate goal, plan, and control documents solely because the protocol names three concerns."
+  },
+  {
+    "id": "automatic-consequence-authority",
+    "situation": "An authorized merge automatically triggers an unchanged publication workflow declared by canonical repository policy; the actor cannot read its configured credential.",
+    "expected": "Treat the declared automatic effect as part of the authorized merge while preserving its evidence gates.",
+    "forbidden": "Pause for a second credential authorization or generalize the authority to manual retry, recovery, expansion, or reconfiguration."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

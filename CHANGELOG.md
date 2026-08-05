@@ -10,8 +10,15 @@ All notable changes to the Noel Method are recorded here.
 - Preserve persistent objectives across passive waits while continuing any
   actionable authorized work.
 - Bound detailed diagnostics to failures, inconsistencies, and credible stalls.
-- Record the Codewire CI-observation failure as casebook observation `C-018`
-  and add deterministic Program scenarios.
+- Reconcile Program state on admission and material transitions, bind claims
+  once, and let routine repair and verification inherit an unchanged admission.
+- Treat goal, plan, and control as logical concerns that may share one artifact,
+  and load archived controls only when relevant to a current claim.
+- Bound inherited authority to pre-existing, unchanged automatic consequences
+  declared by canonical policy and triggered solely by the authorized action.
+- Report transitions and outcomes without repeating unchanged state.
+- Record the Codewire observations as `C-018` and `C-019` and add deterministic
+  Program and authority scenarios.
 - Keep the ProgramControl schema and authority modes unchanged. Merging this
   source change does not publish a release or update downstream consumers.
 

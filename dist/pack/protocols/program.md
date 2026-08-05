@@ -6,51 +6,52 @@
 # Program Protocol
 
 Use this protocol only for persistent dependent workstreams. It adds
-coordination procedure to the Runtime Kernel and grants no authority. A
-program needs a live control, but that control may be a canonical plan block,
-tracker record, host state, or optional structured document.
+coordination procedure to the Runtime Kernel and grants no authority. A program
+needs one live control, which may be a canonical tracker, plan block, host
+state, or optional structured document.
 
 ## Keep one live control
 
-Keep three concerns separate:
+Keep three logical concerns explicit; they may share one control or artifact:
 
 1. **Goal state** — durable end conditions and invariants.
 2. **Execution plan** — workstreams, recovery boundaries, dependencies, and
    acceptance criteria.
 3. **ProgramControl** — current state, mutation claims, authorized queue,
-   gates, forbidden work, and reconciliation receipt.
+   gates, forbidden work, and reconciliation state.
 
-The request and canonical plan identify the live ProgramControl. A copied or
-rendered control must identify its canonical source and revision. Superseded or
-stale controls are evidence, not live authority. Missing, ambiguous, or
-mismatched control identity permits read-only diagnosis only.
+The request and canonical plan identify the live ProgramControl. A copy must
+name its canonical source and revision. Superseded or stale controls are
+evidence, not authority; load them only when relevant to a current claim.
+Missing, ambiguous, or mismatched control identity permits read-only diagnosis
+only.
 
 ## Shape and coordinate work
 
-Every program mutation names a stable coordinate:
+Bind each mutation claim once to a stable coordinate:
 
 ```text
 Program / Wave / Workstream / Work Item
 ```
 
-Define a work item as the smallest cohesive outcome that can be reviewed,
-accepted, and recovered or withdrawn together. Do not split status, evidence,
-repair, language, or bookkeeping work from implementation when prerequisites
-and recovery are the same. Split source work from publication, production,
-live evidence, irreversible deletion, or another external effect when their
-prerequisites or recovery differ.
+Routine actions inherit that coordinate until a material transition. Define a
+work item as the smallest cohesive outcome that can be reviewed, accepted, and
+recovered or withdrawn together. Do not split status, evidence, repair,
+language, or bookkeeping from implementation when prerequisites and recovery
+are the same. Split source from publication, production, live evidence,
+irreversible deletion, or another external effect when their prerequisites or
+recovery differ.
 
-Before fixing that boundary, perform the smallest readiness pass capable of
-checking the actual operating surface, state ownership, authority and
-sensitive-data paths, delivery and verification, and recovery. Record only
-findings that change the work.
+Before the first claim, perform the smallest readiness pass capable of checking
+the operating surface, ownership, authority and sensitive-data paths, delivery,
+verification, and recovery. Record only findings that change the work.
 
-A coordinate has one mutation claim. Other actors may concurrently inspect,
-review, verify, monitor, or assemble evidence when those activities neither
-mutate the claimed surface nor contend for shared state. Several mutation
-claims may be active only when the live control proves their dependencies and
-shared state independent. Shared or external mutations remain serialized
-unless their authority and control identify a narrower boundary.
+A coordinate has one mutation claim. Other actors may inspect, review, verify,
+monitor, or assemble evidence concurrently when they neither mutate the claim
+nor contend for shared state. Several claims may be active only when the live
+control proves their dependencies and shared state independent. Shared or
+external mutations remain serialized unless authority and control prove a
+narrower boundary.
 
 Every work item advances a named goal condition through a cohesive recoverable
 outcome. Every additional control artifact, gate, or receipt must prevent a
@@ -59,65 +60,63 @@ decision. Otherwise omit it.
 
 ## Dispatch only what is ready
 
-Only an `ACTIVE` control dispatches normal mutation. Before dispatch,
-acceptance, publication, release, or external mutation, reconcile the goal,
-plan, live control, tracker, canonical artifact and revision, affected
-external state, applicable authority, and required evidence.
+Only an `ACTIVE` control dispatches normal mutation. Reconcile at admission;
+when the goal, scope, dependency, gate, authority, canonical revision, or
+affected external state materially changes; and immediately before acceptance,
+merge, publication, release, or external mutation. Routine actions against the
+same claim and unchanged admission inherit that reconciliation.
 
-Each hard gate names exactly which mutation or downstream coordinate it
-blocks. Only that action's prerequisite gates must be `SATISFIED`; an
-`UNSATISFIED` gate does not freeze an explicitly authorized independent
-coordinate. Distinguish artifact acceptance from permission to start
-downstream work.
+Each hard gate names the mutation or downstream coordinate it blocks. Only
+that action's gates must be `SATISFIED`; an `UNSATISFIED` gate does not freeze
+an explicitly authorized independent coordinate. Distinguish artifact
+acceptance from permission to start downstream work.
 
-The authorized queue may name read-only preparation for a successor while its
-predecessor is active. That preparation is provisional: it grants no successor
-mutation and must be refreshed against the accepted canonical predecessor
-before successor dispatch.
+The queue may name read-only preparation for a successor while its predecessor
+is active. That preparation is provisional: it grants no successor mutation
+and must be refreshed against the accepted predecessor before dispatch.
 
 A passing test, healthy local state, draft receipt, or previous-head result is
 evidence, not authority.
 
 ## Observe passive gates by transition
 
-A passive external gate can change without another program mutation. Bind its
-first observation to the canonical artifact and revision, then observe again
-only after a notification, an expected transition horizon, a credible stall,
-or when the gate is the remaining prerequisite for a decision being made.
-Report the initial binding, state changes, anomalies, and terminal result; an
-unchanged healthy state produces neither a new report nor a recurring work
-iteration. Inspect detailed diagnostics only on failure, inconsistency, or a
-credible stall, and keep them bounded to the affected component.
+Bind a passive external gate once to the canonical artifact and revision, then
+observe it after a notification, expected transition horizon, credible stall,
+or when it is the remaining prerequisite for a current decision. Report the
+initial binding, transitions, anomalies, and terminal result.
+An unchanged healthy state produces no report or recurring work iteration.
+Inspect detailed diagnostics only on failure, inconsistency, or credible stall,
+bounded to the affected component.
 
-Continue actionable authorized work while a passive gate is pending. When no
-such work remains, end the current observation iteration without terminating
-or abandoning the durable objective. The host may resume observation at the
-next transition trigger. A transition-aware observer is an optional efficiency
-aid, not authority or evidence by itself.
+Continue actionable authorized work while a passive gate is pending. When none
+remains, end the current observation iteration without terminating the durable
+objective. The host may resume at the next transition trigger. A
+transition-aware observer is an optional aid, not authority or evidence by
+itself.
 
 ## Repair locally or replan
 
-Keep the control `ACTIVE` when a defect remains inside the affected
-coordinate's accepted outcome, authority, dependencies, external-state
-boundary, acceptance criteria, and recovery boundary. Mark only its applicable
-gates `UNSATISFIED`, repair under the same coordinate, and leave independent
+Keep the control `ACTIVE` when a defect remains inside the coordinate's
+accepted outcome, authority, dependencies, external-state boundary, acceptance
+criteria, and recovery. Mark only its gates `UNSATISFIED`, then repair, rebase,
+retry, and verify under the same claim and admission. Leave independent
 authorized work dispatchable.
 
 Set `STOPPED_FOR_REPLAN` only when a finding materially changes scope,
 dependencies, gates, authority, controlled artifacts or systems, contracts,
-external controls, acceptance criteria, or recovery. While stopped, only
-read-only diagnosis, issue capture, mechanical freeze, non-mutating evidence,
-and independently authorized control repair may continue. An invalidated
-actor or control cannot accept its own repair or resumption.
+external controls, acceptance, or recovery. While stopped, only read-only
+diagnosis, issue capture, mechanical freeze, non-mutating evidence, and
+independently authorized control repair may continue. An invalidated actor or
+control cannot accept its own repair or resumption.
 
 Emergency containment does not reactivate a program. It requires separate
-pre-existing authority and follows the Secrets protocol when applicable.
+pre-existing authority and follows Secrets when applicable.
 
 ## Finish once
 
-Set `COMPLETE` only when every goal condition and required receipt is
-satisfied. Set `TERMINATED` when work ends with unmet goals, recording exactly
-one reason: `OWNER_CANCELLED`, `ABANDONED`, `SUPERSEDED`, or `SAFETY`.
+Set `COMPLETE` only when every goal condition and required receipt is satisfied.
+Set `TERMINATED` when work ends with unmet goals, recording exactly one reason:
+`OWNER_CANCELLED`, `ABANDONED`, `SUPERSEDED`, or `SAFETY`.
 
 Terminal controls have no active mutation claims or dispatchable queue. A
 terminated control cannot resume; later work needs a new accepted control and
