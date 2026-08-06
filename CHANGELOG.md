@@ -2,7 +2,18 @@
 
 All notable changes to the Noel Method are recorded here.
 
-## 0.8.0 - Unreleased
+## 0.8.1 - Unreleased
+
+- Apply transition-driven passive-gate observation in direct mode as well as
+  Program work, while preserving useful early failure and terminal feedback.
+- Permit transition-aware observers without making unchanged state a recurring
+  work iteration, and reserve detailed diagnostics for failure, inconsistency,
+  empty output, or credible stall.
+- Record the Codewire direct-mode observation as casebook entry `C-020` and add
+  a deterministic direct-mode scenario.
+- Keep protocols, schemas, authority modes, and CLI shape unchanged.
+
+## 0.8.0 - 2026-08-05
 
 - Observe passive external gates after notifications, expected transition
   horizons, credible stalls, or when they become decision-relevant, instead of

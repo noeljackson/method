@@ -201,7 +201,6 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "Every work item advances a named goal condition",
         "Otherwise omit it",
         "Observe passive gates by transition",
-        "unchanged healthy state",
         "end the current observation iteration without terminating",
         "Keep the control `ACTIVE`",
         "Set `STOPPED_FOR_REPLAN` only",
@@ -229,6 +228,7 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-passive-gate-unchanged",
         "program-passive-gate-only-remaining",
         "program-passive-gate-failure",
+        "direct-passive-gate-transition",
         "program-bind-once-claim",
         "program-material-transition-reconciliation",
         "program-archived-control-opt-in",
@@ -250,6 +250,10 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "automatic consequence only when canonical policy already declares it",
         "Load archived or superseded material only when it bears on a current claim",
         "Report material transitions and decisions; omit unchanged state",
+        "Bind a passive gate once to its exact artifact and revision",
+        "Use transition-aware observation when early failure or the terminal result matters",
+        "Unchanged state creates no work or report",
+        "failure, inconsistency, empty output, or credible stall",
     ] {
         assert!(
             normalized_kernel.contains(required),
@@ -260,6 +264,7 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "they may share one control or artifact",
         "Bind each mutation claim once",
         "Routine actions against the same claim and unchanged admission inherit",
+        "Apply the Kernel's passive-gate rule",
         "repair, rebase, retry, and verify under the same claim and admission",
     ] {
         assert!(

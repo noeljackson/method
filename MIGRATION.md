@@ -14,6 +14,21 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.8.0 to 0.8.1
+
+`0.8.1` clarifies that transition-driven passive-gate observation applies in
+direct mode without changing protocols, schemas, authority modes, or CLI
+shape.
+
+- Bind a passive gate once to its exact artifact and revision.
+- A transition-aware observer may surface early failure or a terminal result;
+  it is neither authority nor evidence by itself.
+- Do not turn unchanged state into another work iteration or status report.
+- Inspect targeted diagnostics after failure, inconsistency, empty output, or
+  credible stall.
+- Existing `0.8.x` resolved-mode policies remain valid. Direct-mode consumers
+  may adopt the clarified Kernel without creating another Method artifact.
+
 ## Public interface migration from 0.7.x to 0.8.0
 
 `0.8.0` simplifies Program observation and coordination without changing
