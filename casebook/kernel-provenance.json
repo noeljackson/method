@@ -25,9 +25,9 @@
   },
   {
     "section": "Verify",
-    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013"],
-    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence.",
-    "eval_ids": ["core-evidence-identity", "experiment-protected-regression"]
+    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013", "C-018", "C-020"],
+    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence, and unchanged passive state turned into recurring work.",
+    "eval_ids": ["core-evidence-identity", "direct-passive-gate-transition", "experiment-protected-regression"]
   },
   {
     "section": "Report",

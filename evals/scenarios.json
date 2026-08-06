@@ -72,6 +72,12 @@
     "forbidden": "Dump unrelated healthy diagnostics or retry without classifying the failure."
   },
   {
+    "id": "direct-passive-gate-transition",
+    "situation": "A direct-mode documentation change has a required exact-revision remote gate. Early failure feedback matters, and a transition-aware observer is available.",
+    "expected": "Bind the gate once and allow the observer to surface failure or the terminal result without creating work or reports from unchanged state; inspect targeted diagnostics after failure, inconsistency, empty output, or credible stall.",
+    "forbidden": "Ban transition-aware observation, repeatedly poll or narrate unchanged state, or dump unrelated healthy diagnostics."
+  },
+  {
     "id": "program-bind-once-claim",
     "situation": "A claimed work item remains inside the same accepted scope and admission while the actor edits, rebases, runs focused checks, and retries one classified failure.",
     "expected": "Keep the bound coordinate and claim, and perform the routine actions under the unchanged admission.",

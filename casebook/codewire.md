@@ -176,6 +176,32 @@ than unchanged state, and bounding automatic-consequence authority. Repository
 workflow names, environments, credential mechanisms, and risk tiers remain
 project-local policy.
 
+### Passive-gate discipline also belongs to direct work
+
+Observation ID: `C-020`
+
+Codewire pull request `#1688` changed only repository agent policy. Its focused
+local policy gate passed, while required exact-head CI continued remotely. A
+transition-aware `tea actions runs watch` invocation was useful because it
+could surface failure or completion promptly without repeated model polling.
+The session nevertheless narrated an unchanged partial job state and fetched
+the full run again before a transition made that inspection relevant.
+
+The existing Program protocol already prohibited recurring unchanged-state
+work, but direct-mode documentation and small source tasks do not load Program.
+The Kernel's general instruction to omit unchanged reports also did not say
+clearly that a transition-aware observer is permitted or when detailed
+diagnostics become useful. A conservative correction could therefore ban
+watching entirely and delay useful failure feedback.
+
+Version 0.8.1 generalizes the distinction in Kernel verification: bind a
+passive gate once, allow transition-aware observation when early failure or a
+terminal result matters, create no work from unchanged state, and inspect
+diagnostics after failure, inconsistency, empty output, or credible stall.
+Codewire's workflow selector independently scheduled broad product checks for
+this policy edit; that proportionality problem remains repository-local and is
+not evidence against transition-aware observation.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary
