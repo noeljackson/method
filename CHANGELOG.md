@@ -2,7 +2,7 @@
 
 All notable changes to the Noel Method are recorded here.
 
-## 0.8.2 - Unreleased
+## 0.8.2 - 2026-08-07
 
 - Classify manual retries by their effects instead of their initiation
   mechanism.
