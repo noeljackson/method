@@ -234,6 +234,8 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-archived-control-opt-in",
         "program-logical-concerns-one-artifact",
         "automatic-consequence-authority",
+        "verification-only-transient-retry",
+        "side-effecting-workflow-retry",
         "unclassified-external-failure",
         "failure-layer-before-retry",
         "program-diagnostic-gap-same-claim",
@@ -251,6 +253,8 @@ fn runtime_text_keeps_v08_semantics_concise() {
     let normalized_program = program.split_whitespace().collect::<Vec<_>>().join(" ");
     for required in [
         "automatic consequence only when canonical policy already declares it",
+        "Retrying unchanged verification-only work under a canonical transient policy inherits that action",
+        "publication, deployment, release, recovery, live mutation, or direct credential handling is separate",
         "Load archived or superseded material only when it bears on a current claim",
         "Report material transitions and decisions; omit unchanged state",
         "Bind a passive gate once to its exact artifact and revision",

@@ -2,6 +2,18 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.8.2 - Unreleased
+
+- Classify manual retries by their effects instead of their initiation
+  mechanism.
+- Let unchanged verification-only work inherit its authorized action when
+  canonical policy classifies the failure as transient.
+- Keep retries capable of publication, deployment, release, recovery, live
+  mutation, or direct credential handling separately authorized.
+- Record the Codewire Infra retry observation as casebook entry `C-022` and
+  add deterministic safe-retry and side-effecting-retry scenarios.
+- Keep protocols, schemas, authority modes, and CLI shape unchanged.
+
 ## 0.8.1 - 2026-08-07
 
 - Apply transition-driven passive-gate observation in direct mode as well as
