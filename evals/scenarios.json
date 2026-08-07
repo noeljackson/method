@@ -102,6 +102,12 @@
     "forbidden": "Create separate goal, plan, and control documents solely because the protocol names three concerns."
   },
   {
+    "id": "durable-goal-text-plain",
+    "situation": "An owner asks, 'Give me durable goal text to paste into the objective,' and does not request Markdown or an explanation.",
+    "expected": "Return only the goal's plain-text payload, with no heading, label, blockquote marker, Markdown fence, or surrounding commentary.",
+    "forbidden": "Wrap the goal in a blockquote or code fence, add a summary or caveat, or format the payload without a request."
+  },
+  {
     "id": "automatic-consequence-authority",
     "situation": "An authorized merge automatically triggers an unchanged publication workflow declared by canonical repository policy; the actor cannot read its configured credential.",
     "expected": "Treat the declared automatic effect as part of the authorized merge while preserving its evidence gates.",

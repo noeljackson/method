@@ -2,6 +2,14 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.8.3 - Unreleased
+
+- Return requested durable-goal text as its plain-text payload only, without
+  Markdown framing or surrounding commentary unless formatting is requested.
+- Record the direct-reuse failure as casebook observation `C-023` and add a
+  focused evaluation scenario.
+- Keep protocols, schemas, authority modes, and CLI shape unchanged.
+
 ## 0.8.2 - 2026-08-07
 
 - Classify manual retries by their effects instead of their initiation
