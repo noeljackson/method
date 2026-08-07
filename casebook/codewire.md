@@ -230,6 +230,32 @@ input predicts a discriminating result or canonical policy identifies a
 transient failure. An unknown result freezes that mutation; it does not freeze
 read-only diagnosis, independent authorized work, or the whole Program.
 
+### Verification retry authority follows effects
+
+Observation ID: `C-022`
+
+On Codewire's Infra pull request `#313`, focused source and security checks
+passed for the exact head. The required infrastructure check later failed in
+an unrelated `pentest-scanner` remote read, using the repository's fixed
+`remote read failure` class. The agent correctly avoided attributing the
+failure to the proposed source, but stopped and requested separate authority
+to rerun the unchanged verification-only workflow.
+
+The Kernel grouped every manual retry with recovery and reconfiguration when
+describing automatic-consequence authority. That safely excluded a retry of a
+publishing or state-mutating workflow, but also made the user-interface action
+of rerunning a read-only check more important than its effect. The Verify rule
+already allowed canonical transient retries, so the two rules together said
+when a retry was justified while leaving routine delivery blocked on duplicate
+approval.
+
+Version 0.8.2 classifies the retry by effect. Retrying unchanged
+verification-only work under a canonical transient policy inherits the
+authorized action. A manual action capable of publication, deployment,
+release, recovery, live mutation, or direct credential handling remains
+separate. Repository policy still defines what counts as verification-only and
+which failures are transient.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

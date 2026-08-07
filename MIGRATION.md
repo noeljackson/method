@@ -14,6 +14,21 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.8.1 to 0.8.2
+
+`0.8.2` clarifies that retry authority follows the operation's effects rather
+than whether a person or tool starts it. It does not change protocols, schemas,
+authority modes, or CLI shape.
+
+- Retrying unchanged verification-only work inherits the authorized action
+  when canonical policy classifies the failure as transient.
+- Publication, deployment, release, recovery, live mutation, direct credential
+  handling, and retries capable of those effects remain separate actions.
+- Repository policy defines verification-only workflows and transient failure
+  classes. This clarification does not authorize arbitrary retries.
+- Existing `0.8.x` resolved-mode policies remain valid. Direct-mode consumers
+  may adopt the clarified Kernel without another Method artifact.
+
 ## Public interface migration from 0.8.0 to 0.8.1
 
 `0.8.1` clarifies that transition-driven passive-gate observation applies in
