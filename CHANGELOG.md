@@ -2,7 +2,7 @@
 
 All notable changes to the Noel Method are recorded here.
 
-## 0.8.3 - Unreleased
+## 0.8.3 - 2026-08-08
 
 - Return requested durable-goal text as its plain-text payload only, without
   Markdown framing or surrounding commentary unless formatting is requested.
