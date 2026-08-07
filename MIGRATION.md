@@ -14,6 +14,19 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.8.2 to 0.8.3
+
+`0.8.3` clarifies the presentation contract for an explicitly requested
+durable-goal artifact. It does not change protocols, schemas, authority modes,
+or CLI shape.
+
+- When asked for durable-goal text, return the requested plain-text payload
+  only, without a heading, label, blockquote marker, Markdown fence, or
+  surrounding commentary unless formatting is explicitly requested.
+- Ordinary reports, plans, and evidence retain their proportionate structure.
+- Existing `0.8.x` resolved-mode policies remain valid. Direct-mode consumers
+  may adopt the clarified Kernel without another Method artifact.
+
 ## Public interface migration from 0.8.1 to 0.8.2
 
 `0.8.2` clarifies that retry authority follows the operation's effects rather

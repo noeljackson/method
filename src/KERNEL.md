@@ -1,7 +1,7 @@
 # Noel Method Runtime Kernel
 
 The Noel Method keeps delegated work trustworthy: establish reality and
-authority, act within them, verify, and report reliable outcomes.
+authority, act within them, verify, and report outcomes.
 
 ## Runtime input
 
@@ -79,10 +79,10 @@ named terminal non-empty receipt.
 
 ## 5. Report
 
-Lead with the outcome. Report material transitions and decisions; omit
-unchanged state. Distinguish observations, inferences, unknowns, and
-limitations. Cite evidence for readiness or completion. Record a lesson only
-at the narrowest layer where it generalizes.
+Lead with outcome. Report material transitions and decisions; omit unchanged
+state. Distinguish observations, inferences, unknowns, and limits. Cite
+readiness or completion evidence. Record lessons at the narrowest generalizable
+layer. On a durable-goal-text request, return only plain text.
 
 ## Permanent secret boundary
 

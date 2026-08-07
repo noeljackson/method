@@ -256,6 +256,26 @@ release, recovery, live mutation, or direct credential handling remains
 separate. Repository policy still defines what counts as verification-only and
 which failures are transient.
 
+### Durable-goal text must be directly reusable
+
+Observation ID: `C-023`
+
+An owner asked for durable-goal text to paste into a persistent objective. The
+response repeatedly added Markdown blockquotes, labels, and surrounding
+explanation. Those additions did not improve the goal's meaning, but made the
+requested artifact harder to copy, introduced cleanup work, and risked
+persisting presentation syntax as objective content.
+
+The Report rule required concise, outcome-led reporting, but did not distinguish
+an explanatory response from a literal artifact explicitly requested for
+insertion. That gap let general conversational formatting override the
+requested interface.
+
+Version 0.8.3 requires a durable-goal response to contain only its unformatted
+plain-text payload unless the owner asks for formatting. The rule is limited to
+that explicit request; it does not suppress useful structure in ordinary
+reports, plans, or evidence.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary
