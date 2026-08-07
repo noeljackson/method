@@ -2,7 +2,7 @@
 
 All notable changes to the Noel Method are recorded here.
 
-## 0.8.1 - Unreleased
+## 0.8.1 - 2026-08-07
 
 - Apply transition-driven passive-gate observation in direct mode as well as
   Program work, while preserving useful early failure and terminal feedback.
