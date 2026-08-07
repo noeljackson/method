@@ -88,11 +88,16 @@ aid, not authority or evidence by itself.
 
 ## Repair locally or replan
 
-Keep the control `ACTIVE` when a defect remains inside the coordinate's
-accepted outcome, authority, dependencies, external-state boundary, acceptance
-criteria, and recovery. Mark only its gates `UNSATISFIED`, then repair, rebase,
-retry, and verify under the same claim and admission. Leave independent
-authorized work dispatchable.
+Keep the control `ACTIVE` when a defect or diagnostic gap remains inside the
+coordinate's accepted outcome, authority, dependencies, external-state
+boundary, acceptance criteria, and recovery. Mark only its gates
+`UNSATISFIED`, then repair, rebase, retry, and verify under the same claim and
+admission. An unknown result freezes the affected mutation, not read-only
+diagnosis or independent authorized work. Do not create a coordinate or
+control transition for each hypothesis.
+
+Procedure may narrow a retry through a named gate but cannot turn
+already-authorized or read-only work into missing authority.
 
 Set `STOPPED_FOR_REPLAN` only when a finding materially changes scope,
 dependencies, gates, authority, controlled artifacts or systems, contracts,

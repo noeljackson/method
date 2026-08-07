@@ -17,8 +17,9 @@ Destination labels:
 ## Public interface migration from 0.8.0 to 0.8.1
 
 `0.8.1` clarifies that transition-driven passive-gate observation applies in
-direct mode without changing protocols, schemas, authority modes, or CLI
-shape.
+direct mode and that unknown failures drive bounded diagnosis rather than
+repeated side effects or control ceremony. It does not change protocols,
+schemas, authority modes, or CLI shape.
 
 - Bind a passive gate once to its exact artifact and revision.
 - A transition-aware observer may surface early failure or a terminal result;
@@ -26,6 +27,14 @@ shape.
 - Do not turn unchanged state into another work iteration or status report.
 - Inspect targeted diagnostics after failure, inconsistency, empty output, or
   credible stall.
+- After a failure, localize the failing layer before attributing a cause. Retry
+  a side effect only when a changed input predicts a discriminating result, or
+  canonical policy classifies the failure as transient.
+- An unknown result freezes the affected action, not already-authorized
+  read-only diagnosis, independent work, or the whole Program.
+- Keep diagnostic gaps within an accepted Program coordinate under the same
+  claim and admission. Do not manufacture a coordinate, issue, or control
+  transition for each hypothesis.
 - Existing `0.8.x` resolved-mode policies remain valid. Direct-mode consumers
   may adopt the clarified Kernel without creating another Method artifact.
 

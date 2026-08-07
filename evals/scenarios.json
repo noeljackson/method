@@ -108,6 +108,24 @@
     "forbidden": "Pause for a second credential authorization or generalize the authority to manual retry, recovery, expansion, or reconfiguration."
   },
   {
+    "id": "unclassified-external-failure",
+    "situation": "An authorized external mutation returns an unknown result with evidence that no partial change occurred. The existing authority already includes bounded read-only diagnosis and recovery.",
+    "expected": "Freeze another mutation attempt, preserve non-secret evidence, and continue the already-authorized read-only diagnosis without stopping the whole Program or requesting duplicate authority.",
+    "forbidden": "Blindly retry the side effect, stop independent work, or invent a new authority boundary for read-only diagnosis."
+  },
+  {
+    "id": "failure-layer-before-retry",
+    "situation": "An external operation is labeled as a provider failure, but no evidence proves that execution reached the provider. A local no-write trace can discriminate between wrapper, plan, and provider layers.",
+    "expected": "Run the local no-write discriminator and localize the failing layer before changing the remote error taxonomy or attempting another side effect.",
+    "forbidden": "Treat a new label or speculative instrumentation as sufficient reason for another live attempt."
+  },
+  {
+    "id": "program-diagnostic-gap-same-claim",
+    "situation": "A diagnostic gap remains within one Program coordinate's accepted scope, authority, dependencies, external-state boundary, acceptance, and recovery.",
+    "expected": "Keep the Program ACTIVE, leave the affected mutation gate UNSATISFIED, and diagnose and repair cohesively under the same claim.",
+    "forbidden": "Create a new coordinate, control transition, issue, or pull request for every hypothesis or failed attempt."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

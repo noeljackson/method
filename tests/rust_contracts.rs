@@ -234,6 +234,9 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-archived-control-opt-in",
         "program-logical-concerns-one-artifact",
         "automatic-consequence-authority",
+        "unclassified-external-failure",
+        "failure-layer-before-retry",
+        "program-diagnostic-gap-same-claim",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");
@@ -254,6 +257,9 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "Use transition-aware observation when early failure or the terminal result matters",
         "Unchanged state creates no work or report",
         "failure, inconsistency, empty output, or credible stall",
+        "localize the failing layer",
+        "predicts a discriminating result",
+        "An unknown result freezes that action, not read-only diagnosis",
     ] {
         assert!(
             normalized_kernel.contains(required),
@@ -266,6 +272,8 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "Routine actions against the same claim and unchanged admission inherit",
         "Apply the Kernel's passive-gate rule",
         "repair, rebase, retry, and verify under the same claim and admission",
+        "An unknown result freezes the affected mutation, not read-only diagnosis",
+        "cannot turn already-authorized or read-only work into missing authority",
     ] {
         assert!(
             normalized_program.contains(required),

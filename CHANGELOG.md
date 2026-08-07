@@ -11,6 +11,12 @@ All notable changes to the Noel Method are recorded here.
   empty output, or credible stall.
 - Record the Codewire direct-mode observation as casebook entry `C-020` and add
   a deterministic direct-mode scenario.
+- Require failure-layer localization before another side effect, with retries
+  justified by a discriminating change or a canonical transient policy.
+- Keep unknown results scoped to the affected mutation while read-only
+  diagnosis and independent authorized work continue.
+- Record the Codewire failure-convergence observation as casebook entry `C-021`
+  and add three deterministic scenarios.
 - Keep protocols, schemas, authority modes, and CLI shape unchanged.
 
 ## 0.8.0 - 2026-08-05

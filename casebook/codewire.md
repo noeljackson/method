@@ -202,6 +202,34 @@ Codewire's workflow selector independently scheduled broad product checks for
 this policy edit; that proportionality problem remains repository-local and is
 not evidence against transition-aware observation.
 
+### Unknown failure must drive diagnosis, not ceremony
+
+Observation ID: `C-021`
+
+During Codewire's confidential-storage live acceptance, an unclassified Talos
+apply result triggered six diagnostic issue and pull-request cycles (`#1697`,
+`#1698`, `#1700`, `#1702`, `#1703`, and `#1706`) and nine guarded saved-plan
+apply attempts. The changes expanded redacted error taxonomy and tracing while
+preserving the nodes and avoiding partial mutation, but they did not first
+prove which execution layer failed. Only a later local trace established that
+the saved-plan path had never called the provider lifecycle operation being
+diagnosed.
+
+The live control also treated unknown classification as a reason to stop the
+Program and seek new authority for read-only provider diagnosis. That confused
+a scoped retry gate with the authority boundary already granted for diagnosis
+and recovery. The safety controls prevented an uncontrolled live mutation, but
+the sequence multiplied source changes, plans, CI turns, and live attempts
+without producing a discriminating observation early.
+
+The prior Kernel rule required a changed hypothesis before retry, but a new
+label or speculative instrument could satisfy that wording without localizing
+the failure. Version 0.8.1 generalizes the correction: preserve the evidence,
+localize the failing layer, and permit another side effect only when a changed
+input predicts a discriminating result or canonical policy identifies a
+transient failure. An unknown result freezes that mutation; it does not freeze
+read-only diagnosis, independent authorized work, or the whole Program.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

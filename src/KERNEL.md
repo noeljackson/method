@@ -1,8 +1,8 @@
 # Noel Method Runtime Kernel
 
 The Noel Method keeps delegated work trustworthy: establish reality and
-authority, take the smallest useful action, verify the actual claim, and report
-what others may rely on.
+authority, take a useful bounded action, verify its claim, and report what
+others may rely on.
 
 ## Runtime input
 
@@ -10,9 +10,9 @@ Every task uses either direct or resolved authority mode.
 
 **Direct mode is the default.** The current request and canonical project
 instructions supply the boundary. They may authorize external or persistent
-work when they name its scope, actions, gates, and prohibitions. Several steps,
-a remote service, or a long conversation require no extra authority artifact.
-Credentials, tool access, history, and plausible intent never widen authority.
+work by naming scope, actions, gates, and prohibitions. Steps, remote
+services, and conversation length require no extra authority artifact.
+Credentials, access, history, and plausible intent never widen authority.
 
 An authorized action includes an automatic consequence only when canonical
 policy already declares it, its trigger and effect are unchanged, and that
@@ -20,9 +20,9 @@ action alone triggers it. Manual retry, recovery, expansion, or reconfiguration
 is a separate action.
 
 **Resolved mode is explicit opt-in.** Use it only when the request, project, or
-host selects it and supplies verified ResolvedPermissions from a ProjectPolicy
-and TaskRequest. A resolver checks consistency; the host authenticates the
-caller, protects inputs, and enforces the result. A model cannot create, widen,
+host supplies verified ResolvedPermissions from a ProjectPolicy and TaskRequest.
+A resolver checks consistency; the host authenticates, protects inputs, and
+enforces the result. A model cannot create, widen,
 validate, or bypass permissions. Missing, invalid, expired, or inconsistent
 permissions keep work read-only.
 
@@ -32,16 +32,16 @@ for a secret-capable path. Risk may add a protocol in either authority mode.
 
 ## 1. Observe
 
-Inspect the smallest current set of instructions, state, decisions, and named
-sources needed to act. Load archived or superseded material only when it bears
+Inspect current instructions, state, decisions, and named sources needed to
+act. Load archived or superseded material only when it bears
 on a current claim. Separate observations from inferences and unknowns. Bind
 material claims to the exact artifact, environment, and state observed. Present
 behavior does not create authority or override accepted intent.
 
 ## 2. Bound
 
-Establish the outcome, included and excluded scope, allowed and forbidden
-actions, gates, recovery boundary, and stop conditions. Do not repeatedly
+Establish outcome, scope, allowed and forbidden actions, gates, recovery, and
+stop conditions. Do not repeatedly
 restate an unchanged boundary. Authority comes from the current request and
 canonical instructions, or verified ResolvedPermissions when selected—not from
 ambient credentials, historical practice, a passing test, or an unaccepted
@@ -69,9 +69,12 @@ transition-aware observation when early failure or the terminal result matters.
 Unchanged state creates no work or report; inspect diagnostics only after
 failure, inconsistency, empty output, or credible stall.
 
-After failure, preserve useful non-secret evidence, classify the failure, and
-change the hypothesis, implementation, or environment before retrying. A
-required gate is satisfied only by its named, terminal, non-empty receipt.
+After failure, preserve useful non-secret evidence and localize the failing
+layer. Retry a side effect only when changed evidence, hypothesis,
+implementation, environment, or instrumentation predicts a discriminating
+result, or canonical policy classifies the failure as transient. An unknown
+result freezes that action, not read-only diagnosis. A required gate needs its
+named terminal non-empty receipt.
 
 ## 5. Report
 
