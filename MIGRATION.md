@@ -14,6 +14,25 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.8.3 to 0.8.4
+
+`0.8.4` clarifies Program control precedence and failure continuity. It does
+not change schemas, authority modes, or CLI shape.
+
+- A host goal, timer, or session state is live Program control only when the
+  current request or canonical plan designates it. Incidental host state cannot
+  pause, stop, replace, or otherwise alter a Program.
+- An in-boundary source repair that existing admission authorizes continues
+  under its claim. Filing an issue, rejecting an attempt, or recording evidence
+  is not a terminal handoff.
+- Extra receipts must support a transition, safe external-result handoff, or a
+  later decision; ordinary unchanged observations remain unreported.
+- Unknown results select one bounded discriminator. A named coordinator must be
+  unambiguous while active.
+- Existing `0.8.x` resolved-mode policies and ProgramControl schema-version-2
+  documents remain valid. Direct-mode consumers may adopt the text or verified
+  runtime pack without another Method artifact.
+
 ## Public interface migration from 0.8.2 to 0.8.3
 
 `0.8.3` clarifies the presentation contract for an explicitly requested

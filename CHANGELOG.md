@@ -2,6 +2,20 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.8.4 - 2026-08-08
+
+- Make a designated ProgramControl authoritative over unrelated host goals,
+  timers, and session state.
+- Require an authorized, in-boundary source repair to continue under its
+  existing claim rather than end at an issue, rejected attempt, or receipt.
+- Limit extra Program artifacts and receipts to named failure, authority,
+  transition, terminal-handoff, or later-decision use.
+- Require an unambiguous named coordinator when live control uses one, and one
+  bounded discriminator for an unknown result.
+- Record the host-control and repair-continuity failure as casebook observation
+  `C-024` and add focused decision scenarios.
+- Keep schemas, authority modes, and CLI shape unchanged.
+
 ## 0.8.3 - 2026-08-08
 
 - Return requested durable-goal text as its plain-text payload only, without

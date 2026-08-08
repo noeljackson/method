@@ -276,6 +276,32 @@ plain-text payload unless the owner asks for formatting. The rule is limited to
 that explicit request; it does not suppress useful structure in ordinary
 reports, plans, or evidence.
 
+### Live control must outlast host state and failed attempts
+
+Observation ID: `C-024`
+
+A persistent program designated one current tracker with active dispatchable
+work. An unrelated host-goal timer later marked an older objective paused, and
+the worker treated that host state as a Program stop and ended its turn. In the
+same recovery pattern, a bounded diagnostic identified an authorized source
+repair, but the worker filed the issue and stopped rather than carrying the
+claim into the repair. Routine read-only probes accumulated status receipts,
+while one sensitive external outcome was lost when the terminal session ended
+after raw output was disposed.
+
+The existing live-control, bounded-repair, and evidence-consumer rules did not
+state the precedence of a designated control over incidental host state, that a
+diagnosed in-boundary repair continues directly, or which outcomes justify a
+durable handoff record. Those gaps allowed both false stopping and receipt
+ceremony without adding safety.
+
+Version 0.8.4 makes undesignated host goals, timers, and session state
+non-authoritative; requires an in-boundary authorized source repair to continue
+under its claim; and limits additional receipts to transition, handoff, or
+decision use. It also bounds unknown-result diagnosis and requires an
+unambiguous named coordinator when a live control uses one. Host integrations,
+receipt storage mechanisms, and redaction policy remain local controls.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

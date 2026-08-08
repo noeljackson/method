@@ -193,6 +193,7 @@ fn generated_distribution_is_current_and_contains_no_executable_fallback() {
 #[test]
 fn program_protocol_distinguishes_bounded_repair_from_replan() {
     let protocol = fs::read_to_string(root().join("protocols/program.md")).unwrap();
+    let normalized_protocol = protocol.split_whitespace().collect::<Vec<_>>().join(" ");
     for required in [
         "smallest readiness pass",
         "one mutation claim",
@@ -206,7 +207,7 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "Set `STOPPED_FOR_REPLAN` only",
     ] {
         assert!(
-            protocol.contains(required),
+            normalized_protocol.contains(required),
             "program protocol is missing decision rule: {required}"
         );
     }
@@ -239,6 +240,11 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "unclassified-external-failure",
         "failure-layer-before-retry",
         "program-diagnostic-gap-same-claim",
+        "program-host-state-not-control",
+        "program-diagnosed-repair-continuation",
+        "program-terminal-handoff-evidence",
+        "program-unknown-bounded-discriminator",
+        "program-coordinator-identity",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");
@@ -263,7 +269,7 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "failure, inconsistency, empty output, or credible stall",
         "localize the failing layer",
         "predicts a discriminating result",
-        "An unknown result freezes that action, not read-only diagnosis",
+        "An unknown result freezes that action, not read-only diagnosis; run one bounded discriminator",
     ] {
         assert!(
             normalized_kernel.contains(required),
@@ -278,6 +284,10 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "repair, rebase, retry, and verify under the same claim and admission",
         "An unknown result freezes the affected mutation, not read-only diagnosis",
         "cannot turn already-authorized or read-only work into missing authority",
+        "Undesignated host goals, timers, and session state may schedule work",
+        "A named coordinator must be unambiguous",
+        "preserve a terminal external outcome for handoff",
+        "proceed directly to one cohesive repair",
     ] {
         assert!(
             normalized_program.contains(required),

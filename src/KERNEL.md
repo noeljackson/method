@@ -70,12 +70,12 @@ transition-aware observation when early failure or the terminal result matters.
 Unchanged state creates no work or report; inspect diagnostics only after
 failure, inconsistency, empty output, or credible stall.
 
-After failure, preserve useful non-secret evidence and localize the failing
-layer. Retry a side effect only when changed evidence, hypothesis,
-implementation, environment, or instrumentation predicts a discriminating
-result, or canonical policy classifies the failure as transient. An unknown
-result freezes that action, not read-only diagnosis. A required gate needs its
-named terminal non-empty receipt.
+After failure, preserve non-secret evidence and localize the failing layer.
+Retry a side effect only when changed evidence, hypothesis, implementation,
+environment, or instrumentation predicts a discriminating result, or canonical
+policy names it transient. An unknown result freezes that action, not read-only
+diagnosis; run one bounded discriminator. A required gate needs its named
+terminal non-empty receipt.
 
 ## 5. Report
 
