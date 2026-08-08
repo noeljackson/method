@@ -144,6 +144,36 @@
     "forbidden": "Create a new coordinate, control transition, issue, or pull request for every hypothesis or failed attempt."
   },
   {
+    "id": "program-host-state-not-control",
+    "situation": "A Program's designated tracker is ACTIVE with dispatchable work, while an unrelated host goal from an earlier session is paused or expired.",
+    "expected": "Continue the current Program frontier from its designated live control; host state may schedule a wakeup but cannot stop, replace, or block the Program.",
+    "forbidden": "Report the Program paused, request new authority, or send a terminal handoff because the unrelated host goal changed state."
+  },
+  {
+    "id": "program-diagnosed-repair-continuation",
+    "situation": "A bounded diagnostic identifies a repository defect inside the existing coordinate, and current admission already authorizes its source repair.",
+    "expected": "Retain the claim and continue directly to one cohesive repair, verification, delivery, and closure.",
+    "forbidden": "Treat filing the repair issue, rejecting an invalid approach, or recording a diagnostic receipt as a terminal handoff."
+  },
+  {
+    "id": "program-terminal-handoff-evidence",
+    "situation": "Several unchanged read-only probes precede one sensitive external operation whose raw output must be disposed before a session handoff.",
+    "expected": "Omit routine probe narration and preserve the minimum safe terminal outcome needed to resume or decide the next transition.",
+    "forbidden": "Create a receipt for every probe, retain raw sensitive output, or discard the only safe terminal outcome."
+  },
+  {
+    "id": "program-unknown-bounded-discriminator",
+    "situation": "An external operation has an unknown result, and the existing control authorizes read-only diagnosis but no repeat mutation.",
+    "expected": "Freeze that mutation and run one bounded discriminator that can select the next repair or escalation branch.",
+    "forbidden": "Blindly retry, expand a failure taxonomy indefinitely, or stop unrelated authorized work."
+  },
+  {
+    "id": "program-coordinator-identity",
+    "situation": "Two sessions can act through the same account, but the live control identifies its coordinator only by that shared account name.",
+    "expected": "Name an unambiguous active coordinator and record any takeover as a material control transition before it edits live control.",
+    "forbidden": "Let either session silently edit the same live control because both use the same account."
+  },
+  {
     "id": "finding-changes-contract",
     "situation": "Investigation discovers that the accepted API contract and the work item's acceptance criteria are wrong.",
     "expected": "Set the program to STOPPED_FOR_REPLAN and repair the controlling documents before implementation resumes.",

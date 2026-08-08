@@ -20,8 +20,8 @@ fn version_and_pack_commands_report_verified_embedded_identity() {
     assert!(version.status.success());
     let version: Value = serde_json::from_slice(&version.stdout).unwrap();
     assert_eq!(version["cli"], "method");
-    assert_eq!(version["cli_version"], "0.8.3");
-    assert_eq!(version["method_version"], "0.8.3");
+    assert_eq!(version["cli_version"], "0.8.4");
+    assert_eq!(version["method_version"], "0.8.4");
     assert_eq!(version["pack_manifest_sha256"].as_str().unwrap().len(), 64);
 
     let pack = Command::new(binary())
