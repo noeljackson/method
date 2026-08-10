@@ -12,8 +12,12 @@ All notable changes to the Noel Method are recorded here.
   transition, terminal-handoff, or later-decision use.
 - Require an unambiguous named coordinator when live control uses one, and one
   bounded discriminator for an unknown result.
+- Turn credible recurring failures with a concrete future consumer into the
+  smallest in-scope guard at the closest existing enforcement boundary.
 - Record the host-control and repair-continuity failure as casebook observation
   `C-024` and add focused decision scenarios.
+- Record the Infra guard-ownership failure as casebook observation `INF-001`
+  and add two bounded decision scenarios.
 - Keep schemas, authority modes, and CLI shape unchanged.
 
 ## 0.8.3 - 2026-08-08

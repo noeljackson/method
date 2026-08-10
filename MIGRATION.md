@@ -29,6 +29,9 @@ not change schemas, authority modes, or CLI shape.
   later decision; ordinary unchanged observations remain unreported.
 - Unknown results select one bounded discriminator. A named coordinator must be
   unambiguous while active.
+- A credible recurring failure with a concrete future consumer may become the
+  smallest in-scope guard at its closest existing enforcement boundary; checks
+  and evidence confirm rather than redefine it.
 - Existing `0.8.x` resolved-mode policies and ProgramControl schema-version-2
   documents remain valid. Direct-mode consumers may adopt the text or verified
   runtime pack without another Method artifact.

@@ -240,6 +240,8 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "unclassified-external-failure",
         "failure-layer-before-retry",
         "program-diagnostic-gap-same-claim",
+        "recurring-failure-concrete-consumer",
+        "one-off-finding-no-guard",
         "program-host-state-not-control",
         "program-diagnosed-repair-continuation",
         "program-terminal-handoff-evidence",
@@ -270,6 +272,8 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "localize the failing layer",
         "predicts a discriminating result",
         "An unknown result freezes that action, not read-only diagnosis; run one bounded discriminator",
+        "Turn credible recurring failures with a concrete consumer into the smallest in-scope guard",
+        "verify outcomes without competing definitions",
     ] {
         assert!(
             normalized_kernel.contains(required),
