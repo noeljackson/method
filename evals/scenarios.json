@@ -144,6 +144,18 @@
     "forbidden": "Create a new coordinate, control transition, issue, or pull request for every hypothesis or failed attempt."
   },
   {
+    "id": "recurring-failure-concrete-consumer",
+    "situation": "An authorized repair addresses a credible recurring failure, and an existing future operation can consume a guard at an established enforcement boundary.",
+    "expected": "Use the smallest guard at the closest existing enforcement boundary and, where safely practical, prove both its accepting and rejecting outcomes.",
+    "forbidden": "Create parallel classifiers, narrative contracts, or a framework larger than the failure class."
+  },
+  {
+    "id": "one-off-finding-no-guard",
+    "situation": "A finding is one-off, outside authorized scope, lacks a concrete future consumer, or concerns only an implementation's spelling rather than its behavior.",
+    "expected": "Repair the scoped defect or record the finding without permanent machinery, and accept equivalent implementations through outcome-based checks.",
+    "forbidden": "Expand scope, add source-text assertions, or create a guard merely to demonstrate learning."
+  },
+  {
     "id": "program-host-state-not-control",
     "situation": "A Program's designated tracker is ACTIVE with dispatchable work, while an unrelated host goal from an earlier session is paused or expired.",
     "expected": "Continue the current Program frontier from its designated live control; host state may schedule a wakeup but cannot stop, replace, or block the Program.",

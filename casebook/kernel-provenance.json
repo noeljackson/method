@@ -31,9 +31,9 @@
   },
   {
     "section": "Report",
-    "source_ids": ["I-019", "I-026", "I-039", "C-019"],
-    "failure_prevented": "Reports that hide uncertainty or leave consumers unable to audit acceptance claims.",
-    "eval_ids": ["core-evidence-identity"]
+    "source_ids": ["I-019", "I-026", "I-039", "C-019", "INF-001"],
+    "failure_prevented": "Reports that hide uncertainty, leave consumers unable to audit acceptance claims, or record a recurring failure without an enforcing consumer.",
+    "eval_ids": ["core-evidence-identity", "recurring-failure-concrete-consumer", "one-off-finding-no-guard"]
   },
   {
     "section": "Permanent secret boundary",
