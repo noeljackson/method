@@ -2,6 +2,17 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.8.5 - 2026-08-11
+
+- Keep incidental prerequisites subordinate to the owning outcome: perform the
+  minimum unblock, return, and promote follow-up only for current acceptance, a
+  concrete safety guard, or changed scope.
+- Treat expensive clean-room, end-to-end, and destructive gates as candidate
+  qualification rather than ordinary debugging loops.
+- Record the scope-return and qualification-loop failures as casebook
+  observations `C-025` and `INF-002`, with four focused decision scenarios.
+- Keep Program, schemas, authority modes, and CLI shape unchanged.
+
 ## 0.8.4 - 2026-08-08
 
 - Make a designated ProgramControl authoritative over unrelated host goals,

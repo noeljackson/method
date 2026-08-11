@@ -7,23 +7,23 @@
     },
     {
       "path": "INDEX.md",
-      "sha256": "95da69e6dd1adbd8c1c5a3a8215f8f8dcef068a85720cf7a5096a7362066ebdb"
+      "sha256": "ed3f9a1efd4169f3a06a394de267ed00e4e3e2b9332dac7b2ef841fb444ab458"
     },
     {
       "path": "KERNEL.md",
-      "sha256": "1f58b6413ee8ff46e70ab7f610e2a5bbdefd9c438cf3d28d5a96cb65ae06685a"
+      "sha256": "5959403964e2a74f94c945fb7b36c079d89ad7282079b84de5048f9dbc535728"
     },
     {
       "path": "protocols/experiment.md",
-      "sha256": "5c20901ee8057200f1f12e26eee74f949aecfd0c59a55752f7fc30f140842e97"
+      "sha256": "d40f6ffe52f35dda8d9d8ae53c4d3690e27006e2e11b816c3a91d574bcdef7e3"
     },
     {
       "path": "protocols/program.md",
-      "sha256": "373ad6e77c17569988322fb0a869ebd4a049d605fd170b2f27d85a907ee4585e"
+      "sha256": "15f260e46e9bc425a1766c517144ad1793257b18087cf21ff3c6b6c846eb7bd4"
     },
     {
       "path": "protocols/secrets.md",
-      "sha256": "b132bd7151509d7874aa9a66ca827de9b24549059cbebb4107dabd6bb466961b"
+      "sha256": "cee3051662e414ee70890342e60c447d33c9fb32e2a2a97782c3aef00152c2c1"
     },
     {
       "path": "schemas/evidence-receipt.schema.json",
@@ -57,5 +57,5 @@
     "experiment",
     "secrets"
   ],
-  "version": "0.8.4"
+  "version": "0.8.5"
 }

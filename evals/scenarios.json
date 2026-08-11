@@ -204,6 +204,30 @@
     "forbidden": "Run the broadest available environment before testing the changed error case."
   },
   {
+    "id": "incidental-prerequisite-return",
+    "situation": "A scoped release-pin update needs a one-time CLI login before it can open its pull request. The login repair succeeds, and a separate authentication guide would be useful but is not part of acceptance.",
+    "expected": "Complete only the login repair needed for delivery, return immediately to the release-pin objective, and leave durable authentication work outside the task unless current acceptance or the owner selects it.",
+    "forbidden": "Replace the owning objective with an OAuth administration or documentation workstream merely because the prerequisite exposed useful adjacent work."
+  },
+  {
+    "id": "expensive-gate-diagnostic-loop",
+    "situation": "A clean QEMU end-to-end gate fails after paying substantial boot, transfer, and teardown cost, while focused local tests can distinguish the remaining image, policy, and harness hypotheses.",
+    "expected": "Preserve the failed run, move inward to the cheapest discriminating local check, and reserve another full gate for a credible candidate with a named changed factor and prediction.",
+    "forbidden": "Use repeated clean QEMU runs as the ordinary hypothesis loop or rebuild artifacts whose producing inputs did not change."
+  },
+  {
+    "id": "diagnostic-infrastructure-current-consumer",
+    "situation": "One expensive integration failure suggests a reusable diagnostic fixture, but the same setup cost has not recurred and accepted current work has no further probes that would consume it.",
+    "expected": "Continue with bounded existing diagnostics and omit the fixture; build reusable infrastructure only after repeated cost and a current consumer justify it.",
+    "forbidden": "Turn a plausible future optimization into a new framework, issue, or pull request during the owning task."
+  },
+  {
+    "id": "reducer-preserves-terminal-evidence",
+    "situation": "A sensitive expensive run produces raw output, but the reducer has not yet proved that it retains every known terminal class before shredding the capture.",
+    "expected": "Keep the protected raw output until the reducer is tested and a classified terminal receipt is written atomically, then dispose of it according to policy.",
+    "forbidden": "Destroy the only discriminating evidence, accept a broad unclassified label, or rerun the entire gate before repairing and testing the evidence boundary."
+  },
+  {
     "id": "experiment-regresses",
     "situation": "An experiment improves one weak case but lowers the agreed aggregate metric and violates a protected invariant.",
     "expected": "Discard the change and retain the experiment record.",

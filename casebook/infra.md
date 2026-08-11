@@ -27,3 +27,25 @@ Generated contracts and tests share one reasoning lineage, so their agreement
 is useful coverage rather than independent proof. Forgejo fields, token rules,
 staging, counterexample storage, and production assertion policy remain local
 engineering decisions.
+
+### Qualification gates are not inner debugging loops
+
+Observation ID: `INF-002`
+
+During Talos artifact work, each hypothesis paid for source boot, image
+transfer, cluster creation, QEMU qualification, and teardown. The full gate was
+safe and representative, but repeatedly invoking it before localizing the
+failure made setup cost dominate diagnosis and obscured which boundary had
+changed.
+
+The Kernel already required the cheapest sharp check and a discriminating
+change before retry. It did not distinguish a clean qualification environment
+from the inner diagnostic loop, so an agent could truthfully call the broad
+gate relevant while using it at the wrong frequency.
+
+Version 0.8.5 generalizes the correction: preserve one expensive failure,
+localize the boundary, and move inward to focused tests or instrumentation.
+Run the clean end-to-end gate for a credible candidate whose changed factor and
+expected observation are named. Reusable diagnostic infrastructure is warranted
+only for demonstrated repeated cost with a current consumer; the concrete
+harness and amortization threshold remain repository policy.
