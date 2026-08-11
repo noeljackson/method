@@ -14,6 +14,23 @@ Destination labels:
 - **Casebook:** rationale and incident history.
 - **Retired:** a local mechanism that should not become universal.
 
+## Public interface migration from 0.8.4 to 0.8.5
+
+`0.8.5` clarifies objective continuity and proportionate verification. It does
+not change protocols, schemas, authority modes, or CLI shape.
+
+- Keep an incidental prerequisite subordinate to the owning outcome. Perform
+  only the unblock needed to resume, then return.
+- Promote incidental follow-up only when current acceptance consumes it, a
+  concrete safety guard is needed, or the owner changes scope.
+- Use expensive clean-room, end-to-end, or destructive gates to qualify a
+  credible candidate rather than as the ordinary hypothesis loop.
+- After an expensive failure, preserve evidence, localize the boundary, and
+  move inward before another full run.
+- Existing `0.8.x` resolved-mode policies and ProgramControl documents remain
+  valid. Direct-mode consumers may adopt the text or verified runtime pack
+  without another Method artifact.
+
 ## Public interface migration from 0.8.3 to 0.8.4
 
 `0.8.4` clarifies Program control precedence and failure continuity. It does

@@ -52,11 +52,10 @@ reality invalidates the boundary, or a material direction choice remains.
 
 ## 3. Act
 
-Take the smallest useful action supported by evidence. Before intervening,
-classify the need or failure, affected invariant, ownership boundary, and likely blast
-surface. Use an accepted plan when it covers the problem; repair it when
-reality invalidates it. Do not absorb neighboring work without
-authority.
+Take the smallest evidence-backed action. Classify failure, invariant, owner,
+and blast surface. Repair invalid plans. Keep incidental prerequisites
+subordinate: unblock the owning outcome, then return; promote for acceptance,
+a safety guard, or changed scope.
 
 ## 4. Verify
 
@@ -70,11 +69,12 @@ Unchanged state creates no work or report; inspect diagnostics only after
 failure, inconsistency, empty output, or credible stall.
 
 After failure, preserve non-secret evidence and localize the failing layer.
-Retry a side effect only when changed evidence, hypothesis, implementation,
-environment, or instrumentation predicts a discriminating result, or canonical
+Expensive clean-room, end-to-end, or destructive gates qualify credible
+candidates, not debugging. Move inward before repeating one. Retry a side
+effect only when a changed factor predicts a discriminating result, or canonical
 policy names it transient. An unknown result freezes that action, not read-only
 diagnosis; run one bounded discriminator. A required gate needs its named
-terminal non-empty receipt.
+terminal receipt.
 
 ## 5. Report
 

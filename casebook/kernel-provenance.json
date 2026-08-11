@@ -19,15 +19,15 @@
   },
   {
     "section": "Act",
-    "source_ids": ["I-007", "I-033", "I-036", "C-008"],
-    "failure_prevented": "Overbroad intervention and unauthorized neighboring work before failure classification.",
-    "eval_ids": ["direct-bounded-edit", "secrets-latent-helper"]
+    "source_ids": ["I-007", "I-033", "I-036", "C-008", "C-025"],
+    "failure_prevented": "Overbroad intervention, unauthorized neighboring work, or an incidental prerequisite replacing the owning outcome.",
+    "eval_ids": ["direct-bounded-edit", "incidental-prerequisite-return", "secrets-latent-helper"]
   },
   {
     "section": "Verify",
-    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013", "C-018", "C-020"],
-    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence, and unchanged passive state turned into recurring work.",
-    "eval_ids": ["core-evidence-identity", "direct-passive-gate-transition", "experiment-protected-regression"]
+    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013", "C-018", "C-020", "INF-002"],
+    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence; unchanged passive state or expensive qualification turned into recurring work.",
+    "eval_ids": ["core-evidence-identity", "direct-passive-gate-transition", "expensive-gate-diagnostic-loop", "experiment-protected-regression"]
   },
   {
     "section": "Report",

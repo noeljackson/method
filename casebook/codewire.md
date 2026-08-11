@@ -302,6 +302,28 @@ decision use. It also bounds unknown-result diagnosis and requires an
 unambiguous named coordinator when a live control uses one. Host integrations,
 receipt storage mechanisms, and redaction policy remain local controls.
 
+### Incidental prerequisites must return to the owning objective
+
+Observation ID: `C-025`
+
+While adopting a Method release in Codewire and Infra, a missing Forgejo CLI
+login became an incidental prerequisite. Repairing the login was useful and
+necessary, but the worker then expanded into OAuth administration and a
+separate documentation pull request before returning to the release adoption.
+The discovery became a peer workstream even though the accepted outcome did
+not require a new authentication contract.
+
+The Kernel already prohibited unauthorized neighboring work, but it did not
+state the control-flow obligation after a necessary subordinate repair. A
+worker could therefore remain inside the broad authority boundary while still
+abandoning the owner's immediate outcome.
+
+Version 0.8.5 keeps incidental prerequisites subordinate: perform only the
+repair needed to resume the owning outcome, then return. Durable follow-up is
+appropriate when current acceptance consumes it, a concrete safety guard is
+needed, or the owner changes scope. Repository-specific login mechanisms,
+documentation ownership, and backlog policy remain local decisions.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary

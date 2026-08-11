@@ -247,6 +247,10 @@ fn program_protocol_distinguishes_bounded_repair_from_replan() {
         "program-terminal-handoff-evidence",
         "program-unknown-bounded-discriminator",
         "program-coordinator-identity",
+        "incidental-prerequisite-return",
+        "expensive-gate-diagnostic-loop",
+        "diagnostic-infrastructure-current-consumer",
+        "reducer-preserves-terminal-evidence",
         "finding-changes-contract",
     ] {
         assert!(ids.contains(&required), "missing scenario: {required}");
@@ -269,7 +273,9 @@ fn runtime_text_keeps_v08_semantics_concise() {
         "Use transition-aware observation when early failure or the terminal result matters",
         "Unchanged state creates no work or report",
         "failure, inconsistency, empty output, or credible stall",
+        "Keep incidental prerequisites subordinate",
         "localize the failing layer",
+        "Expensive clean-room, end-to-end, or destructive gates qualify credible candidates",
         "predicts a discriminating result",
         "An unknown result freezes that action, not read-only diagnosis; run one bounded discriminator",
         "Turn credible recurring failures with a concrete consumer into the smallest in-scope guard",
