@@ -1,110 +1,69 @@
 # Runtime Contracts
 
-These contracts define the small public interface between people, hosts,
-tools, and delegated actors. Direct mode requires no Method-specific document.
-The JSON forms under `schemas/` are optional automation serializations. The
-packaged resolver owns semantic checks that schemas cannot express, such as
-source precedence and action-set relations.
+Direct work requires no Method-specific document. The Method publishes only
+two optional control contracts: one human-readable Program body and one JSON
+receipt for fragile evidence. Neither contract grants authority.
 
-## ProjectPolicy
+## Program control
 
-A ProjectPolicy is standing policy for resolved mode, accepted once per policy
-revision. It defines canonical sources, action boundaries, protocol defaults,
-gates, secret controls, program repair authority, and reporting.
+A Program has one canonical tracker body. Its first content is a fenced TOML
+block with exactly:
 
-The canonical JSON has exactly five top-level fields: `schema_version`,
-`method_version`, `policy_id`, `policy`, and `acceptance`. The policy digest
-covers the canonical JSON representation of every field except `acceptance`.
-Unknown or duplicate fields fail closed. Acceptance metadata is evidence only
-when an independently authoritative receipt matches the exact policy digest.
-The PolicyAuthorityRegistry shape is published under `schemas/`; it must live
-outside the delegated model's write authority.
+- `schema_version = 1`;
+- a positive `control_revision`;
+- `state` as `ACTIVE`, `STOPPED_FOR_REPLAN`, `COMPLETE`, or `TERMINATED`;
+- one unambiguous primary `coordinator`; and
+- `termination_reason` only when terminated, as `OWNER_CANCELLED`,
+  `SUPERSEDED`, or `SAFETY`.
 
-The coordinating model does not validate or load the ProjectPolicy. The
-consuming host validates it and supplies the accepted input to the resolver.
+The body then has these Markdown headings exactly once and in order: `Goal`,
+`Done when`, `Current`, `Next`, `Needs from human`, `Boundaries`, and
+`Evidence`. Outside fenced code, the control dialect allows only those ATX H2
+headings and optional H3-or-deeper subsections. H1, Setext headings, raw HTML
+H1/H2, and ambiguous backtick fences are invalid. This hybrid is the human and
+machine interface. Do not maintain a second live JSON control.
 
-## TaskRequest
+Only the named coordinator revises the body. Increment `control_revision` once
+when live state, coordinator, frontier, claims, gates, `Next`, or human need
+materially changes, not for a routine action or evidence-only addition. An
+optional validator may compare revisions. It checks structure, exact revision
+increment, and terminal lock. It does not compare prose, prove that a
+tracker is canonical, authenticate a coordinator transfer, establish evidence,
+or authorize an action.
 
-A TaskRequest is a host-authenticated snapshot of the caller's request for one
-resolved-mode task. A model draft is not authoritative merely because it
-matches the schema. It states:
-
-- task identity and outcome;
-- included and excluded scope;
-- non-authorizing logical references to relevant resources or live controls;
-- requested and forbidden actions;
-- program, experiment, and secret-risk signals;
-- additional required gates;
-- baseline identity, stop conditions, and expiry conditions.
-
-Requested actions must be a subset of policy-allowed actions and must not
-intersect any forbidden action.
-
-## ResolvedPermissions
-
-ResolvedPermissions is generated, task-scoped capability context. It contains:
-
-- the explicit `resolved` authority mode and exact TaskRequest digest;
-- exact policy identity, digest, and acceptance receipt;
-- canonical sources and their precedence;
-- allowed and forbidden actions;
-- selected protocols;
-- required gates and their evidence definitions; and
-- only the project controls needed by the selected protocols, plus reporting.
-
-The TaskRequest carries outcome, scope, logical references, baseline, stop, and
-expiry data; ResolvedPermissions does not repeat them. References must never
-be bearer or authorizing material. Secret and program controls are omitted
-unless their protocols are selected.
-
-Only the consuming host may treat `policy_verified: true` as meaningful. The
-resolver proves structural consistency and a matching acceptance receipt; it
-does not authenticate the caller, prove that a TaskRequest preserves the
-conversation, or enforce a permission. The host must protect the ProjectPolicy
-and authority registry, bind the accepted TaskRequest, and map action and gate
-identifiers to enforceable tools where available.
-
-## ControlledAction
-
-Before a consequential mutation, restate only:
-
-- outcome;
-- allowed and forbidden action;
-- gate that permits the action;
-- recovery or accepted irreversibility; and
-- stop condition.
-
-Do not create a separate controlled-action artifact when the applicable direct
-boundary or ResolvedPermissions already states these fields clearly.
+Comments, commits, pull requests, host goals, and local copies may supply
+evidence or scheduling, but cannot change Program state. Migrate an active
+older control at its next natural transition instead of pausing delivery just
+to change formats.
 
 ## EvidenceReceipt
 
-An EvidenceReceipt binds a claim to its observation, exact artifact,
-environment, method, terminal result, citation, capture event, limitations, and
-supersession condition. It contains no secret value. A newer artifact or
-material environment change invalidates the old receipt for the changed claim.
+Use an EvidenceReceipt only when an expensive, destructive, sensitive, or
+multi-plane result can disappear, must be reduced before raw material is
+destroyed, or cannot survive for a successor in ordinary durable evidence.
+Crossing sessions alone is insufficient. Ordinary test output, commits, and
+links remain ordinary evidence.
 
-## ProgramControl
+Version 2 records:
 
-ProgramControl exists only for persistent dependent workstreams. It records one
-live program state, active coordinates, accepted frontiers, authorized queue,
-hard gates with the actions or coordinates they block, forbidden work,
-reconciliation receipt, and stop/resume conditions. It may be a canonical plan
-block, tracker record, host state, or the optional JSON serialization. The
-Method does not require JSON or the `method` binary. A copied or rendered
-control identifies its canonical source and revision; if that identity is stale
-or ambiguous, the copy is evidence rather than live authority.
+- why durability is needed: `ephemeral`, `destructive_output`,
+  `secret_reduced`, or `successor_gap` when ordinary durable evidence cannot
+  preserve the result for a successor;
+- the exact subject and environment identities;
+- the bounded procedure;
+- one or more predeclared claims;
+- the durable non-secret evidence reference and capture event;
+- material limitations and any superseded receipt; and
+- whether raw source was non-sensitive, retained protected, or reduced and
+  destroyed.
 
-Only `ACTIVE` controls dispatch normal work. A defect that remains inside the
-accepted coordinate boundaries keeps the control active, makes the affected
-coordinate's applicable gates unsatisfied, and does not block explicitly
-independent authorized coordinates. A finding that materially invalidates the
-live control sets `STOPPED_FOR_REPLAN`, which permits read-only diagnosis and
-independently authorized plan repair. `COMPLETE` and `TERMINATED` controls have
-no active coordinates or dispatchable queue. Authority invalidated by a finding
-cannot authorize its own repair or acceptance.
+Each claim has a stable identifier, direct non-secret observation, and exactly
+one outcome: `SUPPORTED`, `REJECTED`, or `INCONCLUSIVE`. Predeclaring claims
+alone creates no artifact; the receipt is terminal operation output, not
+admission or attempt narration. A broad label cannot erase which claim failed,
+and duplicate attestations do not strengthen one boundary.
 
-Protocol routing does not infer live program state. The actor or host must
-reconcile the ProgramControl identified by the current request and canonical
-plan, or by the TaskRequest in resolved mode. A missing or mismatched control
-keeps program work read-only.
+The JSON Schema and native validator check shape and internal consistency.
+They do not prove the observation, authenticate the author, or authorize a
+follow-up action. JSON Schema checks each item; the native validator also
+enforces unique claim identifiers and non-whitespace text.

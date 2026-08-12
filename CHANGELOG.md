@@ -2,6 +2,37 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.9.0 - 2026-08-12
+
+- Rewrite the Kernel around five questions a trusted senior teammate answers,
+  including bounded tentative assent, objective continuity across questions
+  and failed approaches, and just-in-time human involvement.
+- Make direct mode the only authority mode and remove ProjectPolicy,
+  PolicyAuthorityRegistry, TaskRequest, ResolvedPermissions, their schemas and
+  templates, and the resolver, policy, and generic validation commands.
+- Replace the optional ProgramControl JSON with one canonical human-readable
+  tracker body: a strict TOML metadata header and seven short Markdown
+  sections, validated by `method program validate` and optional transition
+  comparison.
+- Advance EvidenceReceipt to version 2, reserve it for fragile operation
+  results, and classify predeclared claims individually as `SUPPORTED`,
+  `REJECTED`, or `INCONCLUSIVE`.
+- Require diagnostic evidence to serve a pending decision, distinguish missing
+  observation from product failure, isolate unrelated failure planes, and
+  apply a known safe invariant without waiting for irrelevant perfect
+  causation.
+- Prefer local, deterministic discrimination before expensive qualification;
+  preflight cheap prerequisites before consuming an operation attempt and
+  preserve its claim-scoped reduction before raw evidence disappears.
+- Simplify the CLI to version, context, Program validation, receipt validation,
+  pack verification, and distribution commands. Machine-readable context is
+  schema version 4.
+- Bind pack verification to the v0.9 runtime inventory; older consumers retain
+  their matching immutable CLI and pack until migration.
+- Record the v0.9 failures and insufficiencies as casebook observations
+  `M-001` through `M-004`, with focused deterministic decision scenarios and a
+  public API migration snapshot.
+
 ## 0.8.5 - 2026-08-11
 
 - Keep incidental prerequisites subordinate to the owning outcome: perform the

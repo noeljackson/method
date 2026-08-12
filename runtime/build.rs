@@ -28,7 +28,7 @@ fn main() {
     println!("cargo:rerun-if-changed={}", root.join("VERSION").display());
     emit_pack_reruns(&root.join("dist/pack"));
 
-    let commit = Command::new("git")
+    let mut commit = Command::new("git")
         .args(["rev-parse", "HEAD"])
         .current_dir(&root)
         .output()
@@ -37,6 +37,21 @@ fn main() {
         .and_then(|output| String::from_utf8(output.stdout).ok())
         .map(|value| value.trim().to_owned())
         .unwrap_or_else(|| "unknown".to_owned());
+    let clean = Command::new("git")
+        .args(["diff", "--quiet", "HEAD", "--"])
+        .current_dir(&root)
+        .status()
+        .is_ok_and(|status| status.success());
+    let untracked = Command::new("git")
+        .args(["ls-files", "--others", "--exclude-standard"])
+        .current_dir(&root)
+        .output()
+        .ok()
+        .filter(|output| output.status.success())
+        .is_some_and(|output| output.stdout.is_empty());
+    if commit != "unknown" && (!clean || !untracked) {
+        commit.push_str("+dirty");
+    }
     println!("cargo:rustc-env=METHOD_BUILD_COMMIT={commit}");
 }
 

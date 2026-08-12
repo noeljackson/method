@@ -1,17 +1,16 @@
 {
-  "authority_modes": {
-    "default": "direct",
-    "direct": {
-      "requires": []
+  "contracts": {
+    "evidence_receipt": {
+      "schema": "schemas/evidence-receipt.schema.json",
+      "template": "templates/evidence-receipt.json",
+      "validator": "method receipt validate"
     },
-    "resolved": {
-      "requires": [
-        "TaskRequest",
-        "ResolvedPermissions"
-      ],
-      "selection": "explicit"
+    "program_control": {
+      "template": "templates/program-control.md",
+      "validator": "method program validate"
     }
   },
+  "default": "direct",
   "kernel": "KERNEL.md",
   "module_order": [
     "protocols/program.md",
@@ -21,24 +20,16 @@
   "protocols": {
     "experiment": {
       "module": "protocols/experiment.md",
-      "task_signal": "controlled_comparison"
+      "task_signal": "controlled comparison against a fixed baseline"
     },
     "program": {
       "module": "protocols/program.md",
-      "task_signal": "persistent_program"
+      "task_signal": "persistent dependent work across sessions, repositories, or operational gates"
     },
     "secrets": {
       "module": "protocols/secrets.md",
-      "task_signal": "secret_risk"
+      "task_signal": "the actor or a locally invoked process can access secret material"
     }
   },
-  "resolved_mode": {
-    "authorities_schema": "schemas/policy-authorities.schema.json",
-    "evidence_schema": "schemas/evidence-receipt.schema.json",
-    "permissions_schema": "schemas/resolved-permissions.schema.json",
-    "policy_schema": "schemas/project-policy.schema.json",
-    "program_schema": "schemas/program-control.schema.json",
-    "task_schema": "schemas/task-request.schema.json"
-  },
-  "schema_version": 3
+  "schema_version": 4
 }

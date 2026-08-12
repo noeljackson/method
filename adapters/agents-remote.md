@@ -11,8 +11,7 @@ same `<tag>/dist/pack/` path. Apply the Kernel in direct mode to the current
 request and canonical repository instructions. Load Program, Experiment, or
 Secrets by task shape.
 
-Require locally verified ResolvedPermissions only when this repository, the
-current request, or the host explicitly selects resolved mode. Do not
-substitute `main`, infer missing modules, let the model validate its own
-ProjectPolicy, or let it downgrade resolved mode.
+Do not substitute `main` or infer missing modules. Protocols add procedure,
+never permission. If Program applies, use one canonical tracker body; local
+copies and host goal state are not live control.
 ```

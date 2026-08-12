@@ -3,51 +3,39 @@
   "files": [
     {
       "path": "CONTEXT.json",
-      "sha256": "01f1106219e6700e89648a0c0ae07ce624e6ee9210d47a4212d53b82e432fe81"
+      "sha256": "36ecc64ff7de6b44156bdeb97a582a66231b18118b018415fed7f9db51cce355"
     },
     {
       "path": "INDEX.md",
-      "sha256": "ed3f9a1efd4169f3a06a394de267ed00e4e3e2b9332dac7b2ef841fb444ab458"
+      "sha256": "5e580016a9824ee5d316cf8dddc3d73554c0a0709785d1462c6e40754f4e477d"
     },
     {
       "path": "KERNEL.md",
-      "sha256": "5959403964e2a74f94c945fb7b36c079d89ad7282079b84de5048f9dbc535728"
+      "sha256": "c867d700cbf3662bf88fe3ed3a8a7a5ce89ec2781beb616ac32c7dfcabc52271"
     },
     {
       "path": "protocols/experiment.md",
-      "sha256": "d40f6ffe52f35dda8d9d8ae53c4d3690e27006e2e11b816c3a91d574bcdef7e3"
+      "sha256": "182d4ea868bc6751cad66118f84def725ab481f7a736cad2e12fc9354df6e757"
     },
     {
       "path": "protocols/program.md",
-      "sha256": "15f260e46e9bc425a1766c517144ad1793257b18087cf21ff3c6b6c846eb7bd4"
+      "sha256": "58e95ae24b438e723e78e383e0ea05b92095428d0dbb8240385bfd36bcce3300"
     },
     {
       "path": "protocols/secrets.md",
-      "sha256": "cee3051662e414ee70890342e60c447d33c9fb32e2a2a97782c3aef00152c2c1"
+      "sha256": "f5f28d473ad6125d1def378a68802c025d4e3b1c65806713179aac212bef1f8a"
     },
     {
       "path": "schemas/evidence-receipt.schema.json",
-      "sha256": "e8d595182acfd2d9eac9be907412536646a1a107cc59fb6ccfb01887ccfedd33"
+      "sha256": "057e432d41d86a88bc290e644bc5e11c81682565117f5e583b3c759cb2779656"
     },
     {
-      "path": "schemas/policy-authorities.schema.json",
-      "sha256": "6194db5363e4e8a44658a39eeb25ab095f3412618a72bb4aa7d1eaad30ddc451"
+      "path": "templates/evidence-receipt.json",
+      "sha256": "6022452255e65c50288560ab840b984f087c4672b862197465186ea9951aab96"
     },
     {
-      "path": "schemas/program-control.schema.json",
-      "sha256": "ed9b156a2d120291686e2ac5dc44d43ebd4642254dd8053b6cc2e9c2ccb21264"
-    },
-    {
-      "path": "schemas/project-policy.schema.json",
-      "sha256": "628edecddf81f8e40b58115082beaac2e842ea813d2a876dfccd44603ff6d7cd"
-    },
-    {
-      "path": "schemas/resolved-permissions.schema.json",
-      "sha256": "cf90652dc10c81e3c2e88afd363ab9bcc77646f81e795d41704aca792c4c2fb3"
-    },
-    {
-      "path": "schemas/task-request.schema.json",
-      "sha256": "f46ea907e2b8021122a4facf2e9eedc1b55c32f6232966ec65f33b3454c09a45"
+      "path": "templates/program-control.md",
+      "sha256": "a67202695f33b687e214a2499b051458f891eee3a34e99af6ff7f613d4f208d9"
     }
   ],
   "kernel": "KERNEL.md",
@@ -57,5 +45,5 @@
     "experiment",
     "secrets"
   ],
-  "version": "0.8.5"
+  "version": "0.9.0"
 }
