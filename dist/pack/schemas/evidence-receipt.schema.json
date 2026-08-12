@@ -1,70 +1,104 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://noel-method.example/schemas/evidence-receipt.schema.json",
-  "title": "Noel Method EvidenceReceipt",
+  "$id": "https://github.com/noeljackson/method/schemas/evidence-receipt.schema.json",
+  "title": "Noel Method EvidenceReceipt v2",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "schema_version",
-    "claim",
-    "observation",
-    "artifact_identity",
+    "durability_reason",
+    "subject_identity",
     "environment_identity",
-    "method",
-    "result",
-    "citation",
+    "procedure",
+    "claims",
+    "evidence_ref",
     "captured_at",
     "limitations",
-    "superseded_by"
+    "source_disposition"
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "const": 2
     },
-    "claim": {
-      "type": "string",
-      "minLength": 1
+    "durability_reason": {
+      "enum": [
+        "ephemeral",
+        "destructive_output",
+        "secret_reduced",
+        "successor_gap"
+      ]
     },
-    "observation": {
+    "subject_identity": {
       "type": "string",
-      "minLength": 1
-    },
-    "artifact_identity": {
-      "type": "string",
-      "minLength": 1
+      "pattern": "\\S"
     },
     "environment_identity": {
       "type": "string",
-      "minLength": 1
+      "pattern": "\\S"
     },
-    "method": {
+    "procedure": {
       "type": "string",
-      "minLength": 1
+      "pattern": "\\S"
     },
-    "result": {
-      "type": "string",
-      "minLength": 1
-    },
-    "citation": {
-      "type": "string",
-      "minLength": 1
-    },
-    "captured_at": {
-      "type": "string",
-      "minLength": 1
-    },
-    "limitations": {
+    "claims": {
       "type": "array",
       "minItems": 1,
       "items": {
-        "type": "string",
-        "minLength": 1
-      },
-      "uniqueItems": true
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "outcome",
+          "observation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "outcome": {
+            "enum": [
+              "SUPPORTED",
+              "REJECTED",
+              "INCONCLUSIVE"
+            ]
+          },
+          "observation": {
+            "type": "string",
+            "pattern": "\\S"
+          }
+        }
+      }
     },
-    "superseded_by": {
+    "evidence_ref": {
       "type": "string",
-      "minLength": 1
+      "pattern": "\\S"
+    },
+    "captured_at": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "limitations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "\\S"
+      }
+    },
+    "source_disposition": {
+      "enum": [
+        "not_sensitive",
+        "retained_protected",
+        "reduced_and_destroyed"
+      ]
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "\\S"
     }
   }
 }

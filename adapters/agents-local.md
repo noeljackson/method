@@ -11,8 +11,7 @@ instructions; do not create extra Method artifacts. Direct mode is the
 default, and external or persistent work does not by itself change modes.
 
 Load Program for persistent dependent work, Experiment for a controlled
-comparison, and Secrets for a secret-capable path. Use ResolvedPermissions
-only when this repository, the current request, or the host explicitly selects
-resolved mode. A model may not validate the ProjectPolicy, widen permissions,
-or downgrade resolved mode.
+comparison, and Secrets for a secret-capable path. Protocols add procedure,
+never permission. If Program applies, use one canonical tracker body; local
+copies and host goal state are not live control.
 ```

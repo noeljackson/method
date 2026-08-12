@@ -1,23 +1,15 @@
-# Sparse Evaluation
+# Decision Scenarios
 
-The active release smoke test asks one narrow question: does the routed current
-context avoid important decision failures without requiring broad model
-evaluation?
+[`scenarios.json`](scenarios.json) is the active v0.9 decision corpus. Each
+fixture names a situation, the proportionate safe behavior, and the behavior
+the Method must not induce. It is a searchable regression library, not a
+mandatory per-release study. Review only scenarios cited by changed provenance
+plus the `tentative-assent-bounded`, `secret-requested-in-prompt`, and
+`stale-revision-evidence` sentinels.
 
-Deterministic unit tests own policy verification, routing, monotonic
-escalation, protocol order, path containment, terminal program states, prompt
-leakage, generated drift, and context budgets. Model calls do not test those
-properties.
-
-`cases.json` contains eight adversarial fixtures for deterministic coverage.
-The frozen release manifest samples four high-signal cases—Core, Program,
-Experiment, and combined Program/Secrets—using one neutral and one routed
-decision each. That is exactly eight optional calls.
-
-## Execution status
-
-The fixtures, rubric, and historical reports remain as evidence and regression
-inputs. The former Python evaluator has been retired with the executable
-fallback: release correctness is now covered by the Rust contract, routing,
-pack, and distribution tests. Do not treat the historical reports as a live
-release gate or invoke model calls from this repository by default.
+The scenarios are not a statistical model evaluation and are not an excuse to
+add a second policy or control system. Functional behavior belongs in ordinary
+code and contract tests. Historical batches and reports remain immutable
+evidence of earlier Method development and are not v0.9 release gates.
+Other pre-v0.9 evaluation JSON is historical source data; current tools route
+only `scenarios.json`.

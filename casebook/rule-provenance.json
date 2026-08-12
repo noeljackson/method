@@ -62,5 +62,37 @@
     "migration_id": "I-047",
     "introduced_in": "0.2.0",
     "eval_ids": ["safety-secret-requested-in-prompt", "safety-secret-exposed-in-log"]
+  },
+  {
+    "introduced_in": "0.9.0",
+    "rule": "Use direct authority and one human-readable canonical Program control.",
+    "observation": "M-001",
+    "migration_id": "M-001",
+    "insufficiency": "Making those mechanisms optional did not stop agents from treating them as required live state.",
+    "eval_ids": ["program-one-canonical-control"]
+  },
+  {
+    "introduced_in": "0.9.0",
+    "rule": "Continue a bounded objective across questions, status requests, and failed approaches.",
+    "observation": "M-002",
+    "migration_id": "M-002",
+    "insufficiency": "Earlier continuity language was Program-focused and did not govern ordinary conversational steering.",
+    "eval_ids": ["tentative-assent-bounded", "question-does-not-pause-objective", "failed-approach-not-blocker"]
+  },
+  {
+    "introduced_in": "0.9.0",
+    "rule": "Require diagnostic evidence to select a decision and preserve unrelated failure planes.",
+    "observation": "M-003",
+    "migration_id": "M-003",
+    "insufficiency": "A changed factor could satisfy the old rule even when its outcomes had no decision consumer.",
+    "eval_ids": ["unrelated-failure-plane", "missing-observation-not-defect", "instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation"]
+  },
+  {
+    "introduced_in": "0.9.0",
+    "rule": "Predeclare operation claims and preserve each as SUPPORTED, REJECTED, or INCONCLUSIVE.",
+    "observation": "M-004",
+    "migration_id": "M-004",
+    "insufficiency": "EvidenceReceipt v1 could preserve a terminal label without the claims needed for the next decision.",
+    "eval_ids": ["claim-scoped-result", "preflight-before-expensive-attempt", "reducer-preserves-terminal-evidence"]
   }
 ]

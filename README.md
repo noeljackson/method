@@ -1,162 +1,105 @@
 # Noel Method
 
-The Noel Method is a small runtime discipline for delegated work: observe the
-real state, bound authority, take the smallest useful action, verify the exact
-claim, and report what others may rely on.
+The Noel Method is a compact way for a person and a delegated agent to work
+together like senior teammates. It keeps attention on five questions:
 
-The Method is the normative Markdown in `src/` and `protocols/`. The binary,
-schemas, templates, and generated pack are optional aids. A person or agent
-must be able to follow the complete Method without installing a tool or
-creating a Method-specific artifact.
+1. What outcome does the human want?
+2. What is true now, and what is only inferred?
+3. What is the smallest safe next action?
+4. What evidence would change the next decision?
+5. What genuinely needs the human?
 
-## When to use it
+The normative Method is the Markdown in [`src/`](src/) and
+[`protocols/`](protocols/). The CLI, templates, schemas, and generated pack are
+optional aids. They do not grant authority, schedule work, retain state, or
+replace project instructions.
 
-Use the [Kernel](src/KERNEL.md) for any delegated task where a wrong answer or
-action would cost more than a quick correction. That includes most repository
-changes, operational diagnosis, and evidence-backed research.
+## Use it
 
-Direct authority mode is the default. The current request and canonical
-project instructions are the boundary; normal chat creates no Method-specific
-artifact. A concise request may be enough:
+Start with the [Kernel](src/KERNEL.md). Direct mode is the only authority mode:
+the current request and canonical project instructions define what may happen.
+Normal work needs no Method artifact.
 
-```text
-Outcome: fix the parser defect.
-Scope: parser source and focused tests.
-Forbidden: publish, deploy, access credentials.
-Evidence: the focused test must pass on the changed revision.
-```
+Load an optional protocol only when its task signal is present:
 
-External or persistent work does not automatically change the authority mode.
-A project may declare a bounded edit, check, commit, push, review, and merge
-lifecycle direct. Release, deploy, production mutation, and credential access
-remain separately controlled by the request and project.
-
-Load optional protocols by task shape:
-
-- [Program](protocols/program.md) for persistent dependent work;
+- [Program](protocols/program.md) for persistent dependent work across
+  sessions, repositories, or operational gates;
 - [Experiment](protocols/experiment.md) for a controlled comparison; and
-- [Secrets](protocols/secrets.md) for a secret-capable path.
+- [Secrets](protocols/secrets.md) when the actor or a local process can access
+  secret material.
 
-Protocols add procedure, never permission.
+Protocols add procedure, never permission. Several steps, a remote service, or
+a long conversation do not by themselves select Program.
 
-## Two adoption levels
-
-### 1. Direct mode
-
-Copy or reference `dist/pack/KERNEL.md` in the agent instructions. Keep normal
-task prompts short. Load Program, Experiment, or Secrets only when the task
-actually has that risk. This is the minimum useful adoption path.
-
-The optional `method` CLI embeds the verified pack and makes this easy for a
-human, an agent, or a host:
+The optional CLI returns the exact verified modules:
 
 ```sh
-# Kernel only
 method context
-
-# Kernel plus task-shaped procedure
 method context --program --secrets
-
-# Stable machine-readable module content and identities
 method context --experiment --format json
 ```
 
-The Markdown output is ready to inject into an LLM's instruction context.
-An agent may run the command itself when it can load local instructions. The
-CLI remains stateless: it assembles context and checks data, but it does not
-create an authorization session, broker tools, or turn a model request into
-permission. It does not schedule work, fetch live controls, retain program
-state, manage repositories or external systems, or infer authority.
+The Markdown output is ready to inject into an agent's instruction context.
+The JSON form identifies each selected module and digest without inventing an
+authorization envelope.
 
-### 2. Optional resolved mode
+## Human and machine controls
 
-Use resolved mode only when the project, current request, or consuming host
-explicitly selects it. The host authenticates the caller, protects an accepted
-[ProjectPolicy](templates/project-policy.json), binds a
-[TaskRequest](templates/task-request.json) to the approved conversation, and
-computes [ResolvedPermissions](schemas/resolved-permissions.schema.json):
+Most tasks stay conversational. A persistent Program uses one human-readable
+tracker body: a small TOML metadata header followed by `Goal`, `Done when`,
+`Current`, `Next`, `Needs from human`, `Boundaries`, and `Evidence`. The body is
+both the human control and the machine-checkable control; do not maintain a
+second JSON copy.
 
 ```sh
-method resolve \
-  --policy PROJECT-POLICY.json \
-  --authorities POLICY-AUTHORITIES.json \
-  --task TASK-REQUEST.json > RESOLVED-PERMISSIONS.json
-
-method context \
-  --task TASK-REQUEST.json \
-  --permissions RESOLVED-PERMISSIONS.json
+method program validate CONTROL.md
+method program validate CONTROL.md --previous PREVIOUS.md
 ```
 
-Policy acceptance is an owner or host operation, not a model task:
-
-1. Copy and edit `templates/project-policy.json` while its status is `draft`.
-2. Compute its digest with `method policy digest PROJECT-POLICY.json`.
-3. An independent owner records that digest and acceptance metadata using
-   `templates/policy-authorities.json`, then puts the same receipt ID and
-   metadata in the policy and changes its status to `accepted`.
-4. Run `method policy verify PROJECT-POLICY.json --authorities
-   POLICY-AUTHORITIES.json` before resolving tasks.
-
-Changing policy invalidates the digest. Changing acceptance metadata without
-an exact matching external receipt also fails. Keep the authority registry
-outside model write authority.
-
-The resolver rejects draft or altered policies, unknown actions and gates, and
-attempts to weaken protocol selection. It proves consistency, not caller
-identity or enforcement. The host remains responsible for authenticating the
-request, protecting inputs, supplying TaskRequest and ResolvedPermissions to
-the model, and restricting tools when enforcement is required.
-
-The LLM can use `method validate`, `method context`, and additional monotonic
-protocol flags. It must not author its own accepted policy, authority receipt,
-or trusted TaskRequest. Resolved mode is useful at an actual host boundary—
-for example, a service translating authenticated user intent into constrained
-tools—not as extra paperwork inside an ordinary chat.
-
-When Program is selected, the harness must also supply the current
-ProgramControl named by a non-authorizing TaskRequest reference. Structural
-validation does not prove that a control is live or authoritative; reconcile
-that identity against canonical project state.
-
-## Install the CLI
-
-Install the published crate:
+Ordinary commits, links, and test output are ordinary evidence. Use the JSON
+[EvidenceReceipt](templates/evidence-receipt.json) only when an operation result
+can be lost, destroyed, reduced to protect secrets, or cannot be preserved for
+a successor through ordinary durable evidence. Crossing sessions alone is not
+a durability reason:
 
 ```sh
-cargo install noel-method --locked --version 0.7.0
+method receipt validate RECEIPT.json
+```
+
+Each declared claim is classified `SUPPORTED`, `REJECTED`, or `INCONCLUSIVE`.
+Predeclaring claims creates no artifact. A receipt is terminal output that
+preserves a decision-bearing result, not a status ritual or authority token.
+
+## Install and verify
+
+When the optional crate is published, install it with:
+
+```sh
+cargo install noel-method --locked --version 0.9.0
 method version --json
 method pack verify
 ```
 
 Release archives provide native `method` binaries for Linux, macOS, and
-Windows with a `SHA256SUMS` file. To build the current checkout instead:
+Windows with a `SHA256SUMS` file and are the canonical binary distribution.
+To build the current checkout:
 
 ```sh
 cargo install --path . --locked
 ```
 
-For a separately downloaded or vendored pack, bind verification to the
-manifest digest recorded by the consuming project or release:
+Bind a separately downloaded or vendored pack to the manifest digest recorded
+by the consumer:
 
 ```sh
 method pack verify vendor/noel-method/dist/pack \
   --expect-manifest-sha256 "$EXPECTED_SHA256"
 ```
 
-All JSON-reading commands accept `-` for standard input. Validation supports
-`project-policy`, `policy-authorities`, `task-request`,
-`resolved-permissions`, `program-control`, and `evidence-receipt`:
+JSON-reading commands accept `-` for standard input. Invalid contract data
+exits with status 2; file and stream errors exit with status 1.
 
-```sh
-method validate task-request TASK-REQUEST.json --json
-method validate evidence-receipt - --json < EVIDENCE-RECEIPT.json
-```
-
-Invalid data exits with status 2; file and stream errors exit with status 1.
-The runtime pack contains no executable fallback: use the matching `method`
-release for resolved-mode validation and resolution.
-
-## Development
+## Develop and distribute
 
 The repository has no Python runtime or test dependency. Regenerate or verify
 the checked-in distribution with Rust:
@@ -167,27 +110,22 @@ method dist check
 cargo test --all-targets
 ```
 
-## Distribution
+Published surfaces are:
 
-- `dist/pack/` — recommended progressively loaded pack
-- `dist/MONOLITH.md` — all normative runtime text for one-file systems
-- `method` / the `noel-method` crate — optional stateless runtime tooling
-- `src/` and `protocols/` — normative source
-- `schemas/` and `templates/` — optional structured contracts
-- `policies/` — draft examples, not accepted authority
-- `casebook/` and `MIGRATION.md` — rationale and source traceability
-- `evals/` — sparse, opt-in decision smoke test
+- `dist/pack/` — progressively loaded runtime pack;
+- `dist/MONOLITH.md` — one-file fallback with every protocol;
+- `method` / `noel-method` — optional stateless tooling;
+- `src/` and `protocols/` — normative source;
+- `schemas/` and `templates/` — optional Program and evidence contracts;
+- `casebook/` and [`MIGRATION.md`](MIGRATION.md) — rationale and traceability;
+- `evals/` — deterministic decision fixtures and historical evaluation data.
 
 For subtree, submodule, remote, and single-file consumption, see the
-[adapter guide](adapters/README.md). Use an existing release tag; never treat
-the `VERSION` in an unreleased checkout as a published tag.
+[adapter guide](adapters/README.md). Use a published tag, never mutable `main`.
 
-## Versioning
-
-The current version is in [`VERSION`](VERSION). Before `1.0.0`, a minor release
-may make a breaking decision or contract change when the changelog and
-migration guide name it. Patch releases clarify wording without changing
-decisions.
+Before `1.0.0`, a minor release may make a breaking interface or decision
+change when the changelog and migration guide name it. Patch releases clarify
+wording without changing decisions.
 
 ## License
 

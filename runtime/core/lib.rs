@@ -2,20 +2,20 @@ mod canonical;
 mod contracts;
 pub mod dist;
 mod pack;
+mod program;
 mod validation;
 
-pub use canonical::{canonical_json, parse_json_strict, sha256_hex};
+pub use canonical::{parse_json_strict, sha256_hex};
 pub use contracts::{
-    EvidenceReceipt, PolicyAuthorityRegistry, ProgramControl, ProjectPolicy, ProtocolFlags,
-    ResolvedPermissions, TaskRequest,
+    ClaimOutcome, DurabilityReason, EvidenceClaim, EvidenceReceipt, ProtocolFlags,
+    SourceDisposition,
 };
 pub use pack::{PackFile, PackManifest, PackReport, verify_pack_directory, verify_pack_files};
-pub use validation::{
-    ValidationKind, context_protocols, project_policy_digest, resolve_permissions,
-    validate_authority_registry, validate_evidence_receipt, validate_program_control,
-    validate_project_policy, validate_resolved_permissions, validate_task_request,
-    verify_project_policy,
+pub use program::{
+    PROGRAM_SECTIONS, ProgramDocument, ProgramMetadata, ProgramState, TerminationReason,
+    validate_program_document, validate_program_transition,
 };
+pub use validation::{context_protocols, validate_evidence_receipt};
 
 use std::io;
 use thiserror::Error;

@@ -1,0 +1,69 @@
+{
+  "version": "0.9.0",
+  "kernel_sections": [
+    "Understand",
+    "Act",
+    "Learn efficiently",
+    "Finish",
+    "Secret boundary"
+  ],
+  "contracts": {
+    "program_control": {
+      "format": "markdown_with_toml_header",
+      "schema_version": 1,
+      "template": "templates/program-control.md"
+    },
+    "evidence_receipt": {
+      "format": "json",
+      "schema_version": 2,
+      "schema": "schemas/evidence-receipt.schema.json",
+      "template": "templates/evidence-receipt.json",
+      "durability_reasons": [
+        "ephemeral",
+        "destructive_output",
+        "secret_reduced",
+        "successor_gap"
+      ]
+    }
+  },
+  "protocols": [
+    "program",
+    "experiment",
+    "secrets"
+  ],
+  "authority_modes": {
+    "default": "direct",
+    "supported": [
+      "direct"
+    ]
+  },
+  "context_schema_version": 4,
+  "cli_commands": [
+    "version",
+    "context",
+    "program validate",
+    "receipt validate",
+    "pack verify",
+    "dist build",
+    "dist check"
+  ],
+  "distribution": {
+    "entrypoint": "dist/pack/INDEX.md",
+    "kernel": "dist/pack/KERNEL.md",
+    "monolith": "dist/MONOLITH.md",
+    "cli": "method",
+    "cargo_package": "noel-method",
+    "pack_inventory_requires_matching_cli": true
+  },
+  "removed_since_0.8.5": [
+    "resolved authority mode",
+    "ProjectPolicy",
+    "PolicyAuthorityRegistry",
+    "TaskRequest",
+    "ResolvedPermissions",
+    "ProgramControl JSON schema",
+    "method validate",
+    "method policy",
+    "method resolve"
+  ]
+}

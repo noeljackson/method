@@ -5,14 +5,8 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 const PROTOCOLS: [&str; 3] = ["program", "experiment", "secrets"];
-const SCHEMAS: [&str; 6] = [
-    "project-policy.schema.json",
-    "policy-authorities.schema.json",
-    "task-request.schema.json",
-    "resolved-permissions.schema.json",
-    "program-control.schema.json",
-    "evidence-receipt.schema.json",
-];
+const SCHEMAS: [&str; 1] = ["evidence-receipt.schema.json"];
+const TEMPLATES: [&str; 2] = ["program-control.md", "evidence-receipt.json"];
 
 pub fn default_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -21,12 +15,14 @@ pub fn default_root() -> PathBuf {
 pub fn build_distribution(root: &Path) -> Result<Vec<PathBuf>> {
     let rendered = render_all(root)?;
     let pack = root.join("dist/pack");
+    for relative in rendered.keys() {
+        validate_output_path(root, &root.join(relative))?;
+    }
+    let _ = collect_relative_files(&pack)?;
     let mut written = Vec::new();
     for (relative, content) in &rendered {
         let path = root.join(relative);
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)?;
-        }
+        prepare_output_path(root, &path)?;
         fs::write(&path, content)?;
         written.push(path);
     }
@@ -43,9 +39,20 @@ pub fn build_distribution(root: &Path) -> Result<Vec<PathBuf>> {
 
 pub fn check_distribution(root: &Path) -> Result<()> {
     let rendered = render_all(root)?;
+    for relative in rendered.keys() {
+        validate_output_path(root, &root.join(relative))?;
+    }
     let mut differences = Vec::new();
     for (relative, expected) in &rendered {
-        let actual = fs::read_to_string(root.join(relative)).unwrap_or_default();
+        let path = root.join(relative);
+        let actual = match fs::read_to_string(&path) {
+            Ok(actual) => actual,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                differences.push(relative.display().to_string());
+                continue;
+            }
+            Err(error) => return Err(error.into()),
+        };
         if actual != *expected {
             differences.push(relative.display().to_string());
         }
@@ -111,6 +118,12 @@ fn render_all(root: &Path) -> Result<BTreeMap<PathBuf, String>> {
             fs::read_to_string(root.join("schemas").join(schema))?,
         );
     }
+    for template in TEMPLATES {
+        output.insert(
+            PathBuf::from(format!("dist/pack/templates/{template}")),
+            fs::read_to_string(root.join("templates").join(template))?,
+        );
+    }
     let files = output
         .iter()
         .filter_map(|(path, content)| {
@@ -148,12 +161,59 @@ fn render_index(version: &str, context: &Value) -> Result<String> {
             .and_then(Value::as_str)
             .ok_or_else(|| MethodError::Data(format!("src/context.json {name} signal is invalid")))
     };
+    let generated_header = header(version);
+    let program = signal("program")?;
+    let experiment = signal("experiment")?;
+    let secrets = signal("secrets")?;
     Ok(format!(
-        "{}\n# Noel Method Runtime Pack\n\nVersion: `{version}`\n\n## Default: direct mode\n\nLoad [Kernel](KERNEL.md). The current request and canonical project\ninstructions supply authority. Direct mode may include external or persistent\nwork when those sources authorize its scope, actions, gates, and prohibitions.\nDo not create Method artifacts merely because work has several steps, uses a\nremote service, or persists across a conversation.\n\nLoad protocols by task shape:\n\n| Protocol | Task signal | Module |\n| --- | --- | --- |\n| `program` | `{}` | [Program](protocols/program.md) |\n| `experiment` | `{}` | [Experiment](protocols/experiment.md) |\n| `secrets` | `{}` | [Secrets](protocols/secrets.md) |\n\nProtocols add procedure, never permission.\n\nThe CLI returns embedded verified modules as Markdown or stable JSON:\n\n```sh\nmethod context --program\nmethod context --experiment --format json\n```\n\n## Optional: resolved mode\n\nUse resolved mode only when the project, current request, or consuming host\nexplicitly selects it. The host authenticates the TaskRequest, protects the\naccepted ProjectPolicy and authority registry, runs the deterministic resolver,\nand enforces ResolvedPermissions:\n\n```sh\nmethod resolve \\\n  --policy PROJECT-POLICY.json \\\n  --authorities POLICY-AUTHORITIES.json \\\n  --task TASK-REQUEST.json > RESOLVED-PERMISSIONS.json\n\nmethod context --permissions RESOLVED-PERMISSIONS.json\n```\n\nLoad [Kernel](KERNEL.md), TaskRequest, ResolvedPermissions, and exactly the\nprotocol modules named by `protocols`. If resolved mode is selected and its\npermissions are missing, unverified, expired, or inconsistent with current\nstate, remain read-only.\n\nWhen Program is selected, separately validate and supply the ProgramControl\nnamed by the TaskRequest:\n\n```sh\nmethod validate program-control PROGRAM-CONTROL.json\n```\n\nThis validates structure and terminal-state invariants only. The harness must\nstill bind the control to current canonical state and authority.\n\nThe model may request another protocol when risk emerges. Only the resolver may\nissue updated ResolvedPermissions in resolved mode; the model cannot remove a\nprotocol, widen actions, or downgrade the authority mode.\n\nMachine-readable routing and schemas are in [CONTEXT.json](CONTEXT.json) and\n[`schemas/`](schemas/). Install the matching `method` release to resolve or\nvalidate structured controls.\n\n## Single-file fallback\n\nUse [`../MONOLITH.md`](../MONOLITH.md) only when linked modules cannot be\nloaded. It contains the same Kernel and all three protocols. It does not grant\nproject authority or select resolved mode.\n",
-        header(version),
-        signal("program")?,
-        signal("experiment")?,
-        signal("secrets")?
+        r#"{generated_header}
+# Noel Method Runtime Pack
+
+Version: `{version}`
+
+Load [Kernel](KERNEL.md). Direct mode is the default: the current request and
+canonical project instructions supply authority. Several steps, a remote service,
+or work across a conversation do not by themselves require more Method.
+
+Load protocols only when their task signal is present:
+
+| Protocol | Task signal | Module |
+| --- | --- | --- |
+| `program` | `{program}` | [Program](protocols/program.md) |
+| `experiment` | `{experiment}` | [Experiment](protocols/experiment.md) |
+| `secrets` | `{secrets}` | [Secrets](protocols/secrets.md) |
+
+Protocols add procedure, never permission. The CLI returns the verified modules:
+
+```sh
+method context --program
+method context --experiment --format json
+```
+
+Program controls use the [human template](templates/program-control.md) and can
+be checked across revisions:
+
+```sh
+method program validate CONTROL.md
+method program validate CONTROL.md --previous PREVIOUS.md
+```
+
+Use an [EvidenceReceipt](templates/evidence-receipt.json) only when evidence can
+be lost, destroyed, secret-reduced, or cannot be preserved for a successor by
+ordinary durable evidence. Crossing sessions alone is insufficient:
+
+```sh
+method receipt validate RECEIPT.json
+```
+
+Machine-readable routing is in [CONTEXT.json](CONTEXT.json). The receipt schema
+is in [`schemas/`](schemas/).
+
+## Single-file fallback
+
+Use [`../MONOLITH.md`](../MONOLITH.md) only when linked modules cannot be loaded.
+It contains the same Kernel and all three protocols; it grants no authority.
+"#
     ))
 }
 
@@ -186,8 +246,18 @@ fn read_json(path: PathBuf) -> Result<Value> {
 }
 
 fn collect_relative_files(root: &Path) -> Result<BTreeSet<PathBuf>> {
-    if !root.exists() {
-        return Ok(BTreeSet::new());
+    match fs::symlink_metadata(root) {
+        Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_dir() => {
+            return Err(MethodError::Data(format!(
+                "distribution path is not a regular directory: {}",
+                root.display()
+            )));
+        }
+        Ok(_) => {}
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+            return Ok(BTreeSet::new());
+        }
+        Err(error) => return Err(error.into()),
     }
     let mut files = BTreeSet::new();
     collect_files(root, root, &mut files)?;
@@ -198,17 +268,97 @@ fn collect_files(root: &Path, directory: &Path, files: &mut BTreeSet<PathBuf>) -
     for entry in fs::read_dir(directory)? {
         let entry = entry?;
         let path = entry.path();
-        if path.is_dir() {
+        let metadata = fs::symlink_metadata(&path)?;
+        if metadata.file_type().is_symlink() {
+            return Err(MethodError::Data(format!(
+                "distribution may not contain symlinks: {}",
+                path.display()
+            )));
+        }
+        if metadata.is_dir() {
             collect_files(root, &path, files)?;
-        } else if path.is_file() {
+        } else if metadata.is_file() {
             files.insert(
                 path.strip_prefix(root)
                     .expect("contained path")
                     .to_path_buf(),
             );
+        } else {
+            return Err(MethodError::Data(format!(
+                "distribution contains a non-regular file: {}",
+                path.display()
+            )));
         }
     }
     Ok(())
+}
+
+fn validate_output_path(root: &Path, path: &Path) -> Result<()> {
+    let relative = path.strip_prefix(root).map_err(|_| {
+        MethodError::Data(format!(
+            "distribution output escapes root: {}",
+            path.display()
+        ))
+    })?;
+    let root_metadata = fs::symlink_metadata(root)?;
+    if root_metadata.file_type().is_symlink() || !root_metadata.is_dir() {
+        return Err(MethodError::Data(format!(
+            "distribution root is not a regular directory: {}",
+            root.display()
+        )));
+    }
+    let mut current = root.to_path_buf();
+    let components = relative.components().collect::<Vec<_>>();
+    for component in components.iter().take(components.len().saturating_sub(1)) {
+        current.push(component.as_os_str());
+        match fs::symlink_metadata(&current) {
+            Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_dir() => {
+                return Err(MethodError::Data(format!(
+                    "distribution parent is not a regular directory: {}",
+                    current.display()
+                )));
+            }
+            Ok(_) => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(()),
+            Err(error) => return Err(error.into()),
+        }
+    }
+    match fs::symlink_metadata(path) {
+        Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_file() => {
+            Err(MethodError::Data(format!(
+                "distribution output is not a regular file: {}",
+                path.display()
+            )))
+        }
+        Ok(_) => Ok(()),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
+        Err(error) => Err(error.into()),
+    }
+}
+
+fn prepare_output_path(root: &Path, path: &Path) -> Result<()> {
+    let relative = path
+        .strip_prefix(root)
+        .expect("validated output under root");
+    let mut current = root.to_path_buf();
+    let components = relative.components().collect::<Vec<_>>();
+    for component in components.iter().take(components.len().saturating_sub(1)) {
+        current.push(component.as_os_str());
+        match fs::symlink_metadata(&current) {
+            Ok(metadata) if metadata.file_type().is_symlink() || !metadata.is_dir() => {
+                return Err(MethodError::Data(format!(
+                    "distribution parent is not a regular directory: {}",
+                    current.display()
+                )));
+            }
+            Ok(_) => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                fs::create_dir(&current)?;
+            }
+            Err(error) => return Err(error.into()),
+        }
+    }
+    validate_output_path(root, path)
 }
 
 fn remove_stale_pack_files(pack: &Path, expected: &BTreeSet<PathBuf>) -> Result<()> {

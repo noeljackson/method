@@ -1,44 +1,38 @@
 [
   {
-    "section": "Runtime input",
-    "source_ids": ["I-014", "I-015", "I-021", "C-004", "C-016", "C-019"],
-    "failure_prevented": "Either under-specified autonomy or mandatory control infrastructure for work already bounded by direct and canonical authority.",
-    "eval_ids": ["direct-bounded-edit", "core-authority-boundary"]
+    "section": "Selection and five questions",
+    "source_ids": ["I-014", "I-015", "I-021", "C-016", "C-019", "M-001"],
+    "failure_prevented": "Method machinery or protocol routing replaces the human's outcome and canonical project authority.",
+    "eval_ids": ["direct-bounded-edit", "core-authority-boundary", "program-one-canonical-control"]
   },
   {
-    "section": "Observe",
-    "source_ids": ["I-004", "I-024", "I-035", "C-013", "C-019"],
-    "failure_prevented": "Conclusions and readiness claims detached from exact current evidence.",
-    "eval_ids": ["core-evidence-identity"]
-  },
-  {
-    "section": "Bound",
-    "source_ids": ["I-009", "I-014", "I-015", "C-006"],
-    "failure_prevented": "Ambient capability, useful follow-through, or old instructions treated as authority.",
-    "eval_ids": ["core-authority-boundary", "program-revoked-repair"]
+    "section": "Understand",
+    "source_ids": ["I-004", "I-024", "I-035", "C-013", "M-003"],
+    "failure_prevented": "Historical, inferred, unrelated, or merely unobserved state is reported as the current product truth.",
+    "eval_ids": ["core-evidence-identity", "unrelated-failure-plane", "missing-observation-not-defect"]
   },
   {
     "section": "Act",
-    "source_ids": ["I-007", "I-033", "I-036", "C-008", "C-025"],
-    "failure_prevented": "Overbroad intervention, unauthorized neighboring work, or an incidental prerequisite replacing the owning outcome.",
-    "eval_ids": ["direct-bounded-edit", "incidental-prerequisite-return", "secrets-latent-helper"]
+    "source_ids": ["I-007", "I-033", "I-036", "C-024", "C-025", "M-002"],
+    "failure_prevented": "A bounded objective stalls after a question or failed approach, widens into adjacent work, or mistakes access and automatic effects for authority.",
+    "eval_ids": ["tentative-assent-bounded", "question-does-not-pause-objective", "failed-approach-not-blocker", "incidental-prerequisite-return"]
   },
   {
-    "section": "Verify",
-    "source_ids": ["I-018", "I-023", "I-034", "C-010", "C-013", "C-018", "C-020", "INF-002"],
-    "failure_prevented": "Broad, stale, or non-terminal checks used as transferable completion evidence; unchanged passive state or expensive qualification turned into recurring work.",
-    "eval_ids": ["core-evidence-identity", "direct-passive-gate-transition", "expensive-gate-diagnostic-loop", "experiment-protected-regression"]
+    "section": "Learn efficiently",
+    "source_ids": ["I-018", "I-023", "I-034", "C-018", "C-020", "C-021", "INF-002", "M-003", "M-004"],
+    "failure_prevented": "Instrumentation and expensive reruns accumulate without selecting a next action, unrelated planes contaminate conclusions, or fragile evidence loses the claim that failed.",
+    "eval_ids": ["instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation", "expensive-gate-diagnostic-loop", "claim-scoped-result", "reducer-preserves-terminal-evidence"]
   },
   {
-    "section": "Report",
-    "source_ids": ["I-019", "I-026", "I-039", "C-019", "INF-001"],
-    "failure_prevented": "Reports that hide uncertainty, leave consumers unable to audit acceptance claims, or record a recurring failure without an enforcing consumer.",
-    "eval_ids": ["core-evidence-identity", "recurring-failure-concrete-consumer", "one-off-finding-no-guard"]
+    "section": "Finish",
+    "source_ids": ["I-019", "I-026", "I-039", "C-019", "C-023", "C-024", "M-002"],
+    "failure_prevented": "Routine delivery ends at an intermediate artifact, unchanged status becomes reporting work, or a host state displaces the durable objective.",
+    "eval_ids": ["program-host-state-not-control", "program-diagnosed-repair-continuation", "durable-goal-text-plain"]
   },
   {
-    "section": "Permanent secret boundary",
-    "source_ids": ["I-047"],
-    "failure_prevented": "Secret-bearing diagnostics contaminate retained output and coordination context.",
-    "eval_ids": ["secrets-known-exposure", "secrets-latent-helper", "interaction-program-secret"]
+    "section": "Secret boundary",
+    "source_ids": ["I-047", "M-004"],
+    "failure_prevented": "Secret-bearing diagnostics contaminate retained context or raw evidence is destroyed before a safe decision-bearing reduction exists.",
+    "eval_ids": ["secrets-known-exposure", "secrets-latent-helper", "interaction-program-secret", "claim-scoped-result"]
   }
 ]

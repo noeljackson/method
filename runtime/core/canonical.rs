@@ -1,4 +1,4 @@
-use crate::{MethodError, Result};
+use crate::Result;
 use serde::de::{DeserializeSeed, MapAccess, SeqAccess, Visitor};
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
@@ -11,11 +11,6 @@ pub fn parse_json_strict(bytes: &[u8]) -> Result<Value> {
     Ok(value)
 }
 
-pub fn canonical_json(value: &Value) -> Result<Vec<u8>> {
-    let normalized = normalize(value);
-    serde_json::to_vec(&normalized).map_err(MethodError::from)
-}
-
 pub fn sha256_hex(bytes: &[u8]) -> String {
     let digest = Sha256::digest(bytes);
     let mut output = String::with_capacity(64);
@@ -24,22 +19,6 @@ pub fn sha256_hex(bytes: &[u8]) -> String {
         write!(&mut output, "{byte:02x}").expect("writing to String cannot fail");
     }
     output
-}
-
-fn normalize(value: &Value) -> Value {
-    match value {
-        Value::Array(items) => Value::Array(items.iter().map(normalize).collect()),
-        Value::Object(items) => {
-            let mut keys = items.keys().collect::<Vec<_>>();
-            keys.sort();
-            let mut normalized = Map::new();
-            for key in keys {
-                normalized.insert(key.clone(), normalize(&items[key]));
-            }
-            Value::Object(normalized)
-        }
-        _ => value.clone(),
-    }
 }
 
 struct StrictValue;
@@ -147,14 +126,5 @@ mod tests {
     fn duplicate_keys_fail() {
         let error = parse_json_strict(br#"{"a":1,"a":2}"#).unwrap_err();
         assert!(error.to_string().contains("duplicate JSON field"));
-    }
-
-    #[test]
-    fn canonical_json_sorts_nested_keys() {
-        let value = parse_json_strict(br#"{"z":{"b":2,"a":1},"a":0}"#).unwrap();
-        assert_eq!(
-            String::from_utf8(canonical_json(&value).unwrap()).unwrap(),
-            r#"{"a":0,"z":{"a":1,"b":2}}"#
-        );
     }
 }

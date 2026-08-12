@@ -31,6 +31,18 @@ pub struct PackReport {
     pub verified: bool,
 }
 
+const REQUIRED_FILES: [&str; 9] = [
+    "CONTEXT.json",
+    "INDEX.md",
+    "KERNEL.md",
+    "protocols/experiment.md",
+    "protocols/program.md",
+    "protocols/secrets.md",
+    "schemas/evidence-receipt.schema.json",
+    "templates/evidence-receipt.json",
+    "templates/program-control.md",
+];
+
 pub fn verify_pack_directory(path: &Path) -> Result<PackReport> {
     let metadata = fs::symlink_metadata(path)?;
     if metadata.file_type().is_symlink() || !metadata.is_dir() {
@@ -98,7 +110,7 @@ fn validate_manifest(manifest: &PackManifest) -> Result<()> {
             "MANIFEST.json method must be Noel Method".to_owned(),
         ));
     }
-    nonempty(&manifest.version, "MANIFEST.json version")?;
+    validate_version(&manifest.version)?;
     safe_relative_path(&manifest.entrypoint)?;
     safe_relative_path(&manifest.kernel)?;
     if manifest.entrypoint != "INDEX.md" || manifest.kernel != "KERNEL.md" {
@@ -134,6 +146,19 @@ fn validate_manifest(manifest: &PackManifest) -> Result<()> {
                 file.path
             )));
         }
+    }
+    let listed = manifest
+        .files
+        .iter()
+        .map(|file| file.path.as_str())
+        .collect::<BTreeSet<_>>();
+    let required = REQUIRED_FILES.into_iter().collect::<BTreeSet<_>>();
+    if listed != required {
+        return Err(MethodError::Data(format!(
+            "MANIFEST.json runtime file inventory is invalid; expected=[{}] actual=[{}]",
+            required.into_iter().collect::<Vec<_>>().join(", "),
+            listed.into_iter().collect::<Vec<_>>().join(", ")
+        )));
     }
     Ok(())
 }
@@ -199,4 +224,62 @@ fn nonempty(value: &str, label: &str) -> Result<()> {
         )));
     }
     Ok(())
+}
+
+fn validate_version(value: &str) -> Result<()> {
+    nonempty(value, "MANIFEST.json version")?;
+    if value.len() > 128
+        || !value
+            .chars()
+            .all(|character| character.is_ascii_alphanumeric() || ".+-".contains(character))
+    {
+        return Err(MethodError::Data(
+            "MANIFEST.json version must be portable SemVer text".to_owned(),
+        ));
+    }
+    let (without_build, build) = match value.split_once('+') {
+        Some((base, suffix)) if !suffix.contains('+') => (base, Some(suffix)),
+        Some(_) => return invalid_version(),
+        None => (value, None),
+    };
+    let (core, prerelease) = match without_build.split_once('-') {
+        Some((core, suffix)) => (core, Some(suffix)),
+        None => (without_build, None),
+    };
+    let parts = core.split('.').collect::<Vec<_>>();
+    if parts.len() != 3
+        || parts.iter().any(|part| {
+            part.is_empty()
+                || !part.bytes().all(|byte| byte.is_ascii_digit())
+                || (part.len() > 1 && part.starts_with('0'))
+        })
+    {
+        return invalid_version();
+    }
+    if prerelease.is_some_and(|suffix| !valid_identifiers(suffix, true))
+        || build.is_some_and(|suffix| !valid_identifiers(suffix, false))
+    {
+        return invalid_version();
+    }
+    Ok(())
+}
+
+fn valid_identifiers(value: &str, reject_numeric_leading_zero: bool) -> bool {
+    !value.is_empty()
+        && value.split('.').all(|part| {
+            !part.is_empty()
+                && part
+                    .bytes()
+                    .all(|byte| byte.is_ascii_alphanumeric() || byte == b'-')
+                && !(reject_numeric_leading_zero
+                    && part.len() > 1
+                    && part.starts_with('0')
+                    && part.bytes().all(|byte| byte.is_ascii_digit()))
+        })
+}
+
+fn invalid_version<T>() -> Result<T> {
+    Err(MethodError::Data(
+        "MANIFEST.json version must be portable SemVer text".to_owned(),
+    ))
 }
