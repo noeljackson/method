@@ -2,6 +2,16 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.9.1 - 2026-08-13
+
+- Reset a working model before another mutation when authoritative evidence
+  contradicts it: separate decision-bearing observations from interpretations,
+  use the cheapest discriminator, and resume on a predictive model or a safe
+  action common to all remaining models.
+- Record the wrapper-model failure as casebook observation `M-005` and add one
+  focused decision scenario. This clarification adds no protocol, artifact,
+  schema, CLI, retry threshold, or mandatory decision table.
+
 ## 0.9.0 - 2026-08-12
 
 - Rewrite the Kernel around five questions a trusted senior teammate answers,

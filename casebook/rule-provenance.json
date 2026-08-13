@@ -94,5 +94,13 @@
     "migration_id": "M-004",
     "insufficiency": "EvidenceReceipt v1 could preserve a terminal label without the claims needed for the next decision.",
     "eval_ids": ["claim-scoped-result", "preflight-before-expensive-attempt", "reducer-preserves-terminal-evidence"]
+  },
+  {
+    "introduced_in": "0.9.1",
+    "rule": "Reset a contradicted working model before another mutation at that boundary.",
+    "observation": "M-005",
+    "migration_id": "M-005",
+    "insufficiency": "Decision-focused instrumentation and one-factor retries did not require a model reset when authoritative facts disproved the interpretation driving those attempts.",
+    "eval_ids": ["authoritative-contradiction-resets-model"]
   }
 ]

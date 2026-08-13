@@ -102,3 +102,27 @@ predeclares claim identifiers, records each as `SUPPORTED`, `REJECTED`, or
 is destroyed. Cheap local prerequisites run first. Ordinary tests and status
 remain ordinary evidence so this durability rule does not recreate receipt
 ceremony.
+
+## Authoritative contradictions reset the working model
+
+Observation ID: `M-005`
+
+A staged operating-system recovery wrapper repeatedly rejected a healthy node.
+It treated a firmware-reported boot entry as case-sensitive proof of what had
+run, then encoded the same interpretation in its mocks. Protected observations
+showed the boot identity had not changed, while upstream source treated the two
+entry spellings as the same identity. The artifact was staged correctly; the
+wrapper's state model was wrong.
+
+The existing decision-focused diagnostic rule could still permit another
+counter or patch after each reading. The one-factor retry rule limited each
+attempt but did not say when contrary authoritative evidence invalidated the
+model behind the attempts. The live system became the integration fixture for
+assumptions that source and a few decision-bearing facts could have rejected.
+
+Version 0.9.1 freezes further mutation at a boundary when authoritative
+evidence contradicts its working model. It separates direct observations from
+interpretations and uses the cheapest discriminator. Work resumes when one
+model predicts the next result or every remaining model selects the same safe
+action. This is not an arbitrary retry count, demand for exhaustive certainty,
+or mandatory decision-table artifact.

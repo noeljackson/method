@@ -398,6 +398,7 @@ fn v09_behavior_has_named_scenarios_and_provenance() {
         "claim-scoped-result",
         "reducer-preserves-terminal-evidence",
         "incidental-prerequisite-return",
+        "authoritative-contradiction-resets-model",
     ] {
         assert!(
             scenario_ids.contains(required),
@@ -411,7 +412,11 @@ fn v09_behavior_has_named_scenarios_and_provenance() {
         .as_array()
         .unwrap()
         .iter()
-        .filter(|entry| entry["introduced_in"] == "0.9.0")
+        .filter(|entry| {
+            entry["introduced_in"]
+                .as_str()
+                .is_some_and(|version| version.starts_with("0.9."))
+        })
         .collect::<Vec<_>>();
     assert!(!v09.is_empty(), "v0.9 rules require casebook provenance");
     for entry in v09 {
