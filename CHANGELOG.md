@@ -2,6 +2,19 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.9.2 - 2026-08-13
+
+- Preserve bounded structural observations while allowing only
+  claim-relevant facts to decide acceptance, and finish diagnostics once those
+  facts are complete and quiescent instead of always consuming the full
+  horizon.
+- Classify diagnostic evidence by content and producer contract rather than
+  treating a log channel as automatically secret or safe; retain protected raw
+  material only for its current consumer.
+- Record these failures as casebook observations `M-006` and `M-007` with two
+  focused decision scenarios. This patch adds no protocol, artifact, schema,
+  CLI, fixed stabilization interval, or service-specific contract.
+
 ## 0.9.1 - 2026-08-13
 
 - Reset a working model before another mutation when authoritative evidence

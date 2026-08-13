@@ -27,6 +27,13 @@ A destination-encrypted envelope is safe only when plaintext is created and
 opened outside the coordinator, only the destination can decrypt it, and
 canonical policy names its audience, key, retention, and delivery path.
 
+Classify evidence by content and source contract, not channel name. A log is
+neither secret nor safe by default. Preserve bounded structural diagnostics
+when their producer excludes sensitive fields. Otherwise capture under
+restricted local access, suppress named sensitive fields, and disclose only
+the decision-bearing remainder. Retain protected raw material only while its
+current consumer needs it, then dispose of it according to canonical policy.
+
 ## Verify without revealing
 
 Use provider status, permitted metadata, reference shape, or intended

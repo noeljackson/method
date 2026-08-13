@@ -19,9 +19,9 @@
   },
   {
     "section": "Learn efficiently",
-    "source_ids": ["I-018", "I-023", "I-034", "C-018", "C-020", "C-021", "INF-002", "M-003", "M-004", "M-005"],
+    "source_ids": ["I-018", "I-023", "I-034", "C-018", "C-020", "C-021", "INF-002", "M-003", "M-004", "M-005", "M-006"],
     "failure_prevented": "Instrumentation and expensive reruns accumulate without selecting a next action, unrelated planes contaminate conclusions, or fragile evidence loses the claim that failed.",
-    "eval_ids": ["instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation", "expensive-gate-diagnostic-loop", "claim-scoped-result", "reducer-preserves-terminal-evidence", "authoritative-contradiction-resets-model"]
+    "eval_ids": ["instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation", "expensive-gate-diagnostic-loop", "claim-scoped-result", "reducer-preserves-terminal-evidence", "authoritative-contradiction-resets-model", "bounded-observation-claim-scoped-decision"]
   },
   {
     "section": "Finish",
@@ -31,8 +31,8 @@
   },
   {
     "section": "Secret boundary",
-    "source_ids": ["I-047", "M-004"],
+    "source_ids": ["I-047", "M-004", "M-007"],
     "failure_prevented": "Secret-bearing diagnostics contaminate retained context or raw evidence is destroyed before a safe decision-bearing reduction exists.",
-    "eval_ids": ["secrets-known-exposure", "secrets-latent-helper", "interaction-program-secret", "claim-scoped-result"]
+    "eval_ids": ["secrets-known-exposure", "secrets-latent-helper", "interaction-program-secret", "claim-scoped-result", "diagnostic-evidence-content-classification"]
   }
 ]

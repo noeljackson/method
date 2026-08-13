@@ -102,5 +102,21 @@
     "migration_id": "M-005",
     "insufficiency": "Decision-focused instrumentation and one-factor retries did not require a model reset when authoritative facts disproved the interpretation driving those attempts.",
     "eval_ids": ["authoritative-contradiction-resets-model"]
+  },
+  {
+    "introduced_in": "0.9.2",
+    "rule": "Preserve bounded observations while deciding only from claim-relevant facts, and end a diagnostic when those facts are complete and quiescent.",
+    "observation": "M-006",
+    "migration_id": "M-006",
+    "insufficiency": "Claim-scoped receipts and decision-focused instrumentation did not prevent fixed reducers from hiding new structural states or unrelated context from rejecting a target claim.",
+    "eval_ids": ["bounded-observation-claim-scoped-decision"]
+  },
+  {
+    "introduced_in": "0.9.2",
+    "rule": "Classify diagnostic evidence by content and producer contract rather than treating a channel as automatically secret or safe.",
+    "observation": "M-007",
+    "migration_id": "M-007",
+    "insufficiency": "The secret boundary prohibited secret-bearing logs but did not prevent blanket channel suppression from destroying safe decision-bearing diagnostics.",
+    "eval_ids": ["diagnostic-evidence-content-classification"]
   }
 ]

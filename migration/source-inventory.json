@@ -84,7 +84,9 @@
     {"id": "M-002", "heading": "Conversation is steering, not an implicit stop signal"},
     {"id": "M-003", "heading": "Diagnostic evidence must choose an action"},
     {"id": "M-004", "heading": "Preserve the claims an operation was meant to prove"},
-    {"id": "M-005", "heading": "Authoritative contradictions reset the working model"}
+    {"id": "M-005", "heading": "Authoritative contradictions reset the working model"},
+    {"id": "M-006", "heading": "Observe broadly enough to decide narrowly"},
+    {"id": "M-007", "heading": "Evidence sensitivity belongs to content, not channel"}
   ],
   "program": [
     {"id": "P-001", "heading": "Control activity must not replace outcome flow"}

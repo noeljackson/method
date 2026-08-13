@@ -17,7 +17,8 @@ insufficient.
 Current distillation evidence includes:
 
 - [`method-v0.9.md`](method-v0.9.md) — human control, conversational
-  continuity, decision-focused diagnosis, and claim-scoped durable evidence;
+  continuity, decision-focused diagnosis, claim-scoped decisions, and bounded
+  diagnostic evidence;
 - [`codewire.md`](codewire.md) — repository and Program delivery failures;
 - [`infra.md`](infra.md) — executable guards and qualification-loop costs;
 - [`program-flow.md`](program-flow.md) — control activity displacing outcomes;

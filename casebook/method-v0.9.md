@@ -126,3 +126,48 @@ interpretations and uses the cheapest discriminator. Work resumes when one
 model predicts the next result or every remaining model selects the same safe
 action. This is not an arbitrary retry count, demand for exhaustive certainty,
 or mandatory decision-table artifact.
+
+## Observe broadly enough to decide narrowly
+
+Observation ID: `M-006`
+
+A staged runtime diagnostic proved its artifact, cache, boot, and named runtime
+services, then rejected the candidate because one additional service was not
+healthy. The reducer listed only services it already knew, so it hid the
+decision-bearing service name. Its acceptance predicate also treated every
+unrelated service as part of the target claim and waited the full horizon after
+the observed state had stopped changing.
+
+The v0.9 claim and instrumentation rules were insufficient because a reducer
+could preserve every predeclared claim while discarding bounded structural
+facts needed to interpret a new state. A narrow claim could also be rejected by
+context that had no named dependency on it.
+
+Version 0.9.2 preserves bounded observations while allowing only
+claim-relevant facts to decide acceptance. Missing or malformed evidence stays
+`INCONCLUSIVE`. A diagnostic may finish when relevant evidence is complete and
+quiescent; the full horizon remains for state that is still progressing.
+Service names, formats, and stabilization intervals remain project policy.
+
+## Evidence sensitivity belongs to content, not channel
+
+Observation ID: `M-007`
+
+A runtime investigation protected credentials, rendered configuration, and
+state correctly, but generalized that protection to ordinary structural logs.
+The resulting reducer hid the process and service diagnostics needed to explain
+why a synthetic fixture passed while the real runtime did not. More guarded
+attempts then produced less useful evidence than a bounded local capture would
+have provided.
+
+The existing secret boundary prohibited secret values in logs and evidence,
+but did not reject the inverse assumption that every log was secret. That
+channel-level classification made safe structural messages unavailable without
+proving they contained sensitive fields.
+
+Version 0.9.2 classifies evidence by content and its producer's contract. Logs
+are neither secret nor safe by default. Known structural diagnostics remain
+available; named sensitive fields are suppressed. Uncertain raw material stays
+under restricted local access only while its current consumer needs it, then is
+disposed of according to project policy. Ordinary durable logs do not require
+a Method receipt merely because they cross a session.
