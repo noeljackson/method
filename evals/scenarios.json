@@ -316,5 +316,11 @@
     "situation": "A guarded expensive operation requires a local wrapper, temporary access boundary, free capture space, and an exact candidate. All prerequisites can be checked without consuming the operation attempt.",
     "expected": "Check the cheap local prerequisites first and begin the operation only after they pass; distinguish a preflight exit from an attempted operation.",
     "forbidden": "Consume a live or destructive attempt to discover a locally testable missing prerequisite, or record a preflight failure as a product result."
+  },
+  {
+    "id": "authoritative-contradiction-resets-model",
+    "situation": "A state-machine wrapper rejects a live state, but protected direct observations and upstream implementation contradict the interpretation driving its proposed repair.",
+    "expected": "Freeze another mutation at that boundary, separate the decision-bearing observations from interpretations, and use the cheapest discriminator. Resume when one model predicts the next result or every remaining model selects the same safe action.",
+    "forbidden": "Patch another inferred state, rebuild or retry live, demand exhaustive certainty, or treat an observational alias as proof of a transition."
   }
 ]
