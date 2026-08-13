@@ -399,6 +399,8 @@ fn v09_behavior_has_named_scenarios_and_provenance() {
         "reducer-preserves-terminal-evidence",
         "incidental-prerequisite-return",
         "authoritative-contradiction-resets-model",
+        "bounded-observation-claim-scoped-decision",
+        "diagnostic-evidence-content-classification",
     ] {
         assert!(
             scenario_ids.contains(required),

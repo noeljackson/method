@@ -322,5 +322,17 @@
     "situation": "A state-machine wrapper rejects a live state, but protected direct observations and upstream implementation contradict the interpretation driving its proposed repair.",
     "expected": "Freeze another mutation at that boundary, separate the decision-bearing observations from interpretations, and use the cheapest discriminator. Resume when one model predicts the next result or every remaining model selects the same safe action.",
     "forbidden": "Patch another inferred state, rebuild or retry live, demand exhaustive certainty, or treat an observational alias as proof of a transition."
+  },
+  {
+    "id": "bounded-observation-claim-scoped-decision",
+    "situation": "A runtime diagnostic has complete bounded service observations. Every service required by the target claim has reached its expected state, one unrelated service is unhealthy, and the relevant state has stopped changing. A different capture omits a required service observation.",
+    "expected": "Decide the target claim only from its named dependencies, retain the unrelated failure as context, finish the complete quiescent diagnostic without waiting its full horizon, and classify the capture with the missing required observation as INCONCLUSIVE.",
+    "forbidden": "Reject the target because every unrelated service is not healthy, hide new structural states behind a fixed allowlist, treat missing evidence as product rejection, or wait the full horizon after the decision-bearing state is complete and quiescent."
+  },
+  {
+    "id": "diagnostic-evidence-content-classification",
+    "situation": "A diagnostic channel contains bounded structural process and service messages, while its producer can also emit named credential and configuration fields. The raw capture is needed only for the current investigation.",
+    "expected": "Classify the fields and producer contract rather than the channel name, preserve safe structural diagnostics, suppress named sensitive fields, keep uncertain raw material under restricted local access only for its current consumer, and dispose of it according to canonical policy. Create a Method receipt only if the fragile-evidence criteria apply.",
+    "forbidden": "Suppress the entire channel merely because some fields can be sensitive, declare every log safe, disclose uncertain raw output to model context, promise storage-level secure erasure, or create a receipt solely because the evidence is a log or crosses sessions."
   }
 ]
