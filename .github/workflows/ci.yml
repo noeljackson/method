@@ -22,7 +22,7 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@2c7215f132e9ebf062739d9130488b56d53c060c
         with:
-          toolchain: stable
+          toolchain: 1.97.1
           components: rustfmt, clippy
 
       - name: Check generated and source documentation
@@ -45,20 +45,3 @@ jobs:
           fail: true
           failIfEmpty: false
           jobSummary: true
-
-  msrv:
-    name: Rust 1.85
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install minimum supported Rust
-        uses: dtolnay/rust-toolchain@2c7215f132e9ebf062739d9130488b56d53c060c
-        with:
-          toolchain: 1.85.0
-
-      - name: Check minimum supported Rust
-        run: cargo check --locked --all-targets

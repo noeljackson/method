@@ -1,8 +1,8 @@
 [package]
 name = "noel-method"
-version = "0.9.2"
+version = "0.9.3"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.97.1"
 description = "Portable runtime tooling for the Noel Method"
 license = "MIT"
 repository = "https://github.com/noeljackson/method"

@@ -10,13 +10,16 @@ Immutable 0.8 tags retain the old interfaces for historical consumers. The
 exact 0.9 surface is recorded in
 [`migration/public-api-0.9.0.json`](migration/public-api-0.9.0.json).
 
-Patch releases 0.9.1 and 0.9.2 keep that public interface unchanged. Version
+Patch releases 0.9.1 through 0.9.3 keep that public interface unchanged. Version
 0.9.1 resets a contradicted working model before another boundary mutation.
 Version 0.9.2 preserves bounded structural observations, decides only from
 claim-relevant facts, permits early completion after relevant state becomes
 complete and quiescent, and classifies diagnostic evidence by content and
-producer contract rather than channel name. Consumers need no schema or CLI
-migration; update the immutable pin and pack-manifest digest together.
+producer contract rather than channel name. Version 0.9.3 raises the minimum
+supported Rust compiler and repository builds to Rust 1.97.1.
+Consumers need no schema or CLI migration; source builders must upgrade Rust,
+and all consumers should update the immutable pin and pack-manifest digest
+together.
 
 ## Authority and context
 
