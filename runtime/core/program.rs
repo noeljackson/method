@@ -150,10 +150,12 @@ fn parse_sections(markdown: &str) -> Result<BTreeMap<String, String>> {
 
     for line in markdown.lines() {
         if let Some((marker, length)) = fence {
-            if let Some((candidate, candidate_length, trailing)) = fence_marker(line) {
-                if candidate == marker && candidate_length >= length && trailing.trim().is_empty() {
-                    fence = None;
-                }
+            if let Some((candidate, candidate_length, trailing)) = fence_marker(line)
+                && candidate == marker
+                && candidate_length >= length
+                && trailing.trim().is_empty()
+            {
+                fence = None;
             }
             if let Some((_, lines)) = current.as_mut() {
                 lines.push(line);

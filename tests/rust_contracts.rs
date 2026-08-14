@@ -480,10 +480,10 @@ fn collect_eval_ids_from_directory(path: &Path, ids: &mut BTreeSet<String>) {
         let path = entry.path();
         if path.is_dir() {
             collect_eval_ids_from_directory(&path, ids);
-        } else if path.extension().and_then(|value| value.to_str()) == Some("json") {
-            if let Ok(value) = parse_json_strict(&fs::read(&path).unwrap()) {
-                collect_ids(&value, ids);
-            }
+        } else if path.extension().and_then(|value| value.to_str()) == Some("json")
+            && let Ok(value) = parse_json_strict(&fs::read(&path).unwrap())
+        {
+            collect_ids(&value, ids);
         }
     }
 }

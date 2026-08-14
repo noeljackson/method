@@ -2,6 +2,19 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.9.3 - 2026-08-14
+
+- Raise the supported Rust toolchain from 1.85 to 1.97.1 and pin repository,
+  continuous-integration, release, and crate-publication builds to Rust 1.97.1,
+  the official stable release from 2026-07-16.
+- Remove the separate minimum-Rust CI job because the complete verification
+  job now runs on the exact minimum and exercises a strict superset of that
+  job's `cargo check` gate.
+- Apply Rust 1.97's behavior-preserving `collapsible_if` guidance to the
+  runtime and test code while retaining existing behavior and coverage.
+- Keep the Method protocols, schemas, CLI, and generated pack contents
+  unchanged apart from the patch version and generated identity.
+
 ## 0.9.2 - 2026-08-13
 
 - Preserve bounded structural observations while allowing only

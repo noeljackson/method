@@ -75,7 +75,7 @@ preserves a decision-bearing result, not a status ritual or authority token.
 When the optional crate is published, install it with:
 
 ```sh
-cargo install noel-method --locked --version 0.9.2
+cargo install noel-method --locked --version 0.9.3
 method version --json
 method pack verify
 ```
