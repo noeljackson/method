@@ -1,6 +1,6 @@
 [
   {
-    "section": "Selection and five questions",
+    "section": "Selection and outcome",
     "source_ids": ["I-014", "I-015", "I-021", "C-016", "C-019", "M-001"],
     "failure_prevented": "Method machinery or protocol routing replaces the human's outcome and canonical project authority.",
     "eval_ids": ["direct-bounded-edit", "core-authority-boundary", "program-one-canonical-control"]
@@ -13,15 +13,15 @@
   },
   {
     "section": "Act",
-    "source_ids": ["I-007", "I-033", "I-036", "C-024", "C-025", "M-002"],
+    "source_ids": ["I-007", "I-033", "I-036", "C-024", "C-025", "M-002", "P-001"],
     "failure_prevented": "A bounded objective stalls after a question or failed approach, widens into adjacent work, or mistakes access and automatic effects for authority.",
-    "eval_ids": ["tentative-assent-bounded", "question-does-not-pause-objective", "failed-approach-not-blocker", "incidental-prerequisite-return"]
+    "eval_ids": ["tentative-assent-bounded", "question-does-not-pause-objective", "failed-approach-not-blocker", "incidental-prerequisite-return", "planning-ready-next-action", "planning-real-boundary-choice", "usable-outcome-before-completion"]
   },
   {
     "section": "Learn efficiently",
     "source_ids": ["I-018", "I-023", "I-034", "C-018", "C-020", "C-021", "INF-002", "M-003", "M-004", "M-005", "M-006"],
     "failure_prevented": "Instrumentation and expensive reruns accumulate without selecting a next action, unrelated planes contaminate conclusions, or fragile evidence loses the claim that failed.",
-    "eval_ids": ["instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation", "expensive-gate-diagnostic-loop", "claim-scoped-result", "reducer-preserves-terminal-evidence", "authoritative-contradiction-resets-model", "bounded-observation-claim-scoped-decision"]
+    "eval_ids": ["instrumentation-requires-decision-consumer", "safe-invariant-before-perfect-causation", "expensive-gate-diagnostic-loop", "claim-scoped-result", "reducer-preserves-terminal-evidence", "authoritative-contradiction-resets-model", "bounded-observation-claim-scoped-decision", "required-check-after-focused-pass"]
   },
   {
     "section": "Finish",

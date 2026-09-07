@@ -1,3 +1,33 @@
+# Migration from 0.9.3 to 0.10.0
+
+Version 0.10.0 simplifies operating decisions while retaining direct authority,
+the existing Kernel sections, three optional protocols, and both control
+contracts. Program metadata remains schema version 1, EvidenceReceipt remains
+version 2, and context remains version 4. CLI commands are unchanged; existing
+controls need no conversion or new acceptance solely for this update.
+
+Plan until the next useful action has a purpose, authority, and check. Make
+routine implementation choices inside the accepted boundary; resolve material
+direction choices and missing authority when they affect the next action.
+Keep implementation, necessary documentation, verification, and integration
+within the cohesive deliverable. Component success does not complete a task
+whose requested usable outcome is missing.
+
+Choose the cheapest reliable check rather than traversing a fixed diagnostic
+sequence. Required checks remain required. Reuse evidence only for unchanged
+tested artifacts and relevant state. Preserve the existing rules for
+contradicted models, unknown results, effectful retries, and fragile evidence.
+
+Program controls still reconcile at admission and material transitions;
+ordinary actions inherit unchanged decisions. Bounded repairs stay active,
+while material boundary changes require replanning under applicable authority.
+The secret boundary and Secrets protocol are unchanged.
+
+Update the immutable release pin and pack-manifest digest together when the
+release is available. The unchanged interface is recorded in
+[`migration/public-api-0.10.0.json`](migration/public-api-0.10.0.json). The
+casebook explains the design rationale; no comparative model study is claimed.
+
 # Migration from 0.8.5 to 0.9.0
 
 Version 0.9.0 is a breaking pre-1 simplification. It keeps direct authority and
