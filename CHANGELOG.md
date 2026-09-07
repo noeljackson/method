@@ -2,6 +2,22 @@
 
 All notable changes to the Noel Method are recorded here.
 
+## 0.10.0 - Unreleased
+
+- Make the next useful action the stopping point for planning: establish its
+  purpose, authority, and check, then make routine choices within scope.
+- Keep implementation, necessary documentation, verification, and integration
+  together until the requested outcome is usable.
+- Replace the fixed diagnostic sequence with the cheapest reliable outcome
+  check while preserving required gates, evidence identity, bounded retries,
+  contradiction handling, and fragile-result preservation.
+- Shorten Program guidance around one control, cohesive deliverables,
+  transition-based reconciliation, scoped gates, and repair within authority.
+- Apply existing casebook observation `P-001`, with paired planning examples
+  and completion/verification scenarios. These are review fixtures, not
+  evidence of measured model improvement.
+- Preserve Kernel sections, contracts, schemas, CLI, and secret protections.
+
 ## 0.9.3 - 2026-08-14
 
 - Raise the supported Rust toolchain from 1.85 to 1.97.1 and pin repository,

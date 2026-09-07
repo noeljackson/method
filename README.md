@@ -1,13 +1,8 @@
 # Noel Method
 
-The Noel Method is a compact way for a person and a delegated agent to work
-together like senior teammates. It keeps attention on five questions:
-
-1. What outcome does the human want?
-2. What is true now, and what is only inferred?
-3. What is the smallest safe next action?
-4. What evidence would change the next decision?
-5. What genuinely needs the human?
+The Noel Method helps people and delegated actors carry authorized work to a
+usable result. Identify the outcome, plan enough for the next useful action,
+make routine choices within scope, and verify what others can rely on.
 
 The normative Method is the Markdown in [`src/`](src/) and
 [`protocols/`](protocols/). The CLI, templates, schemas, and generated pack are
@@ -19,6 +14,18 @@ replace project instructions.
 Start with the [Kernel](src/KERNEL.md). Direct mode is the only authority mode:
 the current request and canonical project instructions define what may happen.
 Normal work needs no Method artifact.
+
+These examples apply the Kernel's operating defaults:
+
+| Situation | Next action |
+| --- | --- |
+| The next change has a clear purpose, authority, and acceptance check; later choices remain open. | Implement and check it. Plan later choices when they affect the work. |
+| A routine repair stays within the accepted boundary. | Repair and verify under the existing task. |
+| A proposed repair changes an accepted contract or requires new authority. | Resolve that boundary before the affected mutation; continue independent authorized work. |
+| Component checks pass but the requested usable flow or a required gate is incomplete. | Finish integration and the required verification before claiming completion. |
+
+The [decision scenarios](evals/scenarios.json) include counterexamples for
+review. They describe expected behavior; they do not establish model performance.
 
 Load an optional protocol only when its task signal is present:
 
@@ -75,7 +82,7 @@ preserves a decision-bearing result, not a status ritual or authority token.
 When the optional crate is published, install it with:
 
 ```sh
-cargo install noel-method --locked --version 0.9.3
+cargo install noel-method --locked --version 0.10.0
 method version --json
 method pack verify
 ```

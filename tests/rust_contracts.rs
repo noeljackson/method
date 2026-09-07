@@ -376,7 +376,7 @@ fn normative_modules_have_stable_structure_and_small_runtime_budgets() {
 }
 
 #[test]
-fn v09_behavior_has_named_scenarios_and_provenance() {
+fn current_behavior_has_named_scenarios_and_provenance() {
     let scenarios = json(root().join("evals/scenarios.json"));
     let scenario_ids = scenarios
         .as_array()
@@ -401,6 +401,10 @@ fn v09_behavior_has_named_scenarios_and_provenance() {
         "authoritative-contradiction-resets-model",
         "bounded-observation-claim-scoped-decision",
         "diagnostic-evidence-content-classification",
+        "planning-ready-next-action",
+        "planning-real-boundary-choice",
+        "usable-outcome-before-completion",
+        "required-check-after-focused-pass",
     ] {
         assert!(
             scenario_ids.contains(required),
@@ -410,28 +414,31 @@ fn v09_behavior_has_named_scenarios_and_provenance() {
 
     let provenance = json(root().join("casebook/rule-provenance.json"));
     let all_eval_ids = collect_eval_ids(&root().join("evals"));
-    let v09 = provenance
+    let current = provenance
         .as_array()
         .unwrap()
         .iter()
         .filter(|entry| {
             entry["introduced_in"]
                 .as_str()
-                .is_some_and(|version| version.starts_with("0.9."))
+                .is_some_and(|version| version.starts_with("0.9.") || version.starts_with("0.10."))
         })
         .collect::<Vec<_>>();
-    assert!(!v09.is_empty(), "v0.9 rules require casebook provenance");
-    for entry in v09 {
+    assert!(
+        !current.is_empty(),
+        "current rules require casebook provenance"
+    );
+    for entry in current {
         for field in ["rule", "observation", "insufficiency"] {
             assert!(
                 entry[field]
                     .as_str()
                     .is_some_and(|value| !value.trim().is_empty()),
-                "v0.9 provenance is missing {field}: {entry}"
+                "current provenance is missing {field}: {entry}"
             );
         }
         let eval_ids = entry["eval_ids"].as_array().unwrap();
-        assert!(!eval_ids.is_empty(), "v0.9 rule has no eval: {entry}");
+        assert!(!eval_ids.is_empty(), "current rule has no eval: {entry}");
         for eval_id in eval_ids {
             let eval_id = eval_id.as_str().unwrap();
             assert!(

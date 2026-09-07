@@ -118,5 +118,18 @@
     "migration_id": "M-007",
     "insufficiency": "The secret boundary prohibited secret-bearing logs but did not prevent blanket channel suppression from destroying safe decision-bearing diagnostics.",
     "eval_ids": ["diagnostic-evidence-content-classification"]
+  },
+  {
+    "introduced_in": "0.10.0",
+    "rule": "End planning when the next useful action has a purpose, authority, and check; carry routine work through its usable outcome.",
+    "observation": "P-001",
+    "migration_id": "P-001",
+    "insufficiency": "Smallest-action and just-in-time guidance left the end of planning implicit and allowed control activity or component evidence to substitute for completed outcomes.",
+    "eval_ids": [
+      "planning-ready-next-action",
+      "planning-real-boundary-choice",
+      "usable-outcome-before-completion",
+      "required-check-after-focused-pass"
+    ]
   }
 ]
