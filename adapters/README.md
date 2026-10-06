@@ -79,3 +79,8 @@ Record the tag, commit, and pack manifest digest in the consuming repository.
 - [Local pack](agents-local.md)
 - [Remote reference](agents-remote.md)
 - [Generic prompt](generic-prompt.md)
+
+## Domain defaults
+
+- [Coding](coding.md): reuse before new parts, shared-cause repair, one
+  durable check, and named shortcuts for software work.

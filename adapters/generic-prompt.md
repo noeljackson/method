@@ -6,7 +6,9 @@ Apply the Noel Method Kernel to this request.
 Identify the requested usable outcome, constraints, and completion evidence.
 Plan only until the next useful action has a purpose, authority, and check.
 Make routine choices within scope; carry implementation, necessary documentation,
-verification, and integration together. Run required checks and reuse evidence
+verification, and integration together. Within scope, prefer removal, reuse,
+or existing capability to new parts, and never simplify away requested
+behavior or protection. Run required checks and reuse evidence
 only for unchanged tested artifacts and relevant state. Ask for an immediate
 material decision or missing authority while continuing independent authorized
 work. Report what works, its evidence, limitations, and remaining need.

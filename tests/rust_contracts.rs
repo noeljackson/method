@@ -318,7 +318,7 @@ fn normative_modules_have_stable_structure_and_small_runtime_budgets() {
     let expected = [
         (
             "src/KERNEL.md",
-            525,
+            540,
             vec![
                 "# Noel Method Kernel",
                 "## Understand",

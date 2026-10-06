@@ -17,6 +17,12 @@ All notable changes to the Noel Method are recorded here.
   and completion/verification scenarios. These are review fixtures, not
   evidence of measured model improvement.
 - Preserve Kernel sections, contracts, schemas, CLI, and secret protections.
+- Add optional coding defaults in `adapters/coding.md`, adapted from the
+  Ponytail skill: reuse before new parts, protection kept under
+  simplification, shared-cause repair, one durable check, and named
+  shortcuts. The adapter adds no hard-core rule.
+- Raise the Kernel word budget from 525 to 540 to leave room for
+  evidence-backed additions. Kernel text is unchanged by this budget.
 
 ## 0.9.3 - 2026-08-14
 
