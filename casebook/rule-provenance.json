@@ -131,5 +131,27 @@
       "usable-outcome-before-completion",
       "required-check-after-focused-pass"
     ]
+  },
+  {
+    "introduced_in": "0.11.0",
+    "rule": "Record each human decision, dated and sourced, in the governing Program's Boundaries or in canonical project policy; remove its question in that revision, check those records before asking, keep the control in a tracker item, and make copies cite the control revision they project.",
+    "observation": "C-026",
+    "migration_id": "C-026",
+    "insufficiency": "Needs from human held pending decisions and standing rules moved to project policy, but nothing said where a made decision goes, when its question leaves the control, or that copies cite their source, so settled decisions lived only in memories, comments, and state files and were asked again.",
+    "eval_ids": [
+      "program-decision-recorded-once",
+      "program-durable-decision-project-policy",
+      "program-control-tracker-not-file"
+    ]
+  },
+  {
+    "introduced_in": "0.11.0",
+    "rule": "Coordinate several Programs through a portfolio Program that settles priority, ownership, and conflicts between members without deciding their internal work or revising their controls; members report status and blockers to it.",
+    "observation": "C-027",
+    "migration_id": "C-027",
+    "insufficiency": "One coordinator per control prevents two writers of a control but does not describe a coordinator whose subject is other Programs, leaving an orchestrator to edit controls it does not own or keep an uncited second source of priority.",
+    "eval_ids": [
+      "program-portfolio-settles-between-programs"
+    ]
   }
 ]

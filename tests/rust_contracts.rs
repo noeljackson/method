@@ -405,6 +405,10 @@ fn current_behavior_has_named_scenarios_and_provenance() {
         "planning-real-boundary-choice",
         "usable-outcome-before-completion",
         "required-check-after-focused-pass",
+        "program-decision-recorded-once",
+        "program-durable-decision-project-policy",
+        "program-control-tracker-not-file",
+        "program-portfolio-settles-between-programs",
     ] {
         assert!(
             scenario_ids.contains(required),
@@ -419,9 +423,11 @@ fn current_behavior_has_named_scenarios_and_provenance() {
         .unwrap()
         .iter()
         .filter(|entry| {
-            entry["introduced_in"]
-                .as_str()
-                .is_some_and(|version| version.starts_with("0.9.") || version.starts_with("0.10."))
+            entry["introduced_in"].as_str().is_some_and(|version| {
+                ["0.9.", "0.10.", "0.11."]
+                    .iter()
+                    .any(|prefix| version.starts_with(prefix))
+            })
         })
         .collect::<Vec<_>>();
     assert!(

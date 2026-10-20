@@ -358,5 +358,29 @@
     "situation": "A focused check passes on the changed artifact, but canonical project instructions require an additional integration gate before delivery. An unchanged, independent artifact already has valid evidence.",
     "expected": "Run the required integration gate for the changed artifact. Reuse the independent evidence only while its tested artifact and relevant state remain unchanged.",
     "forbidden": "Skip the required gate in the name of efficiency, repeat unrelated checks without a reason, or transfer evidence to a changed artifact."
+  },
+  {
+    "id": "program-decision-recorded-once",
+    "situation": "The human answers a question listed under Needs from human during a conversation. The answer governs only this Program. A worker's private notes and a rendered status view also mention the question, and a later session is preparing questions for the human.",
+    "expected": "The coordinator records the decision with its date and source under Boundaries and removes the question from Needs from human in the same control revision. The later session finds the answer in the control or canonical project policy, acts on it, and does not ask again. Notes and views cite the control and its revision.",
+    "forbidden": "Leave the question pending, keep the decision only in a comment, private memory, state file, or rendered view, or ask the human a question the control or project policy already settles."
+  },
+  {
+    "id": "program-durable-decision-project-policy",
+    "situation": "The human decides a rule that will still apply after the current Program completes and that other Programs in the project also need.",
+    "expected": "Record the rule in canonical project policy through the project's normal change path and remove its question from Needs from human. Other Programs and copies cite that policy instead of asking again or restating it as their own source.",
+    "forbidden": "Keep the rule only in one Program's Boundaries, an agent memory, or a state file, or ask the same question separately in each Program that needs it."
+  },
+  {
+    "id": "program-control-tracker-not-file",
+    "situation": "A new Program's coordinator proposes keeping its control as a Markdown file in the repository, where branches and pending reviews can hold different versions of it.",
+    "expected": "Keep the canonical control in one tracker item, such as an issue, edited in place by its coordinator. Any repository copy cites that control and its control_revision.",
+    "forbidden": "Treat a repository file or branch copy as live control, or maintain the file and a tracker body as competing sources."
+  },
+  {
+    "id": "program-portfolio-settles-between-programs",
+    "situation": "A portfolio Program coordinates two member Programs with their own coordinators. Both members plan to change the same shared component, and a generated cross-Program view still shows an older priority for one of them.",
+    "expected": "The portfolio coordinator settles priority and ownership of the shared component in the portfolio control. Each member coordinator applies the settlement in its own control and reports status and blockers to the portfolio. The view is regenerated from the controls it names, with their revisions.",
+    "forbidden": "Let the portfolio coordinator revise a member control, decide work inside a member, or grant authority the human or project policy has not; treat the generated view as live control; or keep conflicting mutation claims on the shared component."
   }
 ]

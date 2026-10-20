@@ -2,7 +2,26 @@
 
 All notable changes to the Noel Method are recorded here.
 
-## 0.10.0 - Unreleased
+## 0.11.0 - 2026-10-20
+
+- Give each human decision one recorded home: dated and sourced under the
+  Program's `Boundaries` when it governs only that Program, otherwise in
+  canonical project policy. Its question leaves `Needs from human` in the same
+  control revision, and a question that the control or project policy already
+  settles is not asked again.
+- Treat memories, notes, state files, and rendered views as copies that cite
+  the control and `control_revision` they project.
+- State that the canonical tracker body is a tracker item, such as an issue,
+  not a repository file.
+- Coordinate several Programs through a portfolio Program. It settles priority,
+  ownership, and conflicts between members without deciding their internal
+  work or revising their controls; member coordinators apply its settlements,
+  report status and blockers to it, and may name it under `Boundaries`.
+- Record casebook observations `C-026` and `C-027` with four Program decision
+  scenarios. Program stays within its existing 625-word budget and headings.
+  Contracts, schemas, CLI, Kernel, and secret protections are unchanged.
+
+## 0.10.0 - 2026-09-07 (merged; not tagged)
 
 - Make the next useful action the stopping point for planning: establish its
   purpose, authority, and check, then make routine choices within scope.

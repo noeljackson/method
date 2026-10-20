@@ -29,7 +29,8 @@ None
 
 ## Boundaries
 
-Only non-obvious current constraints or recovery limits; use None when
+Only non-obvious current constraints or recovery limits, any portfolio control,
+and dated, sourced human decisions that govern only this Program; use None when
 canonical project rules suffice.
 
 ## Evidence
