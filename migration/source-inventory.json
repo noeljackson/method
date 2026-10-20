@@ -73,7 +73,9 @@
     {"id": "C-022", "heading": "Verification retry authority follows effects"},
     {"id": "C-023", "heading": "Durable-goal text must be directly reusable"},
     {"id": "C-024", "heading": "Live control must outlast host state and failed attempts"},
-    {"id": "C-025", "heading": "Incidental prerequisites must return to the owning objective"}
+    {"id": "C-025", "heading": "Incidental prerequisites must return to the owning objective"},
+    {"id": "C-026", "heading": "Settled decisions need one recorded home"},
+    {"id": "C-027", "heading": "Several Programs need one portfolio control"}
   ],
   "infrastructure": [
     {"id": "INF-001", "heading": "Recurring failures need an enforcing consumer"},

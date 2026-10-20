@@ -1,3 +1,31 @@
+# Migration from 0.10.0 to 0.11.0
+
+Version 0.11.0 changes only the Program protocol. The Kernel, contracts, Program
+metadata schema version 1, EvidenceReceipt version 2, context version 4, and
+CLI commands are unchanged. The template's `Boundaries` hint now names
+recorded decisions and an optional portfolio control. Existing controls still
+validate. Do not pause delivery to adopt this release; at each Program's next
+natural transition:
+
+1. Move every human decision that the Program relies on into its home: under
+   `Boundaries`, with its date and source, when it governs only that Program;
+   otherwise into canonical project policy. Remove answered questions from
+   `Needs from human` in the same revision.
+2. Make memories, notes, state files, and rendered views cite the control and
+   `control_revision` they copy. A decision found only in such a copy is moved
+   to its home.
+3. If a control lives in a repository file, move it to one tracker item, such
+   as an issue, and leave the file as a citing copy or remove it.
+4. If a coordinator settles priority or ownership across Programs, give that
+   portfolio its own Program control. Member coordinators keep sole revision of
+   their controls, apply its settlements, report status and blockers to it, and
+   may name it under `Boundaries`.
+
+Where project policy lives across several repositories, and how a decision's
+source is cited, remain project choices. Update the immutable release pin and
+pack-manifest digest together. The unchanged interface is recorded in
+[`migration/public-api-0.11.0.json`](migration/public-api-0.11.0.json).
+
 # Migration from 0.9.3 to 0.10.0
 
 Version 0.10.0 simplifies operating decisions while retaining direct authority,

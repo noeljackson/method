@@ -324,6 +324,66 @@ appropriate when current acceptance consumes it, a concrete safety guard is
 needed, or the owner changes scope. Repository-specific login mechanisms,
 documentation ownership, and backlog policy remain local decisions.
 
+### Settled decisions need one recorded home
+
+Observation ID: `C-026`
+
+Codewire ran several concurrent Programs, each with one canonical tracker
+body. Human decisions usually arrived in conversation and were then kept
+wherever the receiving session wrote them: tracker comments, a coordination
+state file, or an agent's private memory. A build-dependency layout decision
+for issue `#2588` was made on 2026-10-12 and stored only in one agent's memory,
+while the Program body's `Needs from human` kept listing it. Sessions asked the
+human about it roughly ten times before the human pointed out, on 2026-10-15,
+that it was already decided. Other settled questions were forwarded to the
+human again on the day they were answered. Separately, one Program read
+"tracker body" as permitting a checked-in Markdown file while the others used
+issues.
+
+The Program protocol defined `Needs from human` for pending decisions, and the
+v0.9 migration moved standing rules into canonical project policy. Neither said
+where a decision goes once made, that its question leaves `Needs from human` in
+the same revision, or that a session checks the recorded decisions before
+asking. Copies were already non-authoritative, but nothing required a copy to
+cite its source, so a memory or state file could become the only record without
+anyone noticing.
+
+Version 0.11 records each human decision, dated and sourced, under
+`Boundaries` when it governs only one Program and otherwise in canonical
+project policy; removes its question in that revision; settles questions from
+those records before asking; and treats memories, notes, state files, and
+rendered views as copies that cite the control and `control_revision` they
+project. It also states that the control is a tracker item, not a repository
+file. Where project policy lives across several repositories, and how a
+decision's source is quoted, remain project-local.
+
+### Several Programs need one portfolio control
+
+Observation ID: `C-027`
+
+On 2026-10-20 Codewire added an orchestrating session above its concurrent
+Programs to settle priority and ownership between them, with a state file and a
+generated cross-Program tracker view. The protocol gave each Program one
+control and one coordinator, but did not say whether the orchestrator's
+settlements belonged in member controls, whether it could revise them, what
+member coordinators owed it, or which source its state file and view
+represented. The local resolution made the orchestration a Program with its
+own canonical control, issue `#3013`, and treated the state file and view as
+copies of it.
+
+The single-coordinator and copy rules prevent two writers of one control, but
+they do not describe a coordinator whose subject is other Programs. Without
+that, an orchestrator either edits controls it does not own or keeps a second,
+uncited source of priority. This entry records that ambiguity and the
+scattered decisions in `C-026`; it claims no separate incident.
+
+Version 0.11 makes such a portfolio an ordinary Program. It settles priority,
+ownership, and conflicts between members but not work inside them, never
+revises member controls, receives status and blockers from member
+coordinators, and may be named in a member's `Boundaries`. Its view of the
+members is a copy that cites each control and revision. It adds coordination,
+not authority.
+
 ## Experiment loop
 
 An agent-harness project inside the same repository added a complementary
